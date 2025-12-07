@@ -12,6 +12,7 @@ public class Main {
         SatelliteConstellation team = new SatelliteConstellation("RUR");
         team.addSatellite(s2);
         team.addSatellite(c);
+        team.addSatellite(s);
 
         List<Satellite> satellites = team.getSatellites();
         System.out.println(satellites);
