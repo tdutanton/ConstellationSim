@@ -13,6 +13,10 @@ public abstract class Satellite {
         return name;
     }
 
+    private String generateName(String name, int number) {
+        return name + "-" + number;
+    }
+
     public void consumeBattery(double amount) {
         if (amount < 0.0)
             throw new IllegalArgumentException("Значение для снижения заряда батареи не должно быть отрицательным");

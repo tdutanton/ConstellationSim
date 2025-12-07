@@ -2,6 +2,9 @@ public class ImagingSatellite extends Satellite{
     private double resolution;
     private int photosTaken;
 
+    private static final String DEFAULT_NAME = "ДЗЗ";
+    private static final int SERIAL_NUMBER = 1;
+
     public double getResolution() {
         return resolution;
     }
