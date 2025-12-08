@@ -55,5 +55,9 @@ public abstract class Satellite {
         }
     }
 
+    protected void handleChangeBatteryLevel() {
+        if (batteryLevel <= MIN_POSSIBLE_BATTERY_FOR_ACTIVATE && isActive) isActive = false;
+    }
+
     protected abstract void performMission();
 }

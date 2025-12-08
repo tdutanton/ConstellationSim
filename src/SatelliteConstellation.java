@@ -30,7 +30,11 @@ public class SatelliteConstellation {
     }
 
     public void executeAllMissions() {
-        System.out.println("TODO executeAllMissions");
+        System.out.printf("Выполнение миссий группировки %s%n", constellationName);
+        System.out.println(NEW_LINE_DELIM_CONSTELLATION);
+        for (Satellite s : satellites) {
+            s.performMission();
+        }
     }
 
     public List<Satellite> getSatellites() {
@@ -42,7 +46,6 @@ public class SatelliteConstellation {
         System.out.println(NEW_LINE_DELIM_CONSTELLATION);
         satellites.forEach(Satellite::activate);
         System.out.println(NEW_LINE_DELIM_CONSTELLATION);
-        System.out.println();
     }
 
 }

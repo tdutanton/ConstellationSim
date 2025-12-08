@@ -4,6 +4,7 @@ public class ImagingSatellite extends Satellite{
 
     private static final String DEFAULT_NAME = "ДЗЗ";
     private static int SERIAL_NUMBER = 1;
+    private static final double BATTERY_PER_MISSION = 0.05;
 
     public ImagingSatellite(double aResolution) {
         if (aResolution < 0.0)
@@ -38,11 +39,18 @@ public class ImagingSatellite extends Satellite{
 
     @Override
     public void performMission() {
-        System.out.println("TODO imaging performMission");
+        if (isActive) {
+            System.out.printf("✅ %s: Съемка территории с разрешением %.1f м/пиксель%n", name, resolution);
+            consumeBattery(BATTERY_PER_MISSION);
+            handleChangeBatteryLevel();
+            takePhoto();
+        } else {
+            System.out.printf("⛔ %s: Не может выполнить съемку - не активен%n", name);
+        }
     }
 
     private void takePhoto() {
-        System.out.println("TODO takePhoto");
         photosTaken++;
+        System.out.printf("✅ %s : Снимок #%d сделан!%n", name, photosTaken);
     }
 }
