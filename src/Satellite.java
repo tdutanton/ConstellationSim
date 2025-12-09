@@ -28,9 +28,9 @@ public abstract class Satellite {
     private static final Random RANDOM = new Random();
 
     /**
-     * Минимальный допустимый уровень заряда для активации спутника (15%).
+     * Минимальный допустимый уровень заряда для активации спутника (20%).
      */
-    private static final double MIN_POSSIBLE_BATTERY_FOR_ACTIVATE = 0.15;
+    private static final double MIN_POSSIBLE_BATTERY_FOR_ACTIVATE = 0.20;
 
     /**
      * Флаг, включающий или отключающий подробный вывод в консоль

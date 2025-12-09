@@ -14,8 +14,8 @@ public class CommunicationSatellite extends Satellite {
     /** Последовательный номер для генерации уникальных имён спутников. */
     private static int SERIAL_NUMBER = 1;
 
-    /** Уровень потребления заряда батареи за одну миссию (9%). */
-    private static final double BATTERY_PER_MISSION = 0.09;
+    /** Уровень потребления заряда батареи за одну миссию (5%). */
+    private static final double BATTERY_PER_MISSION = 0.05;
 
     /**
      * Конструирует новый спутник связи с заданной пропускной способностью.
