@@ -1,11 +1,13 @@
 public class Main {
     public static void main(String[] args) {
         final String DIVIDER = "---------------------";
+        final String SatelliteIcon = "\uD83D\uDEF0\uFE0F";
 
         Satellite.SetConsolePrintMode(true);
         SatelliteConstellation.SetConsolePrintMode(true);
 
-        System.out.println("ЗАПУСК СИСТЕМЫ УПРАВЛЕНИЯ СПУТНИКОВОЙ ГРУППИРОВКОЙ");
+        System.out.printf("%1$s %1$s ЗАПУСК СИСТЕМЫ УПРАВЛЕНИЯ СПУТНИКОВОЙ ГРУППИРОВКОЙ %1$s %1$s%n",
+                SatelliteIcon);
         System.out.println("=====================");
 
         System.out.println("Создание специализированных спутников:");
@@ -19,6 +21,7 @@ public class Main {
         System.out.println(DIVIDER);
         SatelliteConstellation team = new SatelliteConstellation("RU Basic");
         System.out.println(DIVIDER);
+
         System.out.println("Формирование группировки:");
         System.out.println(DIVIDER);
         team.addSatellite(comSatFirst);
@@ -34,6 +37,7 @@ public class Main {
         team.activateSatellites();
 
         team.executeAllMissions();
+
         System.out.println(DIVIDER);
         System.out.println(team.getSatellites());
     }
