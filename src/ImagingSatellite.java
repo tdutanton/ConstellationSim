@@ -1,4 +1,4 @@
-public class ImagingSatellite extends Satellite{
+public class ImagingSatellite extends Satellite {
     private final double resolution;
     private int photosTaken;
 
@@ -40,17 +40,18 @@ public class ImagingSatellite extends Satellite{
     @Override
     public void performMission() {
         if (isActive) {
-            System.out.printf("✅ %s: Съемка территории с разрешением %.1f м/пиксель%n", name, resolution);
+            if (consolePrintMode)
+                System.out.printf("✅ %s: Съемка территории с разрешением %.1f м/пиксель%n", name, resolution);
             consumeBattery(BATTERY_PER_MISSION);
             handleChangeBatteryLevel();
             takePhoto();
         } else {
-            System.out.printf("⛔ %s: Не может выполнить съемку - не активен%n", name);
+            if (consolePrintMode) System.out.printf("⛔ %s: Не может выполнить съемку - не активен%n", name);
         }
     }
 
     private void takePhoto() {
         photosTaken++;
-        System.out.printf("✅ %s : Снимок #%d сделан!%n", name, photosTaken);
+        if (consolePrintMode) System.out.printf("✅ %s : Снимок #%d сделан!%n", name, photosTaken);
     }
 }

@@ -1,8 +1,9 @@
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
         final String DIVIDER = "---------------------";
+
+        Satellite.SetConsolePrintMode(true);
+        SatelliteConstellation.SetConsolePrintMode(true);
 
         System.out.println("ЗАПУСК СИСТЕМЫ УПРАВЛЕНИЯ СПУТНИКОВОЙ ГРУППИРОВКОЙ");
         System.out.println("=====================");

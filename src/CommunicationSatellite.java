@@ -33,16 +33,17 @@ public class CommunicationSatellite extends Satellite {
     @Override
     public void performMission() {
         if (isActive) {
-            System.out.printf("✅ %s: Передача данных со скоростью %.1f Мбит/с%n", name, bandwidth);
+            if (consolePrintMode)
+                System.out.printf("✅ %s: Передача данных со скоростью %.1f Мбит/с%n", name, bandwidth);
             sendData(bandwidth);
             consumeBattery(BATTERY_PER_MISSION);
             handleChangeBatteryLevel();
         } else {
-            System.out.printf("⛔ %s не может передать данные - не активен%n", name);
+            if (consolePrintMode) System.out.printf("⛔ %s не может передать данные - не активен%n", name);
         }
     }
 
     private void sendData(double data) {
-        System.out.printf("✅ %s отправил %.0f Мбит данных!%n", name, data);
+        if (consolePrintMode) System.out.printf("✅ %s отправил %.0f Мбит данных!%n", name, data);
     }
 }

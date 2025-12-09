@@ -8,15 +8,19 @@ public abstract class Satellite {
     private static final Random RANDOM = new Random();
 
     private static final double MIN_POSSIBLE_BATTERY_FOR_ACTIVATE = 0.15;
-    private static final double ZERO_BATTERY = 0.0;
-    private static final double MAX_BATTERY = 1.0;
-    protected static final String NEW_LINE_DELIM_SATELLITE = "---------------------";
+
+    protected static boolean consolePrintMode = false;
+
+    public static void SetConsolePrintMode(boolean state) {
+        consolePrintMode = state;
+    }
 
     protected Satellite(String aName, int aNumber) {
         name = generateName(aName, aNumber);
         isActive = false;
         batteryLevel = generateBatteryLevel();
-        System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name, batteryLevel * 100.0);
+        if (consolePrintMode)
+            System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name, batteryLevel * 100.0);
     }
 
     public void deactivate() {
@@ -44,19 +48,20 @@ public abstract class Satellite {
     public boolean activate() {
         if (batteryLevel > MIN_POSSIBLE_BATTERY_FOR_ACTIVATE && !isActive) {
             isActive = true;
-            System.out.printf("✅ %s: Активация успешна%n", name);
+            if (consolePrintMode) System.out.printf("✅ %s: Активация успешна%n", name);
             return true;
         } else if (isActive) {
-            System.out.printf("⚠️ %s: Активация уже была произведена ранее%n", name);
+            if (consolePrintMode) System.out.printf("⚠️ %s: Активация уже была произведена ранее%n", name);
             return true;
         } else {
-            System.out.printf("⛔ %s: Ошибка активации (заряд: %.0f%%)%n", name, batteryLevel * 100);
+            if (consolePrintMode)
+                System.out.printf("⛔ %s: Ошибка активации (заряд: %.0f%%)%n", name, batteryLevel * 100);
             return false;
         }
     }
 
     protected void handleChangeBatteryLevel() {
-        if (batteryLevel <= MIN_POSSIBLE_BATTERY_FOR_ACTIVATE && isActive) isActive = false;
+        if (batteryLevel <= MIN_POSSIBLE_BATTERY_FOR_ACTIVATE && isActive) deactivate();
     }
 
     protected abstract void performMission();
