@@ -51,8 +51,8 @@ public class ImagingSatellite extends Satellite {
                 resolution,
                 photosTaken,
                 name,
-                isActive,
-                batteryLevel
+                state.isActive(),
+                energy.getBatteryLevel()
         );
     }
 
@@ -87,14 +87,13 @@ public class ImagingSatellite extends Satellite {
      */
     @Override
     public void performMission() {
-        if (isActive) {
-            if (consolePrintMode)
-                System.out.printf("✅ %s: Съемка территории с разрешением %.1f м/пиксель%n", name, resolution);
-            consumeBattery(BATTERY_PER_MISSION);
+        if (state.isActive()) {
+            System.out.printf("✅ %s: Съемка территории с разрешением %.1f м/пиксель%n", name, resolution);
+            energy.consume(BATTERY_PER_MISSION);
             handleChangeBatteryLevel();
             takePhoto();
         } else {
-            if (consolePrintMode) System.out.printf("⛔ %s: Не может выполнить съемку - не активен%n", name);
+            System.out.printf("⛔ %s: Не может выполнить съемку - не активен%n", name);
         }
     }
 

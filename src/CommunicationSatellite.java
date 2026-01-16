@@ -47,8 +47,8 @@ public class CommunicationSatellite extends Satellite {
                 this.getClass().getSimpleName(),
                 bandwidth,
                 name,
-                isActive,
-                batteryLevel
+                state.isActive(),
+                energy.getBatteryLevel()
         );
     }
 
@@ -74,14 +74,13 @@ public class CommunicationSatellite extends Satellite {
      */
     @Override
     public void performMission() {
-        if (isActive) {
-            if (consolePrintMode)
-                System.out.printf("✅ %s: Передача данных со скоростью %.1f Мбит/с%n", name, bandwidth);
+        if (state.isActive()) {
+            System.out.printf("✅ %s: Передача данных со скоростью %.1f Мбит/с%n", name, bandwidth);
             sendData(bandwidth);
-            consumeBattery(BATTERY_PER_MISSION);
+            energy.consume(BATTERY_PER_MISSION);
             handleChangeBatteryLevel();
         } else {
-            if (consolePrintMode) System.out.printf("⛔ %s не может передать данные - не активен%n", name);
+            System.out.printf("⛔ %s не может передать данные - не активен%n", name);
         }
     }
 

@@ -1,5 +1,3 @@
-import java.util.Random;
-
 /**
  * Абстрактный базовый класс для представления спутника.
  * Содержит общую логику управления состоянием спутника: активация/деактивация,
@@ -12,20 +10,11 @@ public abstract class Satellite {
      */
     protected String name;
 
-    /**
-     * Текущее состояние спутника: активен ({@code true}) или нет ({@code false}).
-     */
-    protected boolean isActive;
+    /** Текущее состояние спутника (активен/неактивен). */
+    protected SatelliteState state;
 
-    /**
-     * Уровень заряда батареи в диапазоне [0.0, 1.0].
-     */
-    protected double batteryLevel;
-
-    /**
-     * Генератор случайных чисел для инициализации начального уровня заряда.
-     */
-    private static final Random RANDOM = new Random();
+    /** Система управления энергией спутника. */
+    protected EnergySystem energy;
 
     /**
      * Минимальный допустимый уровень заряда для активации спутника (20%).
@@ -59,17 +48,9 @@ public abstract class Satellite {
      */
     protected Satellite(String aName, int aNumber) {
         name = generateName(aName, aNumber);
-        isActive = false;
-        batteryLevel = generateBatteryLevel();
-        if (consolePrintMode)
-            System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name, batteryLevel * 100.0);
-    }
-
-    /**
-     * Деактивирует спутник, устанавливая флаг {@link #isActive} в {@code false}.
-     */
-    public void deactivate() {
-        isActive = false;
+        state = new SatelliteState();
+        energy = new EnergySystem();
+        System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name, energy.getBatteryLevel() * 100.0);
     }
 
     /**
@@ -79,15 +60,6 @@ public abstract class Satellite {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Генерирует случайный начальный уровень заряда батареи в диапазоне [0.0, 1.0).
-     *
-     * @return случайное значение уровня заряда
-     */
-    protected double generateBatteryLevel() {
-        return RANDOM.nextDouble();
     }
 
     /**
@@ -102,38 +74,30 @@ public abstract class Satellite {
     }
 
     /**
-     * Уменьшает уровень заряда батареи на указанную величину.
-     * Заряд не может опуститься ниже 0.0.
-     *
-     * @param amount величина, на которую снижается заряд (должна быть ≥ 0)
-     * @throws IllegalArgumentException если {@code amount} отрицательное
-     */
-    public void consumeBattery(double amount) {
-        if (amount < 0.0)
-            throw new IllegalArgumentException("Значение для снижения заряда батареи не должно быть отрицательным");
-        batteryLevel = Math.max(0.0, this.batteryLevel - amount);
-    }
-
-    /**
      * Пытается активировать спутник.
-     * Активация возможна только если уровень заряда превышает
-     * {@link #MIN_POSSIBLE_BATTERY_FOR_ACTIVATE} (15%) и спутник ещё не активен.
-     * При включённом {@code consolePrintMode} выводятся соответствующие сообщения.
+     * <p>
+     * Активация возможна только если:
+     * <ul>
+     *   <li>уровень заряда батареи превышает {@link #MIN_POSSIBLE_BATTERY_FOR_ACTIVATE}, и</li>
+     *   <li>спутник в данный момент неактивен.</li>
+     * </ul>
+     * Если спутник уже активен, операция считается успешной, но повторной активации не происходит.
+     * При недостаточном заряде активация отклоняется.
+     * </p>
      *
-     * @return {@code true}, если активация прошла успешно или спутник уже был активен;
-     * {@code false}, если активация невозможна из-за недостаточного заряда.
+     * @return {@code true}, если активация прошла успешно (включая случай, когда спутник уже был активен),
+     *         {@code false} — если активация невозможна из-за низкого заряда батареи
      */
     public boolean activate() {
-        if (batteryLevel > MIN_POSSIBLE_BATTERY_FOR_ACTIVATE && !isActive) {
-            isActive = true;
-            if (consolePrintMode) System.out.printf("✅ %s: Активация успешна%n", name);
+        if (energy.getBatteryLevel() > MIN_POSSIBLE_BATTERY_FOR_ACTIVATE && !state.isActive()) {
+            state.activate();
+            System.out.printf("✅ %s: Активация успешна%n", name);
             return true;
-        } else if (isActive) {
-            if (consolePrintMode) System.out.printf("⚠️ %s: Активация уже была произведена ранее%n", name);
+        } else if (state.isActive()) {
+            System.out.printf("⚠️ %s: Активация уже была произведена ранее%n", name);
             return true;
         } else {
-            if (consolePrintMode)
-                System.out.printf("⛔ %s: Ошибка активации (заряд: %.0f%%)%n", name, batteryLevel * 100);
+            System.out.printf("⛔ %s: Ошибка активации (заряд: %.0f%%)%n", name, energy.getBatteryLevel() * 100);
             return false;
         }
     }
@@ -144,7 +108,7 @@ public abstract class Satellite {
      * Вызывается автоматически после операций, расходующих заряд.
      */
     protected void handleChangeBatteryLevel() {
-        if (batteryLevel <= MIN_POSSIBLE_BATTERY_FOR_ACTIVATE && isActive) deactivate();
+        if (energy.getBatteryLevel() <= MIN_POSSIBLE_BATTERY_FOR_ACTIVATE && state.isActive()) state.deactivate();
     }
 
     /**
