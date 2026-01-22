@@ -12,10 +12,14 @@ public abstract class Satellite {
      */
     protected String name;
 
-    /** Текущее состояние спутника (активен/неактивен). */
+    /**
+     * Текущее состояние спутника (активен/неактивен).
+     */
     protected SatelliteState state;
 
-    /** Система управления энергией спутника. */
+    /**
+     * Система управления энергией спутника.
+     */
     protected EnergySystem energy;
 
     /**
@@ -88,7 +92,7 @@ public abstract class Satellite {
      * </p>
      *
      * @return {@code true}, если активация прошла успешно (включая случай, когда спутник уже был активен),
-     *         {@code false} — если активация невозможна из-за низкого заряда батареи
+     * {@code false} — если активация невозможна из-за низкого заряда батареи
      */
     public boolean activate() {
         if (energy.getBatteryLevel() > MIN_POSSIBLE_BATTERY_FOR_ACTIVATE && !state.isActive()) {
@@ -119,4 +123,10 @@ public abstract class Satellite {
      * в наследующих классах (например, передача данных или съёмка).
      */
     protected abstract void performMission();
+
+    public String status() {
+        String result = "не активен";
+        if (state.isActive()) result = "активен";
+        return "Спутник " + getName() + " . Статус:  " + result;
+    }
 }

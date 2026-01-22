@@ -12,16 +12,24 @@ import java.util.List;
  * </p>
  */
 public class SatelliteConstellation {
-    /** Название спутниковой группировки. */
+    /**
+     * Название спутниковой группировки.
+     */
     private final String constellationName;
 
-    /** Список спутников, входящих в состав группировки. */
+    /**
+     * Список спутников, входящих в состав группировки.
+     */
     private final List<Satellite> satellites;
 
-    /** Строка-разделитель, используемая при выводе в консоль. */
+    /**
+     * Строка-разделитель, используемая при выводе в консоль.
+     */
     private static final String NEW_LINE_DELIM_CONSTELLATION = "---------------------";
 
-    /** Название группировки по умолчанию, используемое при вызове конструктора без параметров. */
+    /**
+     * Название группировки по умолчанию, используемое при вызове конструктора без параметров.
+     */
     private static final String DEFAULT_CONSTELLATION_NAME = "Default Constellation";
 
     /**
@@ -129,5 +137,11 @@ public class SatelliteConstellation {
 
     public String getConstellationName() {
         return constellationName;
+    }
+
+    public void getSatellitesStatus() {
+        for (Satellite s : satellites) {
+            System.out.println(s.status());
+        }
     }
 }

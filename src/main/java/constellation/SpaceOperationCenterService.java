@@ -1,9 +1,7 @@
 package constellation;
 
-import java.util.Objects;
-
 public class SpaceOperationCenterService {
-    private ConstellationRepository repository;
+    private final ConstellationRepository repository;
 
 
     public SpaceOperationCenterService(ConstellationRepository repository) {
@@ -35,7 +33,34 @@ public class SpaceOperationCenterService {
     public void addSatelliteToConstellation(String constellationName, Satellite satellite) {
         repository.addSatellite(constellationName, satellite);
     }
-//    public executeConstellationMission(String constellationName);
-//    public activateAllSatellites(String constellationName);
-//    public showConstellationStatus(String constellationName)
+
+    public void executeConstellationMission(String constellationName) {
+        SatelliteConstellation constellation = constellationFromRepository(constellationName);
+        if (constellation != null) {
+            constellation.executeAllMissions();
+        }
+    }
+
+
+    public void activateAllSatellites(String constellationName) {
+        SatelliteConstellation constellation = constellationFromRepository(constellationName);
+        if (constellation != null) {
+            constellation.activateSatellites();
+        }
+    }
+
+    private SatelliteConstellation constellationFromRepository(String constellationName) {
+        if (isConstellationCorrect(constellationName)) {
+            return repository.constellationByName(constellationName);
+        }
+        return null;
+    }
+
+    public void showConstellationStatus(String constellationName) {
+        SatelliteConstellation constellation = constellationFromRepository(constellationName);
+        if (constellation != null) {
+            constellation.getSatellitesStatus();
+        }
+    }
 }
+

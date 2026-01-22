@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ConstellationRepository {
-    private Map<String, SatelliteConstellation> constellations;
+    private final Map<String, SatelliteConstellation> constellations;
 
     public ConstellationRepository() {
         this.constellations = new HashMap<>();
