@@ -1,9 +1,12 @@
 package constellation;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@Component
 public class ConstellationRepository {
     private final Map<String, SatelliteConstellation> constellations;
 

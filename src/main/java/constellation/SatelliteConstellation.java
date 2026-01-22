@@ -36,7 +36,7 @@ public class SatelliteConstellation {
      * Флаг, включающий или отключающий подробный вывод в консоль
      * при создании, модификации и управлении группировкой.
      */
-    private static boolean consolePrintMode = false;
+    private static boolean consolePrintMode = true;
 
     /**
      * Устанавливает режим вывода подробной информации в консоль

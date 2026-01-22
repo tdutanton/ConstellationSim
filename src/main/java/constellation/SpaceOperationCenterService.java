@@ -1,5 +1,8 @@
 package constellation;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class SpaceOperationCenterService {
     private final ConstellationRepository repository;
 
@@ -28,6 +31,7 @@ public class SpaceOperationCenterService {
             SatelliteConstellation constellation = new SatelliteConstellation(name);
             repository.addConstellation(constellation);
         }
+
     }
 
     public void addSatelliteToConstellation(String constellationName, Satellite satellite) {

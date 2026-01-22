@@ -13,6 +13,10 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType<JavaExec> {
+    systemProperty("file.encoding", "UTF-8")
+}
+
 application {
     mainClass = "constellation.ConstellationApplication"
 }

@@ -2,10 +2,18 @@ package constellation;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 public class ConstellationApplication {
     public static void main(String[] args) {
+        ConfigurableApplicationContext context = SpringApplication.run(ConstellationApplication.class, args);
+        ConstellationRepository repo = context.getBean(ConstellationRepository.class);
+        SpaceOperationCenterService service = context.getBean(SpaceOperationCenterService.class);
+// вывод в консоль в установке флага в классе!
+        service.createAndSaveConstellation("NEW");
+
+/*
         final String DIVIDER = "---------------------";
         final String SatelliteIcon = "\uD83D\uDEF0\uFE0F";
 
@@ -45,6 +53,6 @@ public class ConstellationApplication {
         team.executeAllMissions();
 
         System.out.println(DIVIDER);
-        System.out.println(team.getSatellites());
+        System.out.println(team.getSatellites());*/
     }
 }
