@@ -1,3 +1,5 @@
+package constellation;
+
 import java.util.Random;
 
 /**

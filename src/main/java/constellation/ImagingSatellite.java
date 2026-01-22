@@ -1,3 +1,5 @@
+package constellation;
+
 /**
  * Спутник дистанционного зондирования Земли (ДЗЗ).
  * Выполняет миссию по съёмке территории с заданным пространственным разрешением.
@@ -28,10 +30,10 @@ public class ImagingSatellite extends Satellite {
      * @throws IllegalArgumentException если разрешение отрицательное
      */
     public ImagingSatellite(double aResolution) {
+        super(DEFAULT_NAME, SERIAL_NUMBER);
         if (aResolution < 0.0)
             throw new IllegalArgumentException("Разрешение не должно быть отрицательным");
 
-        super(DEFAULT_NAME, SERIAL_NUMBER);
         resolution = aResolution;
         photosTaken = 0;
         SERIAL_NUMBER++;

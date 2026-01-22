@@ -1,3 +1,5 @@
+package constellation;
+
 /**
  * Спутник связи.
  * Предназначен для передачи данных с заданной пропускной способностью.
@@ -26,10 +28,10 @@ public class CommunicationSatellite extends Satellite {
      * @throws IllegalArgumentException если пропускная способность отрицательна
      */
     public CommunicationSatellite(double aBandwidth) {
+        super(DEFAULT_NAME, SERIAL_NUMBER);
         if (aBandwidth < 0.0)
             throw new IllegalArgumentException("Пропускная способность не должна быть отрицательной");
 
-        super(DEFAULT_NAME, SERIAL_NUMBER);
         bandwidth = aBandwidth;
         SERIAL_NUMBER++;
     }

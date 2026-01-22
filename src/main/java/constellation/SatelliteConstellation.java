@@ -1,3 +1,5 @@
+package constellation;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,5 +125,9 @@ public class SatelliteConstellation {
                 System.out.printf("⛔ Активация спутников невозможна. В группировке %s отсутствуют спутники", constellationName);
         }
         if (consolePrintMode) System.out.println(NEW_LINE_DELIM_CONSTELLATION);
+    }
+
+    public String getConstellationName() {
+        return constellationName;
     }
 }
