@@ -15,6 +15,10 @@ public class ConstellationRepository {
         safetyAddConstellation(constellation);
     }
 
+    public void addSatellite(String constellationName, Satellite satellite) {
+        safetyAddSatellite(constellationName, satellite);
+    }
+
     private boolean isInRepository(SatelliteConstellation constellation) {
         return constellations.containsKey(constellation.getConstellationName());
     }
@@ -32,7 +36,16 @@ public class ConstellationRepository {
     }
 
     SatelliteConstellation constellationByName(String constellationName) {
-        Objects.requireNonNull(constellationName, "Группировки не существует");
+        Objects.requireNonNull(constellationName, "Группировки" + constellationName + "не существует");
         return constellations.get(constellationName);
+    }
+
+    private void safetyAddSatellite(String constellationName, Satellite satellite) {
+        SatelliteConstellation constellation = constellationByName(constellationName);
+        if (isInRepository(constellation)) {
+            constellation.addSatellite(satellite);
+            return;
+        }
+        System.out.println("Группировки" + constellationName + "не существует");
     }
 }

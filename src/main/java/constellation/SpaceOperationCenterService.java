@@ -10,13 +10,31 @@ public class SpaceOperationCenterService {
         this.repository = repository;
     }
 
-    private boolean isConstellationExists(SatelliteConstellation constellation) {
+    private boolean isConstellationCorrect(SatelliteConstellation constellation) {
         if (constellation == null) return false;
         return (constellation.getConstellationName() != null) && !constellation.getConstellationName().isBlank();
     }
 
-//    public createAndSaveConstellation(String name);
-//    public addSatelliteToConstellation(String constellationName, Satellite satellite);
+    private boolean isConstellationCorrect(String constellationName) {
+        if (constellationName == null) return false;
+        return !constellationName.isBlank();
+    }
+
+    private boolean isSatelliteCorrect(Satellite satellite) {
+        if (satellite == null) return false;
+        return (satellite.getName() != null) && !satellite.getName().isBlank();
+    }
+
+    public void createAndSaveConstellation(String name) {
+        if (isConstellationCorrect(name)) {
+            SatelliteConstellation constellation = new SatelliteConstellation(name);
+            repository.addConstellation(constellation);
+        }
+    }
+
+    public void addSatelliteToConstellation(String constellationName, Satellite satellite) {
+        repository.addSatellite(constellationName, satellite);
+    }
 //    public executeConstellationMission(String constellationName);
 //    public activateAllSatellites(String constellationName);
 //    public showConstellationStatus(String constellationName)
