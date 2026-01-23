@@ -7,22 +7,18 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class ConstellationApplication {
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(ConstellationApplication.class, args);
-        ConstellationRepository repo = context.getBean(ConstellationRepository.class);
-        SpaceOperationCenterService service = context.getBean(SpaceOperationCenterService.class);
-// вывод в консоль в установке флага в классе!
-        service.createAndSaveConstellation("NEW");
-
-/*
-        final String DIVIDER = "---------------------";
-        final String SatelliteIcon = "\uD83D\uDEF0\uFE0F";
-
         Satellite.SetConsolePrintMode(true);
         SatelliteConstellation.SetConsolePrintMode(true);
-
+        final String SatelliteIcon = "\uD83D\uDEF0\uFE0F";
+        final String DIVIDER = "---------------------";
+        final String TEAM_FIRST = "Орбита-1";
+        final String TEAM_SECOND = "Орбита-2";
         System.out.printf("%1$s %1$s ЗАПУСК СИСТЕМЫ УПРАВЛЕНИЯ СПУТНИКОВОЙ ГРУППИРОВКОЙ %1$s %1$s%n",
                 SatelliteIcon);
         System.out.println("=====================");
+        ConfigurableApplicationContext context = SpringApplication.run(ConstellationApplication.class, args);
+        ConstellationRepository repo = context.getBean(ConstellationRepository.class);
+        SpaceOperationCenterService service = context.getBean(SpaceOperationCenterService.class);
 
         System.out.println("Создание специализированных спутников:");
         System.out.println(DIVIDER);
@@ -31,28 +27,42 @@ public class ConstellationApplication {
         ImagingSatellite imagSatFirst = new ImagingSatellite(2.5);
         ImagingSatellite imagSatSecond = new ImagingSatellite(1.0);
         ImagingSatellite imagSatThird = new ImagingSatellite(0.5);
-
-        System.out.println(DIVIDER);
-        SatelliteConstellation team = new SatelliteConstellation("RU Basic");
         System.out.println(DIVIDER);
 
-        System.out.println("Формирование группировки:");
-        System.out.println(DIVIDER);
-        team.addSatellite(comSatFirst);
-        team.addSatellite(comSatSecond);
-        team.addSatellite(imagSatFirst);
-        team.addSatellite(imagSatSecond);
-        team.addSatellite(imagSatThird);
+        service.createAndSaveConstellation(TEAM_FIRST);
+        service.createAndSaveConstellation(TEAM_SECOND);
 
+        System.out.println();
         System.out.println(DIVIDER);
-        System.out.println(team.getSatellites());
+        System.out.println("\uD83D\uDCE1 ДОБАВЛЕНИЕ СПУТНИКОВ:");
+        service.addSatelliteToConstellation(TEAM_FIRST, comSatFirst);
+        service.addSatelliteToConstellation(TEAM_SECOND, comSatSecond);
+        service.addSatelliteToConstellation(TEAM_FIRST, imagSatFirst);
+        service.addSatelliteToConstellation(TEAM_SECOND, imagSatSecond);
+        service.addSatelliteToConstellation(TEAM_SECOND, imagSatThird);
 
+        System.out.println();
         System.out.println(DIVIDER);
-        team.activateSatellites();
+        service.activateAllSatellites(TEAM_FIRST);
 
-        team.executeAllMissions();
-
+        System.out.println();
         System.out.println(DIVIDER);
-        System.out.println(team.getSatellites());*/
+        service.executeConstellationMission(TEAM_FIRST);
+
+        System.out.println();
+        System.out.println(DIVIDER);
+        service.showConstellationStatus(TEAM_FIRST);
+
+        System.out.println();
+        System.out.println(DIVIDER);
+        service.activateAllSatellites(TEAM_SECOND);
+
+        System.out.println();
+        System.out.println(DIVIDER);
+        service.executeConstellationMission(TEAM_SECOND);
+
+        System.out.println();
+        System.out.println(DIVIDER);
+        service.showConstellationStatus(TEAM_SECOND);
     }
 }

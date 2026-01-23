@@ -8,7 +8,9 @@ package constellation;
  * </p>
  */
 public class SatelliteState {
-    /** Флаг, указывающий, активен ли спутник. */
+    /**
+     * Флаг, указывающий, активен ли спутник.
+     */
     private boolean isActive;
 
     /**
@@ -42,5 +44,24 @@ public class SatelliteState {
      */
     public void activate() {
         isActive = true;
+    }
+
+    /**
+     * Возвращает строковое представление текущего состояния спутника.
+     * <p>
+     * Формат строки: {@code ИмяКласса{isActive=значение, statusMessage='Активен'/'Неактивен'}}.
+     * Используется для удобного отображения состояния объекта при отладке или логировании.
+     * </p>
+     *
+     * @return строка с кратким описанием активности спутника
+     */
+    @Override
+    public String toString() {
+        return String.format(
+                "%s{isActive=%s, statusMessage=%s}",
+                this.getClass().getSimpleName(),
+                isActive,
+                isActive ? "'Активен'" : "'Неактивен'"
+        );
     }
 }

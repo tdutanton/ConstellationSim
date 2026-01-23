@@ -124,9 +124,21 @@ public abstract class Satellite {
      */
     protected abstract void performMission();
 
-    public String status() {
-        String result = "не активен";
-        if (state.isActive()) result = "активен";
-        return "Спутник " + getName() + " . Статус:  " + result;
+    /**
+     * Получить состояние спутника
+     *
+     * @return экземпляр класса SatelliteState - состояние
+     */
+    protected SatelliteState getState() {
+        return state;
+    }
+
+    /**
+     * Получить строковый вид статуса спутника
+     *
+     * @return String - статус спутника в виде строки
+     */
+    protected String status() {
+        return state.toString();
     }
 }

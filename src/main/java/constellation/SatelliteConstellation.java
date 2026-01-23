@@ -36,7 +36,7 @@ public class SatelliteConstellation {
      * Флаг, включающий или отключающий подробный вывод в консоль
      * при создании, модификации и управлении группировкой.
      */
-    private static boolean consolePrintMode = true;
+    private static boolean consolePrintMode = false;
 
     /**
      * Устанавливает режим вывода подробной информации в консоль
@@ -135,13 +135,50 @@ public class SatelliteConstellation {
         if (consolePrintMode) System.out.println(NEW_LINE_DELIM_CONSTELLATION);
     }
 
+    /**
+     * Возвращает название спутниковой группировки.
+     *
+     * @return строка с названием группировки, заданная при создании объекта
+     */
     public String getConstellationName() {
         return constellationName;
     }
 
-    public void getSatellitesStatus() {
+    /**
+     * Возвращает список текущих состояний всех спутников в группировке.
+     * <p>
+     * Для каждого спутника вызывается метод {@link Satellite#getState()},
+     * и результаты собираются в новый список типа {@link SatelliteState}.
+     * Порядок состояний в списке соответствует порядку спутников в группировке.
+     * </p>
+     *
+     * @return список объектов {@link SatelliteState}, описывающих состояние каждого спутника
+     */
+    public List<SatelliteState> getSatellitesStatus() {
+        List<SatelliteState> result = new ArrayList<>();
         for (Satellite s : satellites) {
-            System.out.println(s.status());
+            result.add(s.getState());
         }
+        return result;
+    }
+
+    /**
+     * Возвращает строковое представление спутниковой группировки.
+     * <p>
+     * Формат строки: <code>{название=SatelliteConstellation{constellationName=..., satellites=...}}</code>,
+     * где содержимое поля {@code satellites} выводится через стандартный метод {@code toString()} списка.
+     * </p>
+     *
+     * @return строковое представление объекта группировки
+     */
+    @Override
+    public String toString() {
+        return String.format(
+                "{%s=%s{constellationName=%s, satellites=%s}}",
+                getConstellationName(),
+                this.getClass().getSimpleName(),
+                getConstellationName(),
+                satellites
+        );
     }
 }
