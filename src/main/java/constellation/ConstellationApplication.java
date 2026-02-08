@@ -7,8 +7,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class ConstellationApplication {
     public static void main(String[] args) {
-        Satellite.SetConsolePrintMode(true);
-        SatelliteConstellation.SetConsolePrintMode(true);
+        Satellite.setConsolePrintMode(true);
+        SatelliteConstellation.setConsolePrintMode(true);
         final String SatelliteIcon = "\uD83D\uDEF0\uFE0F";
         final String DIVIDER = "---------------------";
         final String TEAM_FIRST = "Орбита-1";

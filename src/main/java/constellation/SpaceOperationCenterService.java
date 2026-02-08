@@ -1,5 +1,6 @@
 package constellation;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,18 +13,9 @@ import org.springframework.stereotype.Service;
  * </p>
  */
 @Service
+@AllArgsConstructor
 public class SpaceOperationCenterService {
     private final ConstellationRepository repository;
-
-    /**
-     * Конструирует сервис с заданным репозиторием группировок.
-     *
-     * @param repository репозиторий для хранения и извлечения спутниковых группировок;
-     *                   не должен быть {@code null} (гарантируется Spring-контейнером)
-     */
-    public SpaceOperationCenterService(ConstellationRepository repository) {
-        this.repository = repository;
-    }
 
     /**
      * Проверяет корректность объекта группировки: он не должен быть {@code null},

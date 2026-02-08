@@ -1,5 +1,8 @@
 package constellation;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
 /**
  * Класс, представляющий состояние спутника - активен или неактивен.
  * <p>
@@ -7,6 +10,8 @@ package constellation;
  * спутник создаётся в неактивном состоянии.
  * </p>
  */
+@Getter
+@EqualsAndHashCode
 public class SatelliteState {
     /**
      * Флаг, указывающий, активен ли спутник.
@@ -21,15 +26,6 @@ public class SatelliteState {
      */
     public SatelliteState() {
         isActive = false;
-    }
-
-    /**
-     * Проверяет, активен ли спутник.
-     *
-     * @return {@code true}, если спутник активен; {@code false} - если неактивен
-     */
-    public boolean isActive() {
-        return isActive;
     }
 
     /**

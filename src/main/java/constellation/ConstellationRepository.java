@@ -54,6 +54,20 @@ public class ConstellationRepository {
     }
 
     /**
+     * Удаляет спутник из существующей спутниковой группировки по её названию.
+     * <p>
+     * Если указанной группировки нет в репозитории, операция игнорируется,
+     * и выводится сообщение об ошибке.
+     * </p>
+     *
+     * @param constellationName название группировки
+     * @param satellite         спутник для удаления; не должен быть {@code null}
+     */
+    public void deleteSatellite(String constellationName, Satellite satellite) {
+        safetyDeleteSatellite(constellationName, satellite);
+    }
+
+    /**
      * Проверяет, содержится ли указанная группировка в репозитории по её названию.
      *
      * @param constellation группировка для проверки
@@ -88,6 +102,20 @@ public class ConstellationRepository {
     }
 
     /**
+     * Безопасно добавляет спутниковую группировку в хранилище, избегая дублирования.
+     *
+     * @param constellation группировка для добавления
+     */
+    private void safetyDeleteConstellation(SatelliteConstellation constellation) {
+        if (!isInRepository(constellation)) {
+            constellations.remove(constellation.getConstellationName(), constellation);
+            System.out.println("Удалена группировка: " + constellation.getConstellationName());
+            return;
+        }
+        System.out.printf("Группировка %s не существует в хранилище.%n", constellation.getConstellationName());
+    }
+
+    /**
      * Возвращает спутниковую группировку по её названию.
      * <p>
      * Метод является защищённым и предназначен для использования внутри пакета
@@ -114,6 +142,22 @@ public class ConstellationRepository {
         SatelliteConstellation constellation = constellationByName(constellationName);
         if (isInRepository(constellation)) {
             constellation.addSatellite(satellite);
+            System.out.printf("Добавлен спутник %s в группировку %s%n", satellite.getName(), constellation.getConstellationName());
+            return;
+        }
+        System.out.println("Группировки" + constellationName + "не существует");
+    }
+
+    /**
+     * Безопасно удаляет спутник из указанной группировки, предварительно проверяя её наличие.
+     *
+     * @param constellationName название группировки
+     * @param satellite         удаляемый спутник
+     */
+    private void safetyDeleteSatellite(String constellationName, Satellite satellite) {
+        SatelliteConstellation constellation = constellationByName(constellationName);
+        if (isInRepository(constellation)) {
+            constellation.deleteSatellite(satellite);
             System.out.printf("Добавлен спутник %s в группировку %s%n", satellite.getName(), constellation.getConstellationName());
             return;
         }

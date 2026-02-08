@@ -1,5 +1,8 @@
 package constellation;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +14,7 @@ import java.util.List;
  * для всех членов группировки одновременно.
  * </p>
  */
+@Getter
 public class SatelliteConstellation {
     /**
      * Название спутниковой группировки.
@@ -36,17 +40,8 @@ public class SatelliteConstellation {
      * Флаг, включающий или отключающий подробный вывод в консоль
      * при создании, модификации и управлении группировкой.
      */
+    @Setter
     private static boolean consolePrintMode = false;
-
-    /**
-     * Устанавливает режим вывода подробной информации в консоль
-     * для всех экземпляров {@code SatelliteConstellation}.
-     *
-     * @param state {@code true} — включить вывод, {@code false} — отключить
-     */
-    public static void SetConsolePrintMode(boolean state) {
-        consolePrintMode = state;
-    }
 
     /**
      * Конструирует спутниковую группировку с заданным названием.
@@ -90,6 +85,20 @@ public class SatelliteConstellation {
     }
 
     /**
+     * Удаляет спутник из группировки.
+     * <p>
+     * При включённом {@code consolePrintMode} выводится подтверждающее сообщение.
+     * </p>
+     *
+     * @param satellite спутник для удаления (не должен быть {@code null})
+     */
+    public void deleteSatellite(Satellite satellite) {
+        satellites.remove(satellite);
+        if (consolePrintMode)
+            System.out.printf("%s удален из группировки '%s'%n", satellite.getName(), constellationName);
+    }
+
+    /**
      * Запускает выполнение миссий для всех спутников в группировке.
      * <p>
      * Вызывает метод {@link Satellite#performMission()} у каждого спутника.
@@ -104,15 +113,6 @@ public class SatelliteConstellation {
         for (Satellite s : satellites) {
             s.performMission();
         }
-    }
-
-    /**
-     * Возвращает неизменяемый (но не защищённый от модификации содержимого) список спутников группировки.
-     *
-     * @return список спутников
-     */
-    public List<Satellite> getSatellites() {
-        return satellites;
     }
 
     /**
@@ -133,15 +133,6 @@ public class SatelliteConstellation {
                 System.out.printf("⛔ Активация спутников невозможна. В группировке %s отсутствуют спутники", constellationName);
         }
         if (consolePrintMode) System.out.println(NEW_LINE_DELIM_CONSTELLATION);
-    }
-
-    /**
-     * Возвращает название спутниковой группировки.
-     *
-     * @return строка с названием группировки, заданная при создании объекта
-     */
-    public String getConstellationName() {
-        return constellationName;
     }
 
     /**

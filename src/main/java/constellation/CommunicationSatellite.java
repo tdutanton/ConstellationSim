@@ -1,13 +1,19 @@
 package constellation;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
 /**
  * Спутник связи.
  * Предназначен для передачи данных с заданной пропускной способностью.
  * Каждая миссия по передаче данных потребляет заряд батареи и сопровождается
  * логгированием объёма переданной информации (при включённом режиме вывода).
  */
+@Getter
+@EqualsAndHashCode(callSuper = false)
 public class CommunicationSatellite extends Satellite {
-    /** Пропускная способность канала связи в мегабитах в секунду (Мбит/с). */
+    /** Пропускная способность канала связи в мегабитах в секунду (Мбит/с).
+     */
     private final double bandwidth;
 
     /** Префикс имени по умолчанию для спутников данного типа. */
@@ -52,15 +58,6 @@ public class CommunicationSatellite extends Satellite {
                 state.isActive(),
                 energy.getBatteryLevel()
         );
-    }
-
-    /**
-     * Возвращает пропускную способность спутника.
-     *
-     * @return пропускная способность в мегабитах в секунду (Мбит/с)
-     */
-    public double getBandwidth() {
-        return bandwidth;
     }
 
     /**

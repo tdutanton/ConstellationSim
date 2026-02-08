@@ -1,15 +1,21 @@
 package constellation;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Абстрактный базовый класс для представления спутника.
  * Содержит общую логику управления состоянием спутника: активация/деактивация,
  * контроль уровня заряда батареи и выполнение миссий.
  * Потомки должны реализовать метод {@link #performMission()}.
  */
+@EqualsAndHashCode
 public abstract class Satellite {
     /**
      * Имя спутника, генерируется автоматически при создании.
      */
+    @Getter
     protected String name;
 
     /**
@@ -31,16 +37,8 @@ public abstract class Satellite {
      * Флаг, включающий или отключающий подробный вывод в консоль
      * при создании, активации и выполнении операций со спутником.
      */
+    @Setter
     protected static boolean consolePrintMode = false;
-
-    /**
-     * Устанавливает режим вывода подробной информации в консоль.
-     *
-     * @param state {@code true} — включить вывод, {@code false} — отключить.
-     */
-    public static void SetConsolePrintMode(boolean state) {
-        consolePrintMode = state;
-    }
 
     /**
      * Конструктор спутника.
@@ -57,15 +55,6 @@ public abstract class Satellite {
         state = new SatelliteState();
         energy = new EnergySystem();
         System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name, energy.getBatteryLevel() * 100.0);
-    }
-
-    /**
-     * Возвращает имя спутника.
-     *
-     * @return имя спутника
-     */
-    public String getName() {
-        return name;
     }
 
     /**

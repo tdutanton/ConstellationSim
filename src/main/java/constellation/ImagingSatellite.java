@@ -1,10 +1,15 @@
 package constellation;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
 /**
  * Спутник дистанционного зондирования Земли (ДЗЗ).
  * Выполняет миссию по съёмке территории с заданным пространственным разрешением.
  * Каждая миссия потребляет заряд батареи и увеличивает счётчик сделанных снимков.
  */
+@Getter
+@EqualsAndHashCode(callSuper = false)
 public class ImagingSatellite extends Satellite {
     /**
      * Пространственное разрешение съёмки в метрах на пиксель.
@@ -66,24 +71,6 @@ public class ImagingSatellite extends Satellite {
                 state.isActive(),
                 energy.getBatteryLevel()
         );
-    }
-
-    /**
-     * Возвращает пространственное разрешение съёмки.
-     *
-     * @return разрешение в метрах на пиксель
-     */
-    public double getResolution() {
-        return resolution;
-    }
-
-    /**
-     * Возвращает количество снимков, сделанных спутником за всё время работы.
-     *
-     * @return число снимков
-     */
-    public int getPhotosTaken() {
-        return photosTaken;
     }
 
     /**

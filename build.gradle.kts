@@ -39,6 +39,10 @@ tasks.withType<JavaExec> {
     systemProperty("file.encoding", "UTF-8")
 }
 
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
 tasks.named<Test>("test") {
     useJUnitPlatform()
 }
@@ -56,5 +60,10 @@ tasks.jacocoTestReport {
 }
 
 tasks.test {
+    systemProperty("file.encoding", "UTF-8")
     finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.bootRun {
+    systemProperty("file.encoding", "UTF-8")
 }

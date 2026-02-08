@@ -1,5 +1,8 @@
 package constellation;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
 import java.util.Random;
 
 /**
@@ -11,8 +14,11 @@ import java.util.Random;
  * минимального уровня заряда на нуле.
  * </p>
  */
+@Getter
+@EqualsAndHashCode
 public class EnergySystem {
-    /** Текущий уровень заряда батареи (в долях от 1, где 1.0 = 100%). */
+    /** Текущий уровень заряда батареи (в долях от 1, где 1.0 = 100%).
+     */
     private double batteryLevel;
 
     /** Экземпляр генератора случайных чисел, используемый для инициализации заряда. */
@@ -25,15 +31,6 @@ public class EnergySystem {
      */
     private double generateBatteryLevel() {
         return RANDOM.nextDouble();
-    }
-
-    /**
-     * Возвращает текущий уровень заряда батареи.
-     *
-     * @return уровень заряда в долях от 1 (например, 0.75 означает 75%)
-     */
-    public double getBatteryLevel() {
-        return batteryLevel;
     }
 
     /**
