@@ -26,6 +26,7 @@ public abstract class Satellite {
     /**
      * Система управления энергией спутника.
      */
+    @Getter
     protected EnergySystem energy;
 
     /**

@@ -40,6 +40,14 @@ public class ConstellationRepository {
     }
 
     /**
+     * Удаляет спутниковую группировку из репозитория.
+     * @param constellation группировка для удаления; не должна быть {@code null}
+     */
+    public void deleteConstellation(SatelliteConstellation constellation) {
+        safetyDeleteConstellation(constellation);
+    }
+
+    /**
      * Добавляет спутник в существующую спутниковую группировку по её названию.
      * <p>
      * Если указанной группировки нет в репозитории, операция игнорируется,
@@ -102,13 +110,13 @@ public class ConstellationRepository {
     }
 
     /**
-     * Безопасно добавляет спутниковую группировку в хранилище, избегая дублирования.
+     * Безопасно удаляет спутниковую группировку.
      *
-     * @param constellation группировка для добавления
+     * @param constellation группировка для удаления
      */
     private void safetyDeleteConstellation(SatelliteConstellation constellation) {
-        if (!isInRepository(constellation)) {
-            constellations.remove(constellation.getConstellationName(), constellation);
+        if (isInRepository(constellation)) {
+            constellations.remove(constellation.getConstellationName());
             System.out.println("Удалена группировка: " + constellation.getConstellationName());
             return;
         }
@@ -139,13 +147,13 @@ public class ConstellationRepository {
      * @param satellite         добавляемый спутник
      */
     private void safetyAddSatellite(String constellationName, Satellite satellite) {
-        SatelliteConstellation constellation = constellationByName(constellationName);
-        if (isInRepository(constellation)) {
+        if (isInRepository(constellationName)) {
+            SatelliteConstellation constellation = constellationByName(constellationName);
             constellation.addSatellite(satellite);
             System.out.printf("Добавлен спутник %s в группировку %s%n", satellite.getName(), constellation.getConstellationName());
             return;
         }
-        System.out.println("Группировки" + constellationName + "не существует");
+        System.out.println("Группировки " + constellationName + " не существует"); // добавлены пробелы
     }
 
     /**
@@ -155,12 +163,14 @@ public class ConstellationRepository {
      * @param satellite         удаляемый спутник
      */
     private void safetyDeleteSatellite(String constellationName, Satellite satellite) {
-        SatelliteConstellation constellation = constellationByName(constellationName);
-        if (isInRepository(constellation)) {
+        if (isInRepository(constellationName)) { // ← проверка по имени
+            SatelliteConstellation constellation = constellationByName(constellationName);
             constellation.deleteSatellite(satellite);
-            System.out.printf("Добавлен спутник %s в группировку %s%n", satellite.getName(), constellation.getConstellationName());
+            System.out.printf("Удалён спутник %s из группировки %s%n", satellite.getName(), constellation.getConstellationName()); // исправлено сообщение
             return;
         }
-        System.out.println("Группировки" + constellationName + "не существует");
+        System.out.println("Группировки " + constellationName + " не существует");
     }
+
+    public boolean containsConstellations() {return !constellations.isEmpty();}
 }

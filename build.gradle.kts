@@ -22,17 +22,27 @@ dependencies {
     // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter")
 
-    // Lombok
-    implementation("org.projectlombok:lombok")
+    // Lombok (production)
+    compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
-    // Spring Boot Starter Tests pack
+    // ТЕСТЫ
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // ЯВНО УКАЗЫВАЕМ РЕАЛИЗАЦИЮ ТЕСТОВОГО ФРЕЙМВОРКА (устраняет предупреждение)
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
+    // Lombok для тестов
+    testCompileOnly("org.projectlombok:lombok")
     testAnnotationProcessor("org.projectlombok:lombok")
 }
 
 springBoot {
     mainClass = "constellation.ConstellationApplication"
+}
+
+tasks.withType<org.gradle.api.tasks.compile.JavaCompile> {
+    options.compilerArgs.add("-Xlint:-deprecation")
 }
 
 tasks.withType<JavaExec> {
@@ -43,8 +53,16 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-tasks.named<Test>("test") {
+tasks.test {
     useJUnitPlatform()
+    systemProperty("file.encoding", "UTF-8")
+    jvmArgs("-Dfile.encoding=UTF-8")
+
+    finalizedBy(tasks.jacocoTestReport)
+    testLogging {
+        events("passed", "failed", "skipped")
+        showStandardStreams = true
+    }
 }
 
 // Jacoco
@@ -56,12 +74,9 @@ tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
         html.required.set(true)
+        xml.required.set(false)
+        csv.required.set(false)
     }
-}
-
-tasks.test {
-    systemProperty("file.encoding", "UTF-8")
-    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.bootRun {

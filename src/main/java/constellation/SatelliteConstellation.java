@@ -172,4 +172,8 @@ public class SatelliteConstellation {
                 satellites
         );
     }
+
+    public boolean containsSatellite(Satellite satellite) {
+        return satellites.contains(satellite);
+    }
 }
