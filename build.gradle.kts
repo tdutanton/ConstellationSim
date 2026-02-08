@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.6"
     id("io.spring.dependency-management") version "1.1.7"
+    id("jacoco")
 }
 
 java {
@@ -13,14 +14,21 @@ java {
     }
 }
 
-
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter")
+
+    // Lombok
+    implementation("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+
+    // Spring Boot Starter Tests pack
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testAnnotationProcessor("org.projectlombok:lombok")
 }
 
 springBoot {
@@ -33,4 +41,20 @@ tasks.withType<JavaExec> {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+}
+
+// Jacoco
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        html.required.set(true)
+    }
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
 }
