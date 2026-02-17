@@ -60,11 +60,15 @@ public abstract class Satellite {
   }
 
   protected Satellite(String aName, int aNumber, double batteryLevel) {
-    name = generateName(aName, aNumber);
-    state = new SatelliteState();
-    energy = new EnergySystem(batteryLevel);
-    System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name,
-        energy.getBatteryLevel() * 100.0);
+    try {
+      name = generateName(aName, aNumber);
+      state = new SatelliteState();
+      energy = new EnergySystem(batteryLevel);
+      System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name,
+          energy.getBatteryLevel() * 100.0);
+    } catch (IllegalArgumentException e) {
+      System.out.println("Ошибка при создании спутника: " + e);
+    }
   }
 
   /**

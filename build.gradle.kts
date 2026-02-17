@@ -38,7 +38,7 @@ dependencies {
 }
 
 springBoot {
-    mainClass = "constellation.App.ConstellationApplication"
+    mainClass = "constellation.ConstellationApplication"
 }
 
 tasks.withType<org.gradle.api.tasks.compile.JavaCompile> {

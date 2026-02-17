@@ -1,9 +1,10 @@
 package constellation;
 
 import constellation.Domain.Constellation.SatelliteConstellation;
-import constellation.Domain.Satellite.CommunicationSatellite;
-import constellation.Domain.Satellite.ImagingSatellite;
 import constellation.Domain.Satellite.Satellite;
+import constellation.Domain.SatelliteFactory.CommunicationSatelliteFactory;
+import constellation.Domain.SatelliteFactory.ImagingSatelliteFactory;
+import constellation.Domain.SatelliteFactory.SatelliteFactory;
 import constellation.Repository.ConstellationRepository;
 import constellation.Service.SpaceOperationCenterService;
 import org.springframework.boot.SpringApplication;
@@ -27,14 +28,16 @@ public class ConstellationApplication {
         args);
     ConstellationRepository repo = context.getBean(ConstellationRepository.class);
     SpaceOperationCenterService service = context.getBean(SpaceOperationCenterService.class);
+    SatelliteFactory commFactory = new CommunicationSatelliteFactory();
+    SatelliteFactory imgFactory = new ImagingSatelliteFactory();
 
     System.out.println("Создание специализированных спутников:");
     System.out.println(DIVIDER);
-    CommunicationSatellite comSatFirst = new CommunicationSatellite(500);
-    CommunicationSatellite comSatSecond = new CommunicationSatellite(1000);
-    ImagingSatellite imagSatFirst = new ImagingSatellite(2.5);
-    ImagingSatellite imagSatSecond = new ImagingSatellite(1.0);
-    ImagingSatellite imagSatThird = new ImagingSatellite(0.5);
+    Satellite comSatFirst = commFactory.createSatellite("Связной", 90);
+    Satellite imagSatFirst = imgFactory.createSatellite("IMG", 50);
+    Satellite comSatSecond = commFactory.createSatelliteWithParameter("Связной", 100, 400);
+    Satellite imagSatSecond = imgFactory.createSatelliteWithParameter("IMG", 50, 1.0);
+    Satellite imagSatThird = imgFactory.createSatelliteWithParameter("IMG", 78, 0.5);
     System.out.println(DIVIDER);
 
     service.createAndSaveConstellation(TEAM_FIRST);
