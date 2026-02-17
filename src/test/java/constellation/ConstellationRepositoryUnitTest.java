@@ -10,9 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import constellation.Domain.Constellation.SatelliteConstellation;
-import constellation.Domain.Internal.EnergySystem;
-import constellation.Domain.Satellite.CommunicationSatellite;
+import constellation.Domain.Internal.EnergySystem.EnergySystem;
 import constellation.Domain.Satellite.ImagingSatellite;
+import constellation.Domain.Satellite.Satellite;
+import constellation.Domain.SatelliteFactory.CommunicationSatelliteFactory;
+import constellation.Domain.SatelliteFactory.SatelliteFactory;
 import constellation.Repository.ConstellationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,15 +35,16 @@ public class ConstellationRepositoryUnitTest {
   private ConstellationRepository repository;
   private SatelliteConstellation fConstellation;
   private SatelliteConstellation sConstellation;
-  private CommunicationSatellite commSatellite;
+  private Satellite commSatellite;
   private ImagingSatellite imagingSatellite;
+  private SatelliteFactory factory = new CommunicationSatelliteFactory();
 
   @BeforeEach
   void setUp() {
     repository = new ConstellationRepository();
     fConstellation = new SatelliteConstellation(FIRST_CONSTELLATION);
     sConstellation = new SatelliteConstellation(SECOND_CONSTELLATION);
-    commSatellite = new CommunicationSatellite(200);
+    commSatellite = factory.createSatelliteWithParameter("Связь", 65, 200);
     imagingSatellite = new ImagingSatellite(1.0);
   }
 

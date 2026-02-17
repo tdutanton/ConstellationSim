@@ -10,7 +10,7 @@ public class CommunicationSatelliteFactory implements SatelliteFactory {
   }
 
   @Override
-  public Satellite createSatelliteWithParameter(String name, double batteryLevel, double parameter) {
-    return new CommunicationSatellite(name, batteryLevel, parameter);
+  public Satellite createSatelliteWithParameter(String name, double batteryLevel, double bandwidth) {
+    return new CommunicationSatellite(name, batteryLevel, bandwidth);
   }
 }

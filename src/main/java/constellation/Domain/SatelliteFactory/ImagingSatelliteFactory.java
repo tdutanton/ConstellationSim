@@ -10,7 +10,7 @@ public class ImagingSatelliteFactory implements SatelliteFactory {
   }
 
   @Override
-  public Satellite createSatelliteWithParameter(String name, double batteryLevel, double parameter) {
-    return new ImagingSatellite(name, batteryLevel, parameter);
+  public Satellite createSatelliteWithParameter(String name, double batteryLevel, double resolution) {
+    return new ImagingSatellite(name, batteryLevel, resolution);
   }
 }
