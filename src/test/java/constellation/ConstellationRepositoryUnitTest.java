@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import constellation.Domain.Constellation.SatelliteConstellation;
+import constellation.Domain.Internal.EnergySystem;
 import constellation.Domain.Satellite.CommunicationSatellite;
 import constellation.Domain.Satellite.ImagingSatellite;
 import constellation.Repository.ConstellationRepository;
@@ -80,7 +81,7 @@ public class ConstellationRepositoryUnitTest {
     void shouldDeleteExistingConstellation() {
       repository.addConstellation(fConstellation);
       assertNotNull(repository.constellationByName(FIRST_CONSTELLATION));
-      repository.deleteConstellation(fConstellation);
+      repository.removeConstellation(fConstellation);
       assertNull(repository.constellationByName(FIRST_CONSTELLATION));
       assertFalse(repository.containsConstellations(),
           "Репозиторий должен быть пустым после удаления");
@@ -91,7 +92,7 @@ public class ConstellationRepositoryUnitTest {
     void shouldIgnoreDeletingNonExistentConstellation() {
       SatelliteConstellation nonExistent = new SatelliteConstellation("Несуществующая");
       assertDoesNotThrow(() ->
-          repository.deleteConstellation(nonExistent)
+          repository.removeConstellation(nonExistent)
       );
       assertFalse(repository.containsConstellations(), "Репозиторий должен оставаться пустым");
     }
@@ -194,5 +195,28 @@ public class ConstellationRepositoryUnitTest {
       repository.addConstellation(longConst);
       assertNotNull(repository.constellationByName(longName));
     }
+  }
+
+  @Test
+  @DisplayName("Бросает IllegalArgumentException при отрицательном заряде батареи")
+  void shouldThrowExceptionForNegativeBatteryLevel() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      new EnergySystem(-100);
+    });
+  }
+
+  @Test
+  @DisplayName("Бросает IllegalArgumentException при большом заряде батареи")
+  void shouldThrowExceptionForBigBatteryLevel() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      new EnergySystem(110);
+    });
+  }
+
+  @Test
+  @DisplayName("отрабатывает корректный аргумент в заряде батареи")
+  void shouldGetCorrectBatteryLevel() {
+    EnergySystem system = new EnergySystem(55);
+    assertEquals(0.55, system.getBatteryLevel());
   }
 }

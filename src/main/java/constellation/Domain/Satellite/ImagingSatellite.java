@@ -50,7 +50,23 @@ public class ImagingSatellite extends Satellite {
     if (aResolution < 0.0) {
       throw new IllegalArgumentException("Разрешение не должно быть отрицательным");
     }
+    resolution = aResolution;
+    photosTaken = 0;
+    SERIAL_NUMBER++;
+  }
 
+  public ImagingSatellite(String name, double batteryLevel) {
+    super(name, SERIAL_NUMBER, batteryLevel);
+    resolution = 0.0;
+    photosTaken = 0;
+    SERIAL_NUMBER++;
+  }
+
+  public ImagingSatellite(String name, double batteryLevel, double aResolution) {
+    super(name, SERIAL_NUMBER, batteryLevel);
+    if (aResolution < 0.0) {
+      throw new IllegalArgumentException("Разрешение не должно быть отрицательным");
+    }
     resolution = aResolution;
     photosTaken = 0;
     SERIAL_NUMBER++;

@@ -59,6 +59,14 @@ public abstract class Satellite {
         energy.getBatteryLevel() * 100.0);
   }
 
+  protected Satellite(String aName, int aNumber, double batteryLevel) {
+    name = generateName(aName, aNumber);
+    state = new SatelliteState();
+    energy = new EnergySystem(batteryLevel);
+    System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name,
+        energy.getBatteryLevel() * 100.0);
+  }
+
   /**
    * Генерирует уникальное имя спутника на основе префикса и номера.
    *

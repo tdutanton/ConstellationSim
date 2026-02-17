@@ -45,7 +45,21 @@ public class CommunicationSatellite extends Satellite {
     if (aBandwidth < 0.0) {
       throw new IllegalArgumentException("Пропускная способность не должна быть отрицательной");
     }
+    bandwidth = aBandwidth;
+    SERIAL_NUMBER++;
+  }
 
+  public CommunicationSatellite(String name, double batteryLevel) {
+    super(name, SERIAL_NUMBER, batteryLevel);
+    bandwidth = 0.0;
+    SERIAL_NUMBER++;
+  }
+
+  public CommunicationSatellite(String name, double batteryLevel, double aBandwidth) {
+    super(name, SERIAL_NUMBER, batteryLevel);
+    if (aBandwidth < 0.0) {
+      throw new IllegalArgumentException("Пропускная способность не должна быть отрицательной");
+    }
     bandwidth = aBandwidth;
     SERIAL_NUMBER++;
   }

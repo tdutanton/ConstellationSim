@@ -90,7 +90,7 @@ class ConstellationRepositoryIntegrationTest {
       assertFalse(retrieved.containsSatellite(imagingSatellite), "Спутник должен быть удалён");
       assertEquals(1, retrieved.getSatellites().size(), "Должен остаться 1 спутник");
 
-      repository.deleteConstellation(constellation);
+      repository.removeConstellation(constellation);
       assertNull(repository.constellationByName(constellationName),
           "Группировка должна быть удалена");
     }

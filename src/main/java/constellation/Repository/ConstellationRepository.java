@@ -2,6 +2,7 @@ package constellation.Repository;
 
 import constellation.Domain.Constellation.SatelliteConstellation;
 import constellation.Domain.Satellite.Satellite;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -45,7 +46,7 @@ public class ConstellationRepository {
    *
    * @param constellation группировка для удаления; не должна быть {@code null}
    */
-  public void deleteConstellation(SatelliteConstellation constellation) {
+  public void removeConstellation(SatelliteConstellation constellation) {
     safetyDeleteConstellation(constellation);
   }
 
@@ -179,5 +180,9 @@ public class ConstellationRepository {
 
   public boolean containsConstellations() {
     return !constellations.isEmpty();
+  }
+
+  public ArrayList<SatelliteConstellation> getAllConstellations() {
+    return new ArrayList<>(constellations.values());
   }
 }

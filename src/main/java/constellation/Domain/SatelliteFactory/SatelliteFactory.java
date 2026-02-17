@@ -1,5 +1,8 @@
 package constellation.Domain.SatelliteFactory;
 
-public abstract class SatelliteFactory {
+import constellation.Domain.Satellite.Satellite;
 
+public interface SatelliteFactory {
+  Satellite createSatellite(String name, double batteryLevel);
+  Satellite createSatelliteWithParameter(String name, double batteryLevel, double parameter);
 }

@@ -16,6 +16,9 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class EnergySystem {
 
+  private static double MAX_BATTERY_LEVEL = 100.0;
+  private static double MIN_BATTERY_LEVEL = 0.0;
+
   /**
    * Текущий уровень заряда батареи (в долях от 1, где 1.0 = 100%).
    */
@@ -43,6 +46,19 @@ public class EnergySystem {
    */
   public EnergySystem() {
     batteryLevel = generateBatteryLevel();
+  }
+
+  /**
+   * Конструктор системы энергоснабжения с параметром
+   * @param batteryLevel уровень заряда батареи в процентах. Не может быть больше 100 % или меньше 0 %
+   */
+  public EnergySystem(double batteryLevel) {
+    if (batteryLevel > MAX_BATTERY_LEVEL || batteryLevel < MIN_BATTERY_LEVEL) {
+      throw new IllegalArgumentException(
+          String.format("Заряд батареи не может быть больше %.2f и меньше %.2f",
+              MAX_BATTERY_LEVEL, MIN_BATTERY_LEVEL));
+    }
+    this.batteryLevel = batteryLevel / 100.0;
   }
 
   /**
