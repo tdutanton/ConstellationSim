@@ -1,7 +1,6 @@
 package constellation.Domain.Satellite;
 
 import constellation.Domain.Internal.EnergySystem.EnergySystem;
-import constellation.Domain.Internal.EnergySystem.EnergySystemBuilder;
 import constellation.Domain.Internal.SatelliteState;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -55,9 +54,7 @@ public abstract class Satellite {
   protected Satellite(String aName, int aNumber) {
     name = generateName(aName, aNumber);
     state = new SatelliteState();
-    EnergySystemBuilder builder = new EnergySystemBuilder();
-    builder.setBatteryRandomLevel();
-    energy = builder.build();
+    this.energy = new EnergySystem.EnergySystemBuilder().build();
     System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name,
         energy.getBatteryLevel() * 100.0);
   }
@@ -66,9 +63,7 @@ public abstract class Satellite {
     try {
       name = generateName(aName, aNumber);
       state = new SatelliteState();
-      EnergySystemBuilder builder = new EnergySystemBuilder();
-      builder.setBatteryLevel(batteryLevel);
-      energy = builder.build();
+      this.energy = new EnergySystem.EnergySystemBuilder().setBatteryLevel(batteryLevel).build();
       System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name,
           energy.getBatteryLevel() * 100.0);
     } catch (IllegalArgumentException e) {

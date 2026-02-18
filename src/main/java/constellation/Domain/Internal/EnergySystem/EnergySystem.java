@@ -19,9 +19,12 @@ public class EnergySystem {
   /**
    * Текущий уровень заряда батареи (в долях от 1, где 1.0 = 100%).
    */
-  protected double batteryLevel;
+  @Getter
+  private double batteryLevel;
 
-  protected EnergySystem() {batteryLevel = 0.0;}
+  private EnergySystem(EnergySystemBuilder builder) {
+    batteryLevel = builder.batteryLevel;
+  }
 
   /**
    * Потребляет указанное количество энергии из батареи.
@@ -39,5 +42,47 @@ public class EnergySystem {
           "Значение для снижения заряда батареи не должно быть отрицательным");
     }
     batteryLevel = Math.max(0.0, batteryLevel - amount);
+  }
+
+  /**
+   * Внутренний статичный класс для создания экземпляров EnergySystem при помощи паттерна Строитель
+   */
+  public static class EnergySystemBuilder {
+
+    private double batteryLevel;
+    private static final double MAX_BATTERY_LEVEL = 100.0;
+    private static final double MIN_BATTERY_LEVEL = 0.0;
+    /**
+     * Экземпляр генератора случайных чисел, используемый для инициализации заряда.
+     */
+    private static final Random RANDOM = new Random();
+
+    /**
+     * Генерирует случайный начальный уровень заряда батареи в диапазоне [0.0, 1.0).
+     *
+     * @return случайное значение уровня заряда
+     */
+    private double generateBatteryLevel() {
+      return RANDOM.nextDouble();
+    }
+
+    public EnergySystemBuilder setBatteryLevel(double batteryLevel) {
+      if (batteryLevel > MAX_BATTERY_LEVEL || batteryLevel < MIN_BATTERY_LEVEL) {
+        throw new IllegalArgumentException(
+            String.format("Заряд батареи не может быть больше %.2f и меньше %.2f",
+                MAX_BATTERY_LEVEL, MIN_BATTERY_LEVEL));
+      }
+      this.batteryLevel = batteryLevel / 100.0;
+      return this;
+    }
+
+    public EnergySystemBuilder() {
+      this.batteryLevel = generateBatteryLevel();
+    }
+
+    public EnergySystem build() {
+      return new EnergySystem(this);
+    }
+
   }
 }

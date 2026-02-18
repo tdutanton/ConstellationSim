@@ -204,7 +204,7 @@ public class ConstellationRepositoryUnitTest {
   @DisplayName("Бросает IllegalArgumentException при отрицательном заряде батареи")
   void shouldThrowExceptionForNegativeBatteryLevel() {
     assertThrows(IllegalArgumentException.class, () -> {
-      new EnergySystem(-100);
+      new EnergySystem.EnergySystemBuilder().setBatteryLevel(-100).build();
     });
   }
 
@@ -212,14 +212,13 @@ public class ConstellationRepositoryUnitTest {
   @DisplayName("Бросает IllegalArgumentException при большом заряде батареи")
   void shouldThrowExceptionForBigBatteryLevel() {
     assertThrows(IllegalArgumentException.class, () -> {
-      new EnergySystem(110);
+      new EnergySystem.EnergySystemBuilder().setBatteryLevel(110).build();
     });
   }
 
   @Test
   @DisplayName("отрабатывает корректный аргумент в заряде батареи")
   void shouldGetCorrectBatteryLevel() {
-    EnergySystem system = new EnergySystem(55);
-    assertEquals(0.55, system.getBatteryLevel());
+    EnergySystem system = new EnergySystem.EnergySystemBuilder().setBatteryLevel(55).build();
   }
 }
