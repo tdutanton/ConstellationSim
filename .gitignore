@@ -14,6 +14,11 @@ target/
 # Gradle
 .gradle/
 build/
+gradlew
+gradlew.bat
+gradle/**
+gradle.properties
+
 
 # OS
 .DS_Store
