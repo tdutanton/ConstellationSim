@@ -20,22 +20,16 @@ public class SatelliteConstellation {
   /**
    * Название спутниковой группировки.
    */
-  private final String constellationName;
+  private String constellationName;
 
   /**
    * Список спутников, входящих в состав группировки.
    */
-  private final List<Satellite> satellites;
-
+  private List<Satellite> satellites;
   /**
    * Строка-разделитель, используемая при выводе в консоль.
    */
   private static final String NEW_LINE_DELIM_CONSTELLATION = "---------------------";
-
-  /**
-   * Название группировки по умолчанию, используемое при вызове конструктора без параметров.
-   */
-  private static final String DEFAULT_CONSTELLATION_NAME = "Default Constellation";
 
   /**
    * Флаг, включающий или отключающий подробный вывод в консоль при создании, модификации и
@@ -45,24 +39,13 @@ public class SatelliteConstellation {
   private static boolean consolePrintMode = false;
 
   /**
-   * Конструирует спутниковую группировку с заданным названием.
+   * Конструктор, вызываемый при помощи строителя
    *
-   * @param name название группировки
+   * @param builder
    */
-  public SatelliteConstellation(String name) {
-    constellationName = name;
-    this.satellites = new ArrayList<>();
-    printConstellationCtor();
-  }
-
-  /**
-   * Конструирует спутниковую группировку с названием по умолчанию
-   * ({@link #DEFAULT_CONSTELLATION_NAME}).
-   */
-  public SatelliteConstellation() {
-    constellationName = DEFAULT_CONSTELLATION_NAME;
-    this.satellites = new ArrayList<>();
-    printConstellationCtor();
+  private SatelliteConstellation(ConstellationBuilder builder) {
+    this.constellationName = builder.constellationName;
+    this.satellites = builder.satellites != null ? builder.satellites : new ArrayList<>();
   }
 
   /**
@@ -187,5 +170,54 @@ public class SatelliteConstellation {
 
   public boolean containsSatellite(Satellite satellite) {
     return satellites.contains(satellite);
+  }
+
+  /**
+   * Внутренний статичный класс для создания экземпляров Constellation при помощи паттерна
+   * Строитель
+   */
+  public static class ConstellationBuilder {
+
+    /**
+     * Название группировки по умолчанию, используемое при вызове конструктора без параметров.
+     */
+    private static final String DEFAULT_CONSTELLATION_NAME = "Default Constellation";
+
+    /**
+     * Название спутниковой группировки.
+     */
+    private String constellationName = DEFAULT_CONSTELLATION_NAME;
+
+    /**
+     * Список спутников, входящих в состав группировки.
+     */
+    private List<Satellite> satellites;
+
+    public ConstellationBuilder setConstellationName(String name) {
+      this.constellationName = name;
+      return this;
+    }
+
+    public ConstellationBuilder addSatellite(Satellite satellite) {
+      if (this.satellites.isEmpty()) {
+        this.satellites = new ArrayList<>();
+      }
+      satellites.add(satellite);
+      return this;
+    }
+
+    public ConstellationBuilder addListSatellites(List<Satellite> satellites) {
+      if (this.satellites.isEmpty()) {
+        this.satellites = new ArrayList<>();
+      }
+      this.satellites.addAll(satellites);
+      return this;
+    }
+
+    public SatelliteConstellation build() {
+      SatelliteConstellation result = new SatelliteConstellation(this);
+      result.printConstellationCtor();
+      return result;
+    }
   }
 }

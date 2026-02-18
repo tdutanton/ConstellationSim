@@ -73,7 +73,8 @@ public class SpaceOperationCenterService {
    */
   public void createAndSaveConstellation(String name) {
     if (isConstellationCorrect(name)) {
-      SatelliteConstellation constellation = new SatelliteConstellation(name);
+      SatelliteConstellation constellation = new SatelliteConstellation.ConstellationBuilder().setConstellationName(
+          name).build();
       repository.addConstellation(constellation);
     }
   }

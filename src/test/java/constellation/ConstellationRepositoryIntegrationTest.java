@@ -45,7 +45,9 @@ class ConstellationRepositoryIntegrationTest {
     @Test
     @DisplayName("создание - добавление спутников - активация - выполнение миссий - деактивация")
     void shouldCompleteFullLifecycleSuccessfully() {
-      SatelliteConstellation constellation = new SatelliteConstellation(constellationName);
+      SatelliteConstellation constellation = new SatelliteConstellation.ConstellationBuilder()
+          .setConstellationName(
+              constellationName).build();
       repository.addConstellation(constellation);
 
       SatelliteConstellation retrieved = repository.constellationByName(constellationName);
@@ -103,8 +105,12 @@ class ConstellationRepositoryIntegrationTest {
     @Test
     @DisplayName("успешное управление несколькими независимыми группировками")
     void shouldManageMultipleIndependentConstellations() {
-      SatelliteConstellation first = new SatelliteConstellation(constellationName);
-      SatelliteConstellation second = new SatelliteConstellation(secondConstellationName);
+      SatelliteConstellation first = new SatelliteConstellation.ConstellationBuilder()
+          .setConstellationName(
+              constellationName).build();
+      SatelliteConstellation second = new SatelliteConstellation.ConstellationBuilder()
+          .setConstellationName(
+              secondConstellationName).build();
 
       repository.addConstellation(first);
       repository.addConstellation(second);
@@ -157,8 +163,12 @@ class ConstellationRepositoryIntegrationTest {
     @Test
     @DisplayName("корректная обработка дубликатов группировок")
     void shouldIgnoreDuplicateConstellationAddition() {
-      SatelliteConstellation first = new SatelliteConstellation(constellationName);
-      SatelliteConstellation duplicate = new SatelliteConstellation(constellationName);
+      SatelliteConstellation first = new SatelliteConstellation.ConstellationBuilder()
+          .setConstellationName(
+              constellationName).build();
+      SatelliteConstellation duplicate = new SatelliteConstellation.ConstellationBuilder()
+          .setConstellationName(
+              constellationName).build();
 
       repository.addConstellation(first);
       repository.addConstellation(duplicate);
@@ -174,7 +184,9 @@ class ConstellationRepositoryIntegrationTest {
     @Test
     @DisplayName("естественная деактивация при разряде через выполнение миссий")
     void shouldDeactivateNaturallyAfterMultipleMissions() {
-      SatelliteConstellation constellation = new SatelliteConstellation(constellationName);
+      SatelliteConstellation constellation = new SatelliteConstellation.ConstellationBuilder()
+          .setConstellationName(
+              constellationName).build();
       repository.addConstellation(constellation);
 
       CommunicationSatellite satellite = new CommunicationSatellite(500.0);

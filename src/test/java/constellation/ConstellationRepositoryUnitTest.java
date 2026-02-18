@@ -42,8 +42,12 @@ public class ConstellationRepositoryUnitTest {
   @BeforeEach
   void setUp() {
     repository = new ConstellationRepository();
-    fConstellation = new SatelliteConstellation(FIRST_CONSTELLATION);
-    sConstellation = new SatelliteConstellation(SECOND_CONSTELLATION);
+    fConstellation = new SatelliteConstellation.ConstellationBuilder()
+        .setConstellationName(
+            FIRST_CONSTELLATION).build();
+    sConstellation = new SatelliteConstellation.ConstellationBuilder()
+        .setConstellationName(
+            SECOND_CONSTELLATION).build();
     commSatellite = factory.createSatelliteWithParameter("Связь", 65, 200);
     imagingSatellite = new ImagingSatellite(1.0);
   }
@@ -67,7 +71,9 @@ public class ConstellationRepositoryUnitTest {
     void shouldIgnoreDuplicateConstellation() {
       repository.addConstellation(fConstellation);
 
-      SatelliteConstellation duplicate = new SatelliteConstellation(FIRST_CONSTELLATION);
+      SatelliteConstellation duplicate = new SatelliteConstellation.ConstellationBuilder()
+          .setConstellationName(
+              FIRST_CONSTELLATION).build();
       repository.addConstellation(duplicate);
 
       SatelliteConstellation retrieved = repository.constellationByName(FIRST_CONSTELLATION);
@@ -93,7 +99,9 @@ public class ConstellationRepositoryUnitTest {
     @Test
     @DisplayName("игнорирует удаление несуществующей группировки")
     void shouldIgnoreDeletingNonExistentConstellation() {
-      SatelliteConstellation nonExistent = new SatelliteConstellation("Несуществующая");
+      SatelliteConstellation nonExistent = new SatelliteConstellation.ConstellationBuilder()
+          .setConstellationName(
+              "Несуществующая").build();
       assertDoesNotThrow(() ->
           repository.removeConstellation(nonExistent)
       );
@@ -185,7 +193,8 @@ public class ConstellationRepositoryUnitTest {
     @Test
     @DisplayName("обрабатывает группировку с пустым именем")
     void shouldHandleEmptyName() {
-      SatelliteConstellation empty = new SatelliteConstellation("");
+      SatelliteConstellation empty = new SatelliteConstellation.ConstellationBuilder()
+          .setConstellationName("").build();
       repository.addConstellation(empty);
       assertNotNull(repository.constellationByName(""));
     }
@@ -194,7 +203,9 @@ public class ConstellationRepositoryUnitTest {
     @DisplayName("обрабатывает очень длинное имя группировки")
     void shouldHandleVeryLongName() {
       String longName = "A".repeat(1000);
-      SatelliteConstellation longConst = new SatelliteConstellation(longName);
+      SatelliteConstellation longConst = new SatelliteConstellation.ConstellationBuilder()
+          .setConstellationName(
+              longName).build();
       repository.addConstellation(longConst);
       assertNotNull(repository.constellationByName(longName));
     }
