@@ -12,13 +12,16 @@ public class ImagingSatelliteFactory implements SatelliteFactory {
   @Override
   public Satellite createSatelliteWithParameter(SatelliteParam param)
       throws SpaceOperationException {
-    if (param instanceof ImagingSatelliteParam) {
-      String name = param.getName();
-      double batteryLevel = param.getBatteryLevel();
-      double resolution = ((ImagingSatelliteParam) param).getResolution();
+    if (param instanceof ImagingSatelliteParam imgparam) {
+      String name = imgparam.getName();
+      double batteryLevel = imgparam.getBatteryLevel();
+      double resolution = imgparam.getResolution();
       return new ImagingSatellite(name, batteryLevel, resolution);
     } else {
-      throw new SpaceOperationException("Тип спутника не соответствует типу Imaging");
+      throw new SpaceOperationException(
+          String.format("Ожидался ImagingSatelliteParam, получен: %s",
+              param.getClass().getSimpleName())
+      );
     }
   }
 

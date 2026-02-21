@@ -12,13 +12,16 @@ public class CommunicationSatelliteFactory implements SatelliteFactory {
   @Override
   public Satellite createSatelliteWithParameter(SatelliteParam param)
       throws SpaceOperationException {
-    if (param instanceof CommunicationSatelliteParam) {
-      String name = param.getName();
-      double batteryLevel = param.getBatteryLevel();
-      double bandwidth = ((CommunicationSatelliteParam) param).getBandwidth();
+    if (param instanceof CommunicationSatelliteParam commParam) {
+      String name = commParam.getName();
+      double batteryLevel = commParam.getBatteryLevel();
+      double bandwidth = commParam.getBandwidth();
       return new CommunicationSatellite(name, batteryLevel, bandwidth);
     } else {
-      throw new SpaceOperationException("Тип спутника не соответствует типу Communication");
+      throw new SpaceOperationException(
+          String.format("Ожидался CommunicationSatelliteParam, получен: %s",
+              param.getClass().getSimpleName())
+      );
     }
   }
 
