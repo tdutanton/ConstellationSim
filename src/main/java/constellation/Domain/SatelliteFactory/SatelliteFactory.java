@@ -1,10 +1,13 @@
 package constellation.Domain.SatelliteFactory;
 
+import constellation.Domain.Satellite.Exception.SpaceOperationException;
 import constellation.Domain.Satellite.Satellite;
+import constellation.Domain.Satellite.SatelliteParam.SatelliteParam;
+import constellation.Domain.Satellite.SatelliteType;
 
 public interface SatelliteFactory {
 
-  Satellite createSatellite(String name, double batteryLevel);
+  boolean isSatelliteTypeSupported(SatelliteType type);
 
-  Satellite createSatelliteWithParameter(String name, double batteryLevel, double parameter);
+  Satellite createSatelliteWithParameter(SatelliteParam param) throws SpaceOperationException;
 }
