@@ -12,10 +12,10 @@ public class ImagingSatelliteFactory implements SatelliteFactory {
   @Override
   public Satellite createSatelliteWithParameter(SatelliteParam param)
       throws SpaceOperationException {
-    if (param instanceof ImagingSatelliteParam imgparam) {
-      String name = imgparam.getName();
-      double batteryLevel = imgparam.getBatteryLevel();
-      double resolution = imgparam.getResolution();
+    if (param instanceof ImagingSatelliteParam imgParam) {
+      String name = imgParam.getName();
+      double batteryLevel = imgParam.getBatteryLevel();
+      double resolution = imgParam.getResolution();
       return new ImagingSatellite(name, batteryLevel, resolution);
     } else {
       throw new SpaceOperationException(
