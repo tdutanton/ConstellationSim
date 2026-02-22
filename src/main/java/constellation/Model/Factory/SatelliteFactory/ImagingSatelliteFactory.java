@@ -1,11 +1,11 @@
 package constellation.Model.Factory.SatelliteFactory;
 
-import constellation.Model.Domain.Satellite.Exception.SpaceOperationException;
+import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.ImagingSatellite;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.ImagingSatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
-import constellation.Model.Domain.Satellite.SatelliteType;
+import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,10 +15,8 @@ public class ImagingSatelliteFactory implements SatelliteFactory {
   public Satellite createSatelliteWithParameter(SatelliteParam param)
       throws SpaceOperationException {
     if (param instanceof ImagingSatelliteParam imgParam) {
-      String name = imgParam.getName();
-      double batteryLevel = imgParam.getBatteryLevel();
-      double resolution = imgParam.getResolution();
-      return new ImagingSatellite(name, batteryLevel, resolution);
+      return new ImagingSatellite(imgParam.getName(), imgParam.getBatteryLevel(),
+          imgParam.getResolution());
     } else {
       throw new SpaceOperationException(
           String.format("Ожидался ImagingSatelliteParam, получен: %s",

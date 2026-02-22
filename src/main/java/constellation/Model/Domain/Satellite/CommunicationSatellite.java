@@ -13,24 +13,21 @@ import lombok.Getter;
 public class CommunicationSatellite extends Satellite {
 
   /**
-   * Пропускная способность канала связи в мегабитах в секунду (Мбит/с).
-   */
-  private final double bandwidth;
-
-  /**
    * Префикс имени по умолчанию для спутников данного типа.
    */
   private static final String DEFAULT_NAME = "Связь";
-
-  /**
-   * Последовательный номер для генерации уникальных имён спутников.
-   */
-  private static int SERIAL_NUMBER = 1;
-
   /**
    * Уровень потребления заряда батареи за одну миссию (5%).
    */
   private static final double BATTERY_PER_MISSION = 0.05;
+  /**
+   * Последовательный номер для генерации уникальных имён спутников.
+   */
+  private static int SERIAL_NUMBER = 1;
+  /**
+   * Пропускная способность канала связи в мегабитах в секунду (Мбит/с).
+   */
+  private final double bandwidth;
 
   /**
    * Конструирует новый спутник связи с заданной пропускной способностью. Автоматически генерирует

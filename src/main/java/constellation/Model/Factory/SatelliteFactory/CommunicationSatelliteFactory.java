@@ -1,11 +1,11 @@
 package constellation.Model.Factory.SatelliteFactory;
 
+import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.CommunicationSatellite;
-import constellation.Model.Domain.Satellite.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.CommunicationSatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
-import constellation.Model.Domain.Satellite.SatelliteType;
+import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,10 +15,8 @@ public class CommunicationSatelliteFactory implements SatelliteFactory {
   public Satellite createSatelliteWithParameter(SatelliteParam param)
       throws SpaceOperationException {
     if (param instanceof CommunicationSatelliteParam commParam) {
-      String name = commParam.getName();
-      double batteryLevel = commParam.getBatteryLevel();
-      double bandwidth = commParam.getBandwidth();
-      return new CommunicationSatellite(name, batteryLevel, bandwidth);
+      return new CommunicationSatellite(commParam.getName(), commParam.getBatteryLevel(),
+          commParam.getBandwidth());
     } else {
       throw new SpaceOperationException(
           String.format("Ожидался CommunicationSatelliteParam, получен: %s",

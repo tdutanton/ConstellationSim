@@ -1,11 +1,11 @@
 package constellation;
 
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
-import constellation.Model.Domain.Satellite.Exception.SpaceOperationException;
+import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.CommunicationSatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.ImagingSatelliteParam;
-import constellation.Model.Domain.Satellite.SatelliteType;
+import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
 import constellation.Repository.ConstellationRepository;
 import constellation.Service.Satellite.SatelliteService;
 import constellation.Service.SpaceOperationCenterService;

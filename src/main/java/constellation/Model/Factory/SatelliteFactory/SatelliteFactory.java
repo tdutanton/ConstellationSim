@@ -1,9 +1,9 @@
 package constellation.Model.Factory.SatelliteFactory;
 
-import constellation.Model.Domain.Satellite.Exception.SpaceOperationException;
+import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
-import constellation.Model.Domain.Satellite.SatelliteType;
+import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
 
 public interface SatelliteFactory {
 

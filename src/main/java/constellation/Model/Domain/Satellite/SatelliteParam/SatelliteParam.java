@@ -1,6 +1,5 @@
 package constellation.Model.Domain.Satellite.SatelliteParam;
 
-import constellation.Model.Domain.Satellite.SatelliteType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

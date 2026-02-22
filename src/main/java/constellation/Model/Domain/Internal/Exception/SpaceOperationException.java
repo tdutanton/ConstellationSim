@@ -1,4 +1,4 @@
-package constellation.Model.Domain.Satellite.Exception;
+package constellation.Model.Domain.Internal.Exception;
 
 public class SpaceOperationException extends Exception {
 

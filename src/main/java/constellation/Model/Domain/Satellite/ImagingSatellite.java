@@ -13,29 +13,25 @@ import lombok.Getter;
 public class ImagingSatellite extends Satellite {
 
   /**
-   * Пространственное разрешение съёмки в метрах на пиксель.
-   */
-  private final double resolution;
-
-  /**
-   * Количество сделанных снимков за время работы спутника.
-   */
-  private int photosTaken;
-
-  /**
    * Префикс имени по умолчанию для спутников данного типа.
    */
   private static final String DEFAULT_NAME = "ДЗЗ";
-
-  /**
-   * Последовательный номер для генерации уникальных имён спутников.
-   */
-  private static int SERIAL_NUMBER = 1;
-
   /**
    * Уровень потребления заряда батареи за одну миссию (8%).
    */
   private static final double BATTERY_PER_MISSION = 0.08;
+  /**
+   * Последовательный номер для генерации уникальных имён спутников.
+   */
+  private static int SERIAL_NUMBER = 1;
+  /**
+   * Пространственное разрешение съёмки в метрах на пиксель.
+   */
+  private final double resolution;
+  /**
+   * Количество сделанных снимков за время работы спутника.
+   */
+  private int photosTaken;
 
   /**
    * Конструирует новый спутник ДЗЗ с заданным разрешением. Автоматически генерирует уникальное имя

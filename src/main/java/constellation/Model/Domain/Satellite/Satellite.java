@@ -1,7 +1,7 @@
 package constellation.Model.Domain.Satellite;
 
 import constellation.Model.Domain.Internal.EnergySystem.EnergySystem;
-import constellation.Model.Domain.Internal.SatelliteState;
+import constellation.Model.Domain.Internal.SatelliteState.SatelliteState;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,33 +15,29 @@ import lombok.Setter;
 public abstract class Satellite {
 
   /**
-   * Имя спутника, генерируется автоматически при создании.
-   */
-  @Getter
-  protected String name;
-
-  /**
-   * Текущее состояние спутника (активен/неактивен).
-   */
-  protected SatelliteState state;
-
-  /**
-   * Система управления энергией спутника.
-   */
-  @Getter
-  protected EnergySystem energy;
-
-  /**
    * Минимальный допустимый уровень заряда для активации спутника (20%).
    */
   private static final double MIN_POSSIBLE_BATTERY_FOR_ACTIVATE = 0.20;
-
   /**
    * Флаг, включающий или отключающий подробный вывод в консоль при создании, активации и выполнении
    * операций со спутником.
    */
   @Setter
   protected static boolean consolePrintMode = false;
+  /**
+   * Имя спутника, генерируется автоматически при создании.
+   */
+  @Getter
+  protected String name;
+  /**
+   * Текущее состояние спутника (активен/неактивен).
+   */
+  protected SatelliteState state;
+  /**
+   * Система управления энергией спутника.
+   */
+  @Getter
+  protected EnergySystem energy;
 
   /**
    * Конструктор спутника. Генерирует уникальное имя на основе переданного префикса и номера,

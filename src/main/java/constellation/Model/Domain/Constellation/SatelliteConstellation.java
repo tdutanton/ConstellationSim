@@ -1,6 +1,6 @@
 package constellation.Model.Domain.Constellation;
 
-import constellation.Model.Domain.Internal.SatelliteState;
+import constellation.Model.Domain.Internal.SatelliteState.SatelliteState;
 import constellation.Model.Domain.Satellite.Satellite;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,25 +18,23 @@ import lombok.Setter;
 public class SatelliteConstellation {
 
   /**
-   * Название спутниковой группировки.
-   */
-  private String constellationName;
-
-  /**
-   * Список спутников, входящих в состав группировки.
-   */
-  private List<Satellite> satellites;
-  /**
    * Строка-разделитель, используемая при выводе в консоль.
    */
   private static final String NEW_LINE_DELIM_CONSTELLATION = "---------------------";
-
   /**
    * Флаг, включающий или отключающий подробный вывод в консоль при создании, модификации и
    * управлении группировкой.
    */
   @Setter
   private static boolean consolePrintMode = false;
+  /**
+   * Название спутниковой группировки.
+   */
+  private final String constellationName;
+  /**
+   * Список спутников, входящих в состав группировки.
+   */
+  private final List<Satellite> satellites;
 
   /**
    * Конструктор, вызываемый при помощи строителя
