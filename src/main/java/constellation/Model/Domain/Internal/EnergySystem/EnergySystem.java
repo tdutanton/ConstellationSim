@@ -1,4 +1,4 @@
-package constellation.Domain.Internal.EnergySystem;
+package constellation.Model.Domain.Internal.EnergySystem;
 
 import java.util.Random;
 import lombok.EqualsAndHashCode;

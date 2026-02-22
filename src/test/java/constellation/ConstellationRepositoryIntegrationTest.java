@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import constellation.Domain.Constellation.SatelliteConstellation;
-import constellation.Domain.Satellite.CommunicationSatellite;
-import constellation.Domain.Satellite.ImagingSatellite;
+import constellation.Model.Domain.Constellation.SatelliteConstellation;
+import constellation.Model.Domain.Satellite.CommunicationSatellite;
+import constellation.Model.Domain.Satellite.ImagingSatellite;
 import constellation.Repository.ConstellationRepository;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;

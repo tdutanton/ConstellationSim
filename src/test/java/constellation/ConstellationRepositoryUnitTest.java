@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import constellation.Domain.Constellation.SatelliteConstellation;
-import constellation.Domain.Internal.EnergySystem.EnergySystem;
-import constellation.Domain.Satellite.ImagingSatellite;
-import constellation.Domain.Satellite.Satellite;
-import constellation.Domain.SatelliteFactory.CommunicationSatelliteFactory;
-import constellation.Domain.SatelliteFactory.SatelliteFactory;
+import constellation.Model.Domain.Constellation.SatelliteConstellation;
+import constellation.Model.Domain.Internal.EnergySystem.EnergySystem;
+import constellation.Model.Domain.Satellite.ImagingSatellite;
+import constellation.Model.Domain.Satellite.Satellite;
+import constellation.Model.Factory.SatelliteFactory.CommunicationSatelliteFactory;
+import constellation.Model.Factory.SatelliteFactory.SatelliteFactory;
 import constellation.Repository.ConstellationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

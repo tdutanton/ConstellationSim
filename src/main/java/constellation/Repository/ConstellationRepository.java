@@ -1,7 +1,7 @@
 package constellation.Repository;
 
-import constellation.Domain.Constellation.SatelliteConstellation;
-import constellation.Domain.Satellite.Satellite;
+import constellation.Model.Domain.Constellation.SatelliteConstellation;
+import constellation.Model.Domain.Satellite.Satellite;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

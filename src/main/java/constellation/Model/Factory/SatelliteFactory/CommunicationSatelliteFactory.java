@@ -1,12 +1,14 @@
-package constellation.Domain.SatelliteFactory;
+package constellation.Model.Factory.SatelliteFactory;
 
-import constellation.Domain.Satellite.CommunicationSatellite;
-import constellation.Domain.Satellite.Exception.SpaceOperationException;
-import constellation.Domain.Satellite.Satellite;
-import constellation.Domain.Satellite.SatelliteParam.CommunicationSatelliteParam;
-import constellation.Domain.Satellite.SatelliteParam.SatelliteParam;
-import constellation.Domain.Satellite.SatelliteType;
+import constellation.Model.Domain.Satellite.CommunicationSatellite;
+import constellation.Model.Domain.Satellite.Exception.SpaceOperationException;
+import constellation.Model.Domain.Satellite.Satellite;
+import constellation.Model.Domain.Satellite.SatelliteParam.CommunicationSatelliteParam;
+import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
+import constellation.Model.Domain.Satellite.SatelliteType;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CommunicationSatelliteFactory implements SatelliteFactory {
 
   @Override

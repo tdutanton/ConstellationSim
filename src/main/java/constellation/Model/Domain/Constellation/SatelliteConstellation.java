@@ -1,7 +1,7 @@
-package constellation.Domain.Constellation;
+package constellation.Model.Domain.Constellation;
 
-import constellation.Domain.Internal.SatelliteState;
-import constellation.Domain.Satellite.Satellite;
+import constellation.Model.Domain.Internal.SatelliteState;
+import constellation.Model.Domain.Satellite.Satellite;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;

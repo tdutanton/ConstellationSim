@@ -1,7 +1,7 @@
 package constellation.Service;
 
-import constellation.Domain.Constellation.SatelliteConstellation;
-import constellation.Domain.Satellite.Satellite;
+import constellation.Model.Domain.Constellation.SatelliteConstellation;
+import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Repository.ConstellationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

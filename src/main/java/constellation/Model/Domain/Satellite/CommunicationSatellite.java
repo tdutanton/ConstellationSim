@@ -1,4 +1,4 @@
-package constellation.Domain.Satellite;
+package constellation.Model.Domain.Satellite;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

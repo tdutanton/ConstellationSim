@@ -1,7 +1,7 @@
-package constellation.Domain.Satellite;
+package constellation.Model.Domain.Satellite;
 
-import constellation.Domain.Internal.EnergySystem.EnergySystem;
-import constellation.Domain.Internal.SatelliteState;
+import constellation.Model.Domain.Internal.EnergySystem.EnergySystem;
+import constellation.Model.Domain.Internal.SatelliteState;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

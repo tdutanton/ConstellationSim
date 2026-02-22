@@ -1,4 +1,4 @@
-package constellation.Domain.Satellite;
+package constellation.Model.Domain.Satellite;
 
 public enum SatelliteType {
   IMAGE,
