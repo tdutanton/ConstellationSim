@@ -1,4 +1,4 @@
-package constellation.Domain.Internal.EnergySystem;
+package constellation.Model.Domain.Internal.EnergySystem;
 
 import java.util.Random;
 import lombok.EqualsAndHashCode;
@@ -49,13 +49,17 @@ public class EnergySystem {
    */
   public static class EnergySystemBuilder {
 
-    private double batteryLevel;
     private static final double MAX_BATTERY_LEVEL = 100.0;
     private static final double MIN_BATTERY_LEVEL = 0.0;
     /**
      * Экземпляр генератора случайных чисел, используемый для инициализации заряда.
      */
     private static final Random RANDOM = new Random();
+    private double batteryLevel;
+
+    public EnergySystemBuilder() {
+      this.batteryLevel = generateBatteryLevel();
+    }
 
     /**
      * Генерирует случайный начальный уровень заряда батареи в диапазоне [0.0, 1.0).
@@ -74,10 +78,6 @@ public class EnergySystem {
       }
       this.batteryLevel = batteryLevel / 100.0;
       return this;
-    }
-
-    public EnergySystemBuilder() {
-      this.batteryLevel = generateBatteryLevel();
     }
 
     public EnergySystem build() {

@@ -8,8 +8,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import constellation.Domain.Constellation.SatelliteConstellation;
-import constellation.Domain.Satellite.Satellite;
+import constellation.Model.Domain.Constellation.SatelliteConstellation;
+import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Repository.ConstellationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

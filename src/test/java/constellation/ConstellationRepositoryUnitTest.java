@@ -9,12 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import constellation.Domain.Constellation.SatelliteConstellation;
-import constellation.Domain.Internal.EnergySystem.EnergySystem;
-import constellation.Domain.Satellite.ImagingSatellite;
-import constellation.Domain.Satellite.Satellite;
-import constellation.Domain.SatelliteFactory.CommunicationSatelliteFactory;
-import constellation.Domain.SatelliteFactory.SatelliteFactory;
+import constellation.Model.Domain.Constellation.SatelliteConstellation;
+import constellation.Model.Domain.Internal.EnergySystem.EnergySystem;
+import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
+import constellation.Model.Domain.Satellite.ImagingSatellite;
+import constellation.Model.Domain.Satellite.Satellite;
+import constellation.Model.Domain.Satellite.SatelliteParam.CommunicationSatelliteParam;
+import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
+import constellation.Model.Factory.SatelliteFactory.CommunicationSatelliteFactory;
+import constellation.Model.Factory.SatelliteFactory.SatelliteFactory;
 import constellation.Repository.ConstellationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,13 +45,19 @@ public class ConstellationRepositoryUnitTest {
   @BeforeEach
   void setUp() {
     repository = new ConstellationRepository();
+
     fConstellation = new SatelliteConstellation.ConstellationBuilder()
         .setConstellationName(
             FIRST_CONSTELLATION).build();
     sConstellation = new SatelliteConstellation.ConstellationBuilder()
         .setConstellationName(
             SECOND_CONSTELLATION).build();
-    commSatellite = factory.createSatelliteWithParameter("Связь", 65, 200);
+    try {
+      commSatellite = factory.createSatelliteWithParameter(new CommunicationSatelliteParam(
+          SatelliteType.COMMUNICATION, "Comm", 89, 500));
+    } catch (SpaceOperationException e) {
+      System.out.println("error" + e.getMessage());
+    }
     imagingSatellite = new ImagingSatellite(1.0);
   }
 
