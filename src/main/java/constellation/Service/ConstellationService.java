@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @AllArgsConstructor
-public class SpaceOperationCenterService {
+public class ConstellationService {
 
   private final ConstellationRepository repository;
 

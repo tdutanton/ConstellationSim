@@ -6,7 +6,7 @@ import constellation.Domain.SatelliteFactory.Impl.CommunicationSatelliteFactory;
 import constellation.Domain.SatelliteFactory.Impl.ImagingSatelliteFactory;
 import constellation.Domain.SatelliteFactory.SatelliteFactory;
 import constellation.Repository.ConstellationRepository;
-import constellation.Service.SpaceOperationCenterService;
+import constellation.Service.ConstellationService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -27,7 +27,7 @@ public class ConstellationApplication {
     ConfigurableApplicationContext context = SpringApplication.run(ConstellationApplication.class,
         args);
     ConstellationRepository repo = context.getBean(ConstellationRepository.class);
-    SpaceOperationCenterService service = context.getBean(SpaceOperationCenterService.class);
+    ConstellationService service = context.getBean(ConstellationService.class);
     SatelliteFactory commFactory = new CommunicationSatelliteFactory();
     SatelliteFactory imgFactory = new ImagingSatelliteFactory();
 
