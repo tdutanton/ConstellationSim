@@ -6,7 +6,7 @@ import constellation.Domain.SatelliteFactory.Impl.CommunicationSatelliteFactory;
 import constellation.Domain.SatelliteFactory.Impl.ImagingSatelliteFactory;
 import constellation.Domain.SatelliteFactory.SatelliteFactory;
 import constellation.Repository.ConstellationRepository;
-import constellation.Service.ConstellationService;
+import constellation.Service.ConstellationService.ConstellationService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;

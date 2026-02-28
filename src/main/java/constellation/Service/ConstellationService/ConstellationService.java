@@ -1,4 +1,4 @@
-package constellation.Service;
+package constellation.Service.ConstellationService;
 
 import constellation.Domain.Constellation.SatelliteConstellation;
 import constellation.Domain.Satellite.Satellite;
