@@ -1,6 +1,6 @@
-package constellation.Model.Domain.Internal.Exception;
+package constellation.Model.Domain.Exception;
 
-public class SpaceOperationException extends Exception {
+public class SpaceOperationException extends RuntimeException {
 
   public SpaceOperationException(String message) {
     super(message);

@@ -1,8 +1,9 @@
-package constellation.Service;
+package constellation.Service.ConstellationService;
 
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Repository.ConstellationRepository;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @AllArgsConstructor
-public class SpaceOperationCenterService {
+public class ConstellationService {
 
   private final ConstellationRepository repository;
 
@@ -133,11 +134,15 @@ public class SpaceOperationCenterService {
    * @param constellationName название группировки
    * @return объект группировки, если она существует и название валидно; иначе {@code null}
    */
-  private SatelliteConstellation constellationFromRepository(String constellationName) {
+  public SatelliteConstellation constellationFromRepository(String constellationName) {
     if (isConstellationCorrect(constellationName)) {
       return repository.constellationByName(constellationName);
     }
     return null;
+  }
+
+  public ArrayList<SatelliteConstellation> constellations() {
+    return repository.getAllConstellations();
   }
 
   /**

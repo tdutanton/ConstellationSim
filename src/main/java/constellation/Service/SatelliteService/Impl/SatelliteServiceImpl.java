@@ -1,6 +1,6 @@
 package constellation.Service.SatelliteService.Impl;
 
-import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
+import constellation.Model.Domain.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
 import constellation.Model.Factory.SatelliteFactory.SatelliteFactory;
@@ -29,6 +29,11 @@ public class SatelliteServiceImpl implements SatelliteService {
     throw new SpaceOperationException(
         String.format("Тип спутника %s не поддерживается сервисом",
             param.getType()));
+  }
+
+  @Override
+  public void executeMission(Satellite satellite) {
+    satellite.executeMission();
   }
 }
 

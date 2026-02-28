@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
-import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
+import constellation.Model.Domain.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.CommunicationSatellite;
 import constellation.Model.Domain.Satellite.ImagingSatellite;
 import constellation.Model.Domain.Satellite.Satellite;
