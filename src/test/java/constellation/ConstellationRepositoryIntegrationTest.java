@@ -16,12 +16,12 @@ import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.CommunicationSatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
-import constellation.Model.Factory.SatelliteFactory.CommunicationSatelliteFactory;
-import constellation.Model.Factory.SatelliteFactory.ImagingSatelliteFactory;
+import constellation.Model.Factory.SatelliteFactory.Impl.CommunicationSatelliteFactory;
+import constellation.Model.Factory.SatelliteFactory.Impl.ImagingSatelliteFactory;
 import constellation.Model.Factory.SatelliteFactory.SatelliteFactory;
 import constellation.Repository.ConstellationRepository;
-import constellation.Service.Satellite.SatelliteService;
-import constellation.Service.Satellite.SatelliteServiceImpl;
+import constellation.Service.SatelliteService.Impl.SatelliteServiceImpl;
+import constellation.Service.SatelliteService.SatelliteService;
 import java.util.ArrayList;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,6 +47,26 @@ class ConstellationRepositoryIntegrationTest {
   void setUp() {
     constellationName = "Орбита-" + UUID.randomUUID().toString().substring(0, 4);
     secondConstellationName = "Орбита-" + UUID.randomUUID().toString().substring(0, 4);
+  }
+
+  @Test
+  @DisplayName("Проверка работы SatelliteServiceImpl")
+  void shouldCreateCorrectSatellite() {
+    SatelliteParam param = new CommunicationSatelliteParam(SatelliteType.COMMUNICATION, "Com", 55,
+        400);
+    SatelliteFactory comFactory = new CommunicationSatelliteFactory();
+    SatelliteFactory imgFactory = new ImagingSatelliteFactory();
+    ArrayList<SatelliteFactory> list = new ArrayList<>();
+    list.add(comFactory);
+    list.add(imgFactory);
+    SatelliteService service = new SatelliteServiceImpl(list);
+    try {
+      Satellite res = service.createSatellite(param);
+      assertEquals("Com-1", res.getName());
+      assertEquals(CommunicationSatellite.class, res.getClass());
+    } catch (SpaceOperationException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   @Nested
@@ -212,26 +232,6 @@ class ConstellationRepositoryIntegrationTest {
 
       assertFalse(satellite.getState().isActive(),
           "Спутник должен деактивироваться после " + missionCount + " миссий");
-    }
-  }
-
-  @Test
-  @DisplayName("Проверка работы SatelliteServiceImpl")
-  void shouldCreateCorrectSatellite() {
-    SatelliteParam param = new CommunicationSatelliteParam(SatelliteType.COMMUNICATION, "Com", 55,
-        400);
-    SatelliteFactory comFactory = new CommunicationSatelliteFactory();
-    SatelliteFactory imgFactory = new ImagingSatelliteFactory();
-    ArrayList<SatelliteFactory> list = new ArrayList<>();
-    list.add(comFactory);
-    list.add(imgFactory);
-    SatelliteService service = new SatelliteServiceImpl(list);
-    try {
-      Satellite res = service.createSatellite(param);
-      assertEquals("Com-1", res.getName());
-      assertEquals(CommunicationSatellite.class, res.getClass());
-    } catch (SpaceOperationException e) {
-      System.out.println(e.getMessage());
     }
   }
 }

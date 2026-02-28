@@ -1,9 +1,10 @@
-package constellation.Service.Satellite;
+package constellation.Service.SatelliteService.Impl;
 
 import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
 import constellation.Model.Factory.SatelliteFactory.SatelliteFactory;
+import constellation.Service.SatelliteService.SatelliteService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -7,7 +7,7 @@ import constellation.Model.Domain.Satellite.SatelliteParam.CommunicationSatellit
 import constellation.Model.Domain.Satellite.SatelliteParam.ImagingSatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
 import constellation.Repository.ConstellationRepository;
-import constellation.Service.Satellite.SatelliteService;
+import constellation.Service.SatelliteService.SatelliteService;
 import constellation.Service.SpaceOperationCenterService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

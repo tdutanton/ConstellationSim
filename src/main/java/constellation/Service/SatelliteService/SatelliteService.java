@@ -1,4 +1,4 @@
-package constellation.Service.Satellite;
+package constellation.Service.SatelliteService;
 
 import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.Satellite;

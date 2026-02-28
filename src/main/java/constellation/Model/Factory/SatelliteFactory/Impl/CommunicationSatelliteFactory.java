@@ -1,4 +1,4 @@
-package constellation.Model.Factory.SatelliteFactory;
+package constellation.Model.Factory.SatelliteFactory.Impl;
 
 import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.CommunicationSatellite;
@@ -6,6 +6,7 @@ import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.CommunicationSatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
+import constellation.Model.Factory.SatelliteFactory.SatelliteFactory;
 import org.springframework.stereotype.Component;
 
 @Component

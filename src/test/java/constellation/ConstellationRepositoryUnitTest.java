@@ -16,7 +16,7 @@ import constellation.Model.Domain.Satellite.ImagingSatellite;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.CommunicationSatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
-import constellation.Model.Factory.SatelliteFactory.CommunicationSatelliteFactory;
+import constellation.Model.Factory.SatelliteFactory.Impl.CommunicationSatelliteFactory;
 import constellation.Model.Factory.SatelliteFactory.SatelliteFactory;
 import constellation.Repository.ConstellationRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,6 +59,28 @@ public class ConstellationRepositoryUnitTest {
       System.out.println("error" + e.getMessage());
     }
     imagingSatellite = new ImagingSatellite(1.0);
+  }
+
+  @Test
+  @DisplayName("Бросает IllegalArgumentException при отрицательном заряде батареи")
+  void shouldThrowExceptionForNegativeBatteryLevel() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      new EnergySystem.EnergySystemBuilder().setBatteryLevel(-100).build();
+    });
+  }
+
+  @Test
+  @DisplayName("Бросает IllegalArgumentException при большом заряде батареи")
+  void shouldThrowExceptionForBigBatteryLevel() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      new EnergySystem.EnergySystemBuilder().setBatteryLevel(110).build();
+    });
+  }
+
+  @Test
+  @DisplayName("отрабатывает корректный аргумент в заряде батареи")
+  void shouldGetCorrectBatteryLevel() {
+    EnergySystem system = new EnergySystem.EnergySystemBuilder().setBatteryLevel(55).build();
   }
 
   @Nested
@@ -117,7 +139,6 @@ public class ConstellationRepositoryUnitTest {
       assertFalse(repository.containsConstellations(), "Репозиторий должен оставаться пустым");
     }
   }
-
 
   @Nested
   @DisplayName("Добавление спутника")
@@ -218,27 +239,5 @@ public class ConstellationRepositoryUnitTest {
       repository.addConstellation(longConst);
       assertNotNull(repository.constellationByName(longName));
     }
-  }
-
-  @Test
-  @DisplayName("Бросает IllegalArgumentException при отрицательном заряде батареи")
-  void shouldThrowExceptionForNegativeBatteryLevel() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new EnergySystem.EnergySystemBuilder().setBatteryLevel(-100).build();
-    });
-  }
-
-  @Test
-  @DisplayName("Бросает IllegalArgumentException при большом заряде батареи")
-  void shouldThrowExceptionForBigBatteryLevel() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new EnergySystem.EnergySystemBuilder().setBatteryLevel(110).build();
-    });
-  }
-
-  @Test
-  @DisplayName("отрабатывает корректный аргумент в заряде батареи")
-  void shouldGetCorrectBatteryLevel() {
-    EnergySystem system = new EnergySystem.EnergySystemBuilder().setBatteryLevel(55).build();
   }
 }
