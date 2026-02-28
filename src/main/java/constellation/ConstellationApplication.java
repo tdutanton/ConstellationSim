@@ -2,8 +2,8 @@ package constellation;
 
 import constellation.Domain.Constellation.SatelliteConstellation;
 import constellation.Domain.Satellite.Satellite;
-import constellation.Domain.SatelliteFactory.CommunicationSatelliteFactory;
-import constellation.Domain.SatelliteFactory.ImagingSatelliteFactory;
+import constellation.Domain.SatelliteFactory.Impl.CommunicationSatelliteFactory;
+import constellation.Domain.SatelliteFactory.Impl.ImagingSatelliteFactory;
 import constellation.Domain.SatelliteFactory.SatelliteFactory;
 import constellation.Repository.ConstellationRepository;
 import constellation.Service.SpaceOperationCenterService;

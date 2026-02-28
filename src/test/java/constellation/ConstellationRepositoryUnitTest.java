@@ -13,7 +13,7 @@ import constellation.Domain.Constellation.SatelliteConstellation;
 import constellation.Domain.Internal.EnergySystem.EnergySystem;
 import constellation.Domain.Satellite.ImagingSatellite;
 import constellation.Domain.Satellite.Satellite;
-import constellation.Domain.SatelliteFactory.CommunicationSatelliteFactory;
+import constellation.Domain.SatelliteFactory.Impl.CommunicationSatelliteFactory;
 import constellation.Domain.SatelliteFactory.SatelliteFactory;
 import constellation.Repository.ConstellationRepository;
 import org.junit.jupiter.api.BeforeEach;

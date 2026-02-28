@@ -1,7 +1,8 @@
-package constellation.Domain.SatelliteFactory;
+package constellation.Domain.SatelliteFactory.Impl;
 
 import constellation.Domain.Satellite.ImagingSatellite;
 import constellation.Domain.Satellite.Satellite;
+import constellation.Domain.SatelliteFactory.SatelliteFactory;
 
 public class ImagingSatelliteFactory implements SatelliteFactory {
 

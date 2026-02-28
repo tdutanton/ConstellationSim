@@ -1,6 +1,6 @@
 package constellation.Domain.Constellation;
 
-import constellation.Domain.Internal.SatelliteState;
+import constellation.Domain.Internal.SatelliteState.SatelliteState;
 import constellation.Domain.Satellite.Satellite;
 import java.util.ArrayList;
 import java.util.List;
