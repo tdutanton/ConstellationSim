@@ -35,6 +35,8 @@ dependencies {
     // Lombok для тестов
     testCompileOnly("org.projectlombok:lombok")
     testAnnotationProcessor("org.projectlombok:lombok")
+
+    implementation("org.springframework.boot:spring-boot-starter-aop")
 }
 
 springBoot {

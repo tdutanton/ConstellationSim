@@ -1,19 +1,22 @@
 package constellation;
 
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
-import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.CommunicationSatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.ImagingSatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
-import constellation.Repository.ConstellationRepository;
-import constellation.Service.Satellite.SatelliteService;
-import constellation.Service.SpaceOperationCenterService;
+import constellation.Service.SpaceOperationCenterService.AddSatelliteRequest;
+import constellation.Service.SpaceOperationCenterService.ConstellationRequest;
+import constellation.Service.SpaceOperationCenterService.MissionRequest;
+import constellation.Service.SpaceOperationCenterService.SpaceOperationCenterService;
+import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class ConstellationApplication {
 
   public static void main(String[] args) {
@@ -26,63 +29,59 @@ public class ConstellationApplication {
     System.out.printf("%1$s %1$s ЗАПУСК СИСТЕМЫ УПРАВЛЕНИЯ СПУТНИКОВОЙ ГРУППИРОВКОЙ %1$s %1$s%n",
         SatelliteIcon);
     System.out.println("=====================");
-    try {
-      ConfigurableApplicationContext context = SpringApplication.run(ConstellationApplication.class,
-          args);
-      ConstellationRepository repo = context.getBean(ConstellationRepository.class);
-      SpaceOperationCenterService service = context.getBean(SpaceOperationCenterService.class);
-      SatelliteService satelliteService = context.getBean(SatelliteService.class);
+    ConfigurableApplicationContext context = SpringApplication.run(ConstellationApplication.class,
+        args);
+    SpaceOperationCenterService centralService = context.getBean(
+        SpaceOperationCenterService.class);
 
-      System.out.println("Создание специализированных спутников:");
-      System.out.println(DIVIDER);
-      Satellite comSatFirst = satelliteService.createSatellite(new CommunicationSatelliteParam(
-          SatelliteType.COMMUNICATION, "Связной", 96, 400));
-      Satellite imagSatFirst = satelliteService.createSatellite(new ImagingSatelliteParam(
-          SatelliteType.IMAGE, "IMG", 96, 1.0));
-      Satellite comSatSecond = satelliteService.createSatellite(new CommunicationSatelliteParam(
-          SatelliteType.COMMUNICATION, "Связной", 70, 500));
-      Satellite imagSatSecond = satelliteService.createSatellite(new ImagingSatelliteParam(
-          SatelliteType.IMAGE, "IMG", 60, 0.5));
-      Satellite imagSatThird = satelliteService.createSatellite(new ImagingSatelliteParam(
-          SatelliteType.IMAGE, "IMG", 87, 1.5));
+    System.out.println("Создание группировок и добавление в них специализированных спутников:");
+    System.out.println(DIVIDER);
+    centralService.addSatellite(
+        new AddSatelliteRequest(TEAM_FIRST,
+            List.of(new CommunicationSatelliteParam(SatelliteType.COMMUNICATION, "Связной", 96,
+                400))));
 
-      service.createAndSaveConstellation(TEAM_FIRST);
-      service.createAndSaveConstellation(TEAM_SECOND);
+    centralService.addSatellite(new AddSatelliteRequest(TEAM_SECOND, List.of(
+        new CommunicationSatelliteParam(
+            SatelliteType.COMMUNICATION, "Связной", 70, 500))));
 
-      System.out.println();
-      System.out.println(DIVIDER);
-      System.out.println("\uD83D\uDCE1 ДОБАВЛЕНИЕ СПУТНИКОВ:");
-      service.addSatelliteToConstellation(TEAM_FIRST, comSatFirst);
-      service.addSatelliteToConstellation(TEAM_SECOND, comSatSecond);
-      service.addSatelliteToConstellation(TEAM_FIRST, imagSatFirst);
-      service.addSatelliteToConstellation(TEAM_SECOND, imagSatSecond);
-      service.addSatelliteToConstellation(TEAM_SECOND, imagSatThird);
+    centralService.addSatellite(new AddSatelliteRequest(TEAM_FIRST, List.of(
+        new ImagingSatelliteParam(
+            SatelliteType.IMAGE, "IMG", 96, 1.0))));
 
-      System.out.println();
-      System.out.println(DIVIDER);
-      service.activateAllSatellites(TEAM_FIRST);
+    centralService.addSatellite(new AddSatelliteRequest(TEAM_SECOND, List.of(
+        new ImagingSatelliteParam(
+            SatelliteType.IMAGE, "IMG", 60, 0.5))));
 
-      System.out.println();
-      System.out.println(DIVIDER);
-      service.executeConstellationMission(TEAM_FIRST);
+    centralService.addSatellite(new AddSatelliteRequest(TEAM_SECOND, List.of(
+        new ImagingSatelliteParam(
+            SatelliteType.IMAGE, "IMG", 87, 1.5))));
+    System.out.println();
+    System.out.println(DIVIDER);
 
-      System.out.println();
-      System.out.println(DIVIDER);
-      service.showConstellationStatus(TEAM_FIRST);
+    System.out.println();
+    System.out.println(DIVIDER);
+    centralService.activateSatellites(new ConstellationRequest(TEAM_FIRST));
 
-      System.out.println();
-      System.out.println(DIVIDER);
-      service.activateAllSatellites(TEAM_SECOND);
+    System.out.println();
+    System.out.println(DIVIDER);
+    centralService.executeMission(
+        new MissionRequest(List.of(TEAM_FIRST), SatelliteType.COMMUNICATION));
 
-      System.out.println();
-      System.out.println(DIVIDER);
-      service.executeConstellationMission(TEAM_SECOND);
+    System.out.println();
+    System.out.println(DIVIDER);
+    centralService.showConstellationStatus(new ConstellationRequest(TEAM_FIRST));
 
-      System.out.println();
-      System.out.println(DIVIDER);
-      service.showConstellationStatus(TEAM_SECOND);
-    } catch (SpaceOperationException e) {
-      System.err.println("Произошла ошибка при запуске: " + e.getMessage());
-    }
+    System.out.println();
+    System.out.println(DIVIDER);
+    centralService.activateSatellites(new ConstellationRequest(TEAM_SECOND));
+
+    System.out.println();
+    System.out.println(DIVIDER);
+    centralService.executeMission(new MissionRequest(List.of(TEAM_SECOND), SatelliteType.IMAGE));
+
+    System.out.println();
+    System.out.println(DIVIDER);
+    centralService.showConstellationStatus(new ConstellationRequest(TEAM_SECOND));
   }
 }

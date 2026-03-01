@@ -1,6 +1,6 @@
 package constellation.Model.Factory.SatelliteFactory;
 
-import constellation.Model.Domain.Internal.Exception.SpaceOperationException;
+import constellation.Model.Domain.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
