@@ -2,6 +2,7 @@ package constellation.Service.SpaceOperationCenterService;
 
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Exception.SpaceOperationException;
+import constellation.Model.Domain.LogExecutionTime.LogExecutionTime;
 import constellation.Model.Domain.Satellite.CommunicationSatellite;
 import constellation.Model.Domain.Satellite.ImagingSatellite;
 import constellation.Model.Domain.Satellite.Satellite;
@@ -21,7 +22,7 @@ public class SpaceOperationCenterService {
   private final ConstellationService constellationService;
   private final SatelliteService satelliteService;
 
-  private Map<SatelliteType, Class<? extends Satellite>> LUT_TYPES = Map.of(
+  private final Map<SatelliteType, Class<? extends Satellite>> LUT_TYPES = Map.of(
       SatelliteType.COMMUNICATION, CommunicationSatellite.class,
       SatelliteType.IMAGE, ImagingSatellite.class
   );
@@ -31,6 +32,7 @@ public class SpaceOperationCenterService {
     return expectedClass != null && expectedClass.isInstance(satellite);
   }
 
+  @LogExecutionTime
   public void addSatellite(AddSatelliteRequest request) {
     constellationService.createAndSaveConstellation(request.getConstellationName());
     for (SatelliteParam satelliteParam : request.getSatelliteParams()) {
@@ -43,6 +45,7 @@ public class SpaceOperationCenterService {
     }
   }
 
+  @LogExecutionTime
   public void executeMission(MissionRequest request) {
     for (String constellation : request.getConstellationNames()) {
       SatelliteConstellation currentConstellation = constellationService.constellationFromRepository(
@@ -57,6 +60,7 @@ public class SpaceOperationCenterService {
     }
   }
 
+  @LogExecutionTime
   public void activateSatellites(ConstellationRequest request) {
     SatelliteConstellation constellation = constellationService.constellationFromRepository(
         request.getConstellationName());
@@ -65,6 +69,7 @@ public class SpaceOperationCenterService {
     }
   }
 
+  @LogExecutionTime
   public void activateSatellites() {
     ArrayList<SatelliteConstellation> constellations = constellationService.constellations();
     if (constellations != null) {
@@ -74,6 +79,7 @@ public class SpaceOperationCenterService {
     }
   }
 
+  @LogExecutionTime
   public void showConstellationStatus(ConstellationRequest request) {
     SatelliteConstellation constellation = constellationService.constellationFromRepository(
         request.getConstellationName());
@@ -82,6 +88,7 @@ public class SpaceOperationCenterService {
     }
   }
 
+  @LogExecutionTime
   public void showConstellationsStatuses() {
     ArrayList<SatelliteConstellation> constellations = constellationService.constellations();
     if (constellations != null) {
