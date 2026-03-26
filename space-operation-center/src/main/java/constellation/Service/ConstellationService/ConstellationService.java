@@ -4,7 +4,7 @@ import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Repository.ConstellationRepository;
 import java.util.ArrayList;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * </p>
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ConstellationService {
 
   private final ConstellationRepository repository;

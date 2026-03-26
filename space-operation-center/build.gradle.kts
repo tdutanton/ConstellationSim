@@ -37,6 +37,10 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok")
 
     implementation("org.springframework.boot:spring-boot-starter-aop")
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    // Source: https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 }
 
 springBoot {
