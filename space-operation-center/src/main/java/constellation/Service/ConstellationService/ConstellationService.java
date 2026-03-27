@@ -4,6 +4,7 @@ import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Repository.ConstellationRepository;
 import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -168,5 +169,9 @@ public class ConstellationService {
       System.out.println(constellation.getSatellitesStatus());
       System.out.println(constellation.getSatellites());
     }
+  }
+
+  public Satellite satelliteByName(String constellationName, String name) {
+    return repository.satelliteByName(constellationName, name);
   }
 }

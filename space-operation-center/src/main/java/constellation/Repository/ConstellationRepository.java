@@ -2,8 +2,10 @@ package constellation.Repository;
 
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Satellite.Satellite;
+import constellation.Service.ConstellationService.ConstellationStatusDTO;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
@@ -142,6 +144,16 @@ public class ConstellationRepository {
   public SatelliteConstellation constellationByName(String constellationName) {
     Objects.requireNonNull(constellationName, "Группировки" + constellationName + "не существует");
     return constellations.get(constellationName);
+  }
+
+  public Satellite satelliteByName(String constellationName, String satelliteName) {
+    SatelliteConstellation satelliteConstellation = constellationByName(constellationName);
+    if (satelliteConstellation != null) {
+      Objects.requireNonNull(satelliteName,
+          "Спутника" + satelliteName + "не существует");
+      return satelliteConstellation.satelliteByName(constellationName);
+    }
+    return null;
   }
 
   /**

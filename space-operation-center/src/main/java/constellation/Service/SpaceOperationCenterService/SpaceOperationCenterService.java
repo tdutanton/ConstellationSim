@@ -9,8 +9,12 @@ import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
 import constellation.Service.ConstellationService.ConstellationService;
+import constellation.Service.ConstellationService.ConstellationStatusDTO;
 import constellation.Service.SatelliteService.SatelliteService;
+import constellation.Service.SpaceOperationCenterService.MissionRequest.MissionRequestSatName;
+import constellation.Service.SpaceOperationCenterService.MissionRequest.MissionRequestSatType;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,19 +50,41 @@ public class SpaceOperationCenterService {
   }
 
   @LogExecutionTime
-  public void executeMission(MissionRequest request) {
-    for (String constellation : request.getConstellationNames()) {
-      SatelliteConstellation currentConstellation = constellationService.constellationFromRepository(
-          constellation);
-      if (currentConstellation != null) {
+  public void executeMission(MissionRequestSatType request) {
+    SatelliteConstellation currentConstellation = constellationService.constellationFromRepository(
+        request.getConstellationName());
+    if (currentConstellation != null) {
+      if (request.getSatelliteType() != null) {
         for (Satellite satellite : currentConstellation.getSatellites()) {
           if (isType(satellite, request.getSatelliteType())) {
             satelliteService.executeMission(satellite);
           }
         }
+      } else {
+        for (Satellite satellite : currentConstellation.getSatellites()) {
+          satelliteService.executeMission(satellite);
+        }
       }
     }
   }
+
+  @LogExecutionTime
+  public void executeMission(MissionRequestSatName request) {
+    SatelliteConstellation currentConstellation = constellationService.constellationFromRepository(
+        request.getConstellationName());
+    if (currentConstellation != null) {
+      if (request.getSatelliteName() != null) {
+        Satellite satellite = constellationService.satelliteByName(
+            currentConstellation.getConstellationName(), request.getSatelliteName());
+        satelliteService.executeMission(satellite);
+      } else {
+        for (Satellite satellite : currentConstellation.getSatellites()) {
+          satelliteService.executeMission(satellite);
+        }
+      }
+    }
+  }
+
 
   @LogExecutionTime
   public void activateSatellites(ConstellationRequest request) {
@@ -96,5 +122,23 @@ public class SpaceOperationCenterService {
         constellationService.showConstellationStatus(constellation.getConstellationName());
       }
     }
+  }
+
+  @LogExecutionTime
+  public List<ConstellationStatusDTO> overview() {
+    ArrayList<SatelliteConstellation> constellations = constellationService.constellations();
+    List<ConstellationStatusDTO> result = new ArrayList<>();
+    if (constellations != null) {
+      for (SatelliteConstellation constellation : constellations) {
+        ConstellationStatusDTO dto = new ConstellationStatusDTO();
+        dto.setConstellationName(constellation.getConstellationName());
+        dto.setSatellitesCount(constellation.getSatellites().size());
+        for (Satellite satellite : constellation.getSatellites()) {
+          dto.getSatellitesStatus().add(satellite.toString());
+        }
+        result.add(dto);
+      }
+    }
+    return result;
   }
 }

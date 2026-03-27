@@ -1,5 +1,8 @@
 package constellation.Model.Domain.Satellite.SatelliteParam;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -7,11 +10,14 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = true)
 public class CommunicationSatelliteParam extends SatelliteParam {
 
-  private final double bandwidth;
+  private final int bandwidth;
 
-  public CommunicationSatelliteParam(SatelliteType aType, String aName, double aBatteryLevel,
-      double aBandwidth) {
-    super(aType, aName, aBatteryLevel);
-    bandwidth = aBandwidth;
+  @JsonCreator
+  public CommunicationSatelliteParam(@JsonProperty("type") SatelliteType type,
+      @JsonProperty("name") String name,
+      @JsonProperty("batteryLevel") double batteryLevel,
+      @JsonProperty("bandwidth") int bandwidth) {
+    super(type, name, batteryLevel);
+    this.bandwidth = bandwidth;
   }
 }

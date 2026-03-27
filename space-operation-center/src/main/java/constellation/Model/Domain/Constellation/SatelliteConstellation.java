@@ -170,6 +170,18 @@ public class SatelliteConstellation {
     return satellites.contains(satellite);
   }
 
+  public Satellite satelliteByName(String satelliteName) {
+    if (satelliteName == null || satelliteName.trim().isEmpty()) {
+      return null;
+    }
+
+    return satellites.stream()
+        .filter(satellite -> satellite != null && satellite.getName() != null)
+        .filter(satellite -> satellite.getName().equals(satelliteName))
+        .findFirst()
+        .orElse(null);
+  }
+
   /**
    * Внутренний статичный класс для создания экземпляров Constellation при помощи паттерна
    * Строитель

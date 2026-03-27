@@ -1,5 +1,8 @@
 package constellation.Model.Domain.Satellite.SatelliteParam;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -7,11 +10,14 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = true)
 public class ImagingSatelliteParam extends SatelliteParam {
 
-  private final double resolution;
+  private final int resolution;
 
-  public ImagingSatelliteParam(SatelliteType aType, String aName, double aBatteryLevel,
-      double aResolution) {
-    super(aType, aName, aBatteryLevel);
-    resolution = aResolution;
+  @JsonCreator
+  public ImagingSatelliteParam(@JsonProperty("type") SatelliteType type,
+      @JsonProperty("name") String name,
+      @JsonProperty("batteryLevel") double batteryLevel,
+      @JsonProperty("resolution") int resolution) {
+    super(type, name, batteryLevel);
+    this.resolution = resolution;
   }
 }
