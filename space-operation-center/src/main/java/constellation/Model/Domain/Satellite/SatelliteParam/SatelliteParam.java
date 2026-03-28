@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = false)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = CommunicationSatelliteParam.class, name = "COMMUNICATION"),
     @JsonSubTypes.Type(value = ImagingSatelliteParam.class, name = "IMAGE")

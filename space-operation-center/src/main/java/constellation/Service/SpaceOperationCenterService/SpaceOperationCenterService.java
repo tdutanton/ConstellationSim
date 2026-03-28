@@ -141,4 +141,9 @@ public class SpaceOperationCenterService {
     }
     return result;
   }
+
+  @LogExecutionTime
+  public boolean deleteSatellite(String constellationName, String satelliteName) {
+    return constellationService.deleteSatellite(constellationName, satelliteName);
+  }
 }

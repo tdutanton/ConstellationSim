@@ -174,4 +174,12 @@ public class ConstellationService {
   public Satellite satelliteByName(String constellationName, String name) {
     return repository.satelliteByName(constellationName, name);
   }
+
+  public boolean deleteSatellite(String constellationName, String name) {
+    Satellite satellite = repository.satelliteByName(constellationName, name);
+    if (satellite != null) {
+      return repository.deleteSatellite(constellationName, satellite);
+    }
+    return false;
+  }
 }
