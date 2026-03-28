@@ -20,10 +20,7 @@ public class CommunicationSatellite extends Satellite {
    * Уровень потребления заряда батареи за одну миссию (5%).
    */
   private static final double BATTERY_PER_MISSION = 0.05;
-  /**
-   * Последовательный номер для генерации уникальных имён спутников.
-   */
-  private static int SERIAL_NUMBER = 1;
+
   /**
    * Пропускная способность канала связи в мегабитах в секунду (Мбит/с).
    */
@@ -31,34 +28,30 @@ public class CommunicationSatellite extends Satellite {
 
   /**
    * Конструирует новый спутник связи с заданной пропускной способностью. Автоматически генерирует
-   * уникальное имя на основе префикса {@link #DEFAULT_NAME} и внутреннего счётчика
-   * {@link #SERIAL_NUMBER}.
+   * уникальное имя на основе префикса {@link #DEFAULT_NAME}
    *
    * @param aBandwidth пропускная способность в Мбит/с (должна быть ≥ 0)
    * @throws IllegalArgumentException если пропускная способность отрицательна
    */
   public CommunicationSatellite(double aBandwidth) {
-    super(DEFAULT_NAME, SERIAL_NUMBER);
+    super(DEFAULT_NAME);
     if (aBandwidth < 0.0) {
       throw new IllegalArgumentException("Пропускная способность не должна быть отрицательной");
     }
     bandwidth = aBandwidth;
-    SERIAL_NUMBER++;
   }
 
   public CommunicationSatellite(String name, double batteryLevel) {
-    super(name, SERIAL_NUMBER, batteryLevel);
+    super(name, batteryLevel);
     bandwidth = 0.0;
-    SERIAL_NUMBER++;
   }
 
   public CommunicationSatellite(String name, double batteryLevel, double aBandwidth) {
-    super(name, SERIAL_NUMBER, batteryLevel);
+    super(name, batteryLevel);
     if (aBandwidth < 0.0) {
       throw new IllegalArgumentException("Пропускная способность не должна быть отрицательной");
     }
     bandwidth = aBandwidth;
-    SERIAL_NUMBER++;
   }
 
   /**
@@ -75,7 +68,7 @@ public class CommunicationSatellite extends Satellite {
         bandwidth,
         name,
         state.isActive(),
-        energy.getBatteryLevel()
+        energy.getBatteryLevel() * 100.0
     );
   }
 

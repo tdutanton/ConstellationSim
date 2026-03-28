@@ -20,10 +20,7 @@ public class ImagingSatellite extends Satellite {
    * Уровень потребления заряда батареи за одну миссию (8%).
    */
   private static final double BATTERY_PER_MISSION = 0.08;
-  /**
-   * Последовательный номер для генерации уникальных имён спутников.
-   */
-  private static int SERIAL_NUMBER = 1;
+
   /**
    * Пространственное разрешение съёмки в метрах на пиксель.
    */
@@ -35,37 +32,33 @@ public class ImagingSatellite extends Satellite {
 
   /**
    * Конструирует новый спутник ДЗЗ с заданным разрешением. Автоматически генерирует уникальное имя
-   * на основе префикса {@link #DEFAULT_NAME} и внутреннего счётчика {@link #SERIAL_NUMBER}.
-   * Инициализирует счётчик снимков значением 0.
+   * на основе префикса {@link #DEFAULT_NAME} Инициализирует счётчик снимков значением 0.
    *
    * @param aResolution пространственное разрешение съёмки в метрах на пиксель (должно быть ≥ 0)
    * @throws IllegalArgumentException если разрешение отрицательное
    */
   public ImagingSatellite(double aResolution) {
-    super(DEFAULT_NAME, SERIAL_NUMBER);
+    super(DEFAULT_NAME);
     if (aResolution < 0.0) {
       throw new IllegalArgumentException("Разрешение не должно быть отрицательным");
     }
     resolution = aResolution;
     photosTaken = 0;
-    SERIAL_NUMBER++;
   }
 
   public ImagingSatellite(String name, double batteryLevel) {
-    super(name, SERIAL_NUMBER, batteryLevel);
+    super(name, batteryLevel);
     resolution = 0.0;
     photosTaken = 0;
-    SERIAL_NUMBER++;
   }
 
   public ImagingSatellite(String name, double batteryLevel, double aResolution) {
-    super(name, SERIAL_NUMBER, batteryLevel);
+    super(name, batteryLevel);
     if (aResolution < 0.0) {
       throw new IllegalArgumentException("Разрешение не должно быть отрицательным");
     }
     resolution = aResolution;
     photosTaken = 0;
-    SERIAL_NUMBER++;
   }
 
   /**
@@ -78,13 +71,13 @@ public class ImagingSatellite extends Satellite {
   @Override
   public String toString() {
     return String.format(
-        "%s{resolution=%.1f, photosTaken=%d, name='%s' isActive=%s, batteryLevel=%.2f}",
+        "%s{resolution=%s, photosTaken=%d, name='%s' isActive=%s, batteryLevel=%.2f}",
         this.getClass().getSimpleName(),
         resolution,
         photosTaken,
         name,
         state.isActive(),
-        energy.getBatteryLevel()
+        energy.getBatteryLevel() * 100.0
     );
   }
 

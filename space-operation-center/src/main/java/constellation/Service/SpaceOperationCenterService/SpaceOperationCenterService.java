@@ -11,8 +11,7 @@ import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
 import constellation.Service.ConstellationService.ConstellationService;
 import constellation.Service.ConstellationService.ConstellationStatusDTO;
 import constellation.Service.SatelliteService.SatelliteService;
-import constellation.Service.SpaceOperationCenterService.MissionRequest.MissionRequestSatName;
-import constellation.Service.SpaceOperationCenterService.MissionRequest.MissionRequestSatType;
+import constellation.Service.SpaceOperationCenterService.MissionRequest.MissionRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,37 +48,22 @@ public class SpaceOperationCenterService {
     }
   }
 
-  @LogExecutionTime
-  public void executeMission(MissionRequestSatType request) {
-    SatelliteConstellation currentConstellation = constellationService.constellationFromRepository(
-        request.getConstellationName());
-    if (currentConstellation != null) {
-      if (request.getSatelliteType() != null) {
-        for (Satellite satellite : currentConstellation.getSatellites()) {
-          if (isType(satellite, request.getSatelliteType())) {
-            satelliteService.executeMission(satellite);
-          }
-        }
-      } else {
-        for (Satellite satellite : currentConstellation.getSatellites()) {
-          satelliteService.executeMission(satellite);
-        }
-      }
-    }
-  }
 
   @LogExecutionTime
-  public void executeMission(MissionRequestSatName request) {
+  public void executeMission(MissionRequest request) {
     SatelliteConstellation currentConstellation = constellationService.constellationFromRepository(
         request.getConstellationName());
     if (currentConstellation != null) {
-      if (request.getSatelliteName() != null) {
-        Satellite satellite = constellationService.satelliteByName(
-            currentConstellation.getConstellationName(), request.getSatelliteName());
-        satelliteService.executeMission(satellite);
-      } else {
-        for (Satellite satellite : currentConstellation.getSatellites()) {
+      switch (request.getTargetType()) {
+        case SINGLE_SATELLITE -> {
+          Satellite satellite = constellationService.satelliteByName(
+              currentConstellation.getConstellationName(), request.getSatelliteName());
           satelliteService.executeMission(satellite);
+        }
+        case CONSTELLATION -> {
+          for (Satellite satellite : currentConstellation.getSatellites()) {
+            satelliteService.executeMission(satellite);
+          }
         }
       }
     }

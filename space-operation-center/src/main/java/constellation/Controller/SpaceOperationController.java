@@ -4,7 +4,6 @@ import constellation.Service.ConstellationService.ConstellationStatusDTO;
 import constellation.Service.SpaceOperationCenterService.AddSatelliteRequest;
 import constellation.Service.SpaceOperationCenterService.ConstellationRequest;
 import constellation.Service.SpaceOperationCenterService.MissionRequest.MissionRequest;
-import constellation.Service.SpaceOperationCenterService.MissionRequest.MissionRequestSatName;
 import constellation.Service.SpaceOperationCenterService.SpaceOperationCenterService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,7 @@ public class SpaceOperationController {
   private final SpaceOperationCenterService spaceOperationCenterService;
 
   @PostMapping("/missions")
-  public ResponseEntity<Void> executeMission(@RequestBody MissionRequestSatName request) {
+  public ResponseEntity<Void> executeMission(@RequestBody MissionRequest request) {
     spaceOperationCenterService.executeMission(request);
     return ResponseEntity.ok().build();
   }

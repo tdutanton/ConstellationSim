@@ -10,11 +10,23 @@ import lombok.RequiredArgsConstructor;
  * выполнены (например, группировка дистанционного зондирования Земли или группировка связи)
  */
 @Getter
-public abstract class MissionRequest {
+@RequiredArgsConstructor
+public class MissionRequest {
 
-  protected final String constellationName;
+  private final TargetType targetType;
+  private final String constellationName;
+  private final String satelliteName;
 
-  public MissionRequest(String constellationName) {
-    this.constellationName = constellationName;
+  public static MissionRequest forConstellation(String constellationName) {
+    return new MissionRequest(TargetType.CONSTELLATION, constellationName, null);
+  }
+
+  public static MissionRequest forSatellite(String constellationName, String satelliteName) {
+    return new MissionRequest(TargetType.SINGLE_SATELLITE, constellationName, satelliteName);
+  }
+
+  public enum TargetType {
+    CONSTELLATION,
+    SINGLE_SATELLITE
   }
 }

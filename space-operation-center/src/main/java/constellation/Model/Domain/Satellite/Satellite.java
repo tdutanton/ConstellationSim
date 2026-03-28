@@ -44,20 +44,19 @@ public abstract class Satellite {
    * инициализирует начальный уровень заряда батареи случайным значением, устанавливает состояние
    * как неактивное. При включённом {@code consolePrintMode} выводит сообщение о создании спутника.
    *
-   * @param aName   префикс имени спутника (например, "Связь" или "ДЗЗ")
-   * @param aNumber последовательный номер спутника
+   * @param aName префикс имени спутника (например, "Связь" или "ДЗЗ")
    */
-  protected Satellite(String aName, int aNumber) {
-    name = generateName(aName, aNumber);
+  protected Satellite(String aName) {
+    name = generateName(aName);
     state = new SatelliteState();
     this.energy = new EnergySystem.EnergySystemBuilder().build();
     System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name,
         energy.getBatteryLevel() * 100.0);
   }
 
-  protected Satellite(String aName, int aNumber, double batteryLevel) {
+  protected Satellite(String aName, double batteryLevel) {
     try {
-      name = generateName(aName, aNumber);
+      name = generateName(aName);
       state = new SatelliteState();
       this.energy = new EnergySystem.EnergySystemBuilder().setBatteryLevel(batteryLevel).build();
       System.out.printf("\uD83D\uDEF0\uFE0F Создан спутник: %s (заряд: %.0f%%)%n", name,
@@ -70,12 +69,11 @@ public abstract class Satellite {
   /**
    * Генерирует уникальное имя спутника на основе префикса и номера.
    *
-   * @param name   префикс имени
-   * @param number последовательный номер
+   * @param name префикс имени
    * @return сформированное имя вида "префикс-номер"
    */
-  private String generateName(String name, int number) {
-    return name + "-" + number;
+  private String generateName(String name) {
+    return name;
   }
 
   /**
