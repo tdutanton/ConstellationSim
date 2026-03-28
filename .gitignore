@@ -13,11 +13,16 @@ target/
 
 # Gradle
 .gradle/
-build/
-gradlew
-gradlew.bat
-gradle/**
-gradle.properties
+**/build/
+space-operation-center/gradlew
+space-operation-center/gradlew.bat
+space-operation-center/gradle/**
+space-operation-center/gradle.properties
+
+mission-scheduler/gradlew
+mission-scheduler/gradlew.bat
+mission-scheduler/gradle/**
+mission-scheduler/gradle.properties
 
 
 # OS
