@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: ./space-operation-center
+      dockerfile: Dockerfile
+    container_name: constellation-server
+    image: constellation/server:latest
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+
+  mission-service:
+    build:
+      context: ./mission-scheduler
+      dockerfile: Dockerfile
+    container_name: mission-service
+    image: constellation/mission-service:latest
+    depends_on:
+      server:
+        condition: service_healthy
+    environment:
+      - SERVER_PORT=8081
+      - SERVER_URL=http://server:8080/api  # DNS-имя контейнера в Docker-сети
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+    name: constellation-net
