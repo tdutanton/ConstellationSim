@@ -18,12 +18,12 @@ management:
 
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:5432/constellation_db
+    url: jdbc:postgresql://${DB_HOST:postgres}:5432/constellation_db?sslmode=disable&connectTimeout=10&socketTimeout=30
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:postgres}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
   flyway:
     enabled: true

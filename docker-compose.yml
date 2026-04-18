@@ -7,9 +7,15 @@ services:
       dockerfile: Dockerfile
     container_name: constellation-server
     image: constellation/server:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
       - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=postgres
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
     ports:
       - "8080:8080"
     networks:
@@ -55,6 +61,8 @@ services:
       POSTGRES_DB: constellation_db
     ports:
       - "5432:5432"
+    networks:
+      - app-network
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
