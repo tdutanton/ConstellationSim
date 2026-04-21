@@ -59,7 +59,6 @@ public abstract class Satellite {
   /**
    * Текущее состояние спутника (активен/неактивен).
    */
-  @Getter
   @Embedded
   @AttributeOverrides({
       @AttributeOverride(name = "isActive", column = @Column(name = "is_active"))

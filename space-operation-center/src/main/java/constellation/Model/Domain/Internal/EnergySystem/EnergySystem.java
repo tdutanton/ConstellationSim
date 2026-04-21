@@ -4,6 +4,7 @@ import jakarta.persistence.Embeddable;
 import java.util.Random;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -18,6 +19,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 @Embeddable
 @Setter
+@NoArgsConstructor
 public class EnergySystem {
 
   /**
@@ -29,6 +31,7 @@ public class EnergySystem {
   private EnergySystem(EnergySystemBuilder builder) {
     batteryLevel = builder.batteryLevel;
   }
+
 
   /**
    * Потребляет указанное количество энергии из батареи.

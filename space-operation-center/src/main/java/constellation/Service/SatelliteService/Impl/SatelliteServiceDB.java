@@ -42,7 +42,7 @@ public class SatelliteServiceDB implements SatelliteService {
   @Transactional
   @Override
   public void executeMission(Satellite satellite) {
-    Optional<Satellite> resultOpt = repository.findBySatelliteName(satellite.getName());
+    Optional<Satellite> resultOpt = repository.findByName(satellite.getName());
     resultOpt.ifPresent(Satellite::executeMission);
   }
 }

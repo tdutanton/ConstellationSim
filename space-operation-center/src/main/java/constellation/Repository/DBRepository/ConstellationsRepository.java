@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ConstellationsRepository extends JpaRepository<SatelliteConstellation, Long> {
 
-  Optional<SatelliteConstellation> findByName(String name);
+  Optional<SatelliteConstellation> findByConstellationName(String name);
 
-  boolean existsByName(String name);
+  boolean existsByConstellationName(String name);
 }

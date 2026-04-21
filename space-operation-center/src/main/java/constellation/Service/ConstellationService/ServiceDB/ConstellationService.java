@@ -70,7 +70,7 @@ public class ConstellationService {
 
   @Transactional
   public void addSatelliteToConstellation(String constellationName, Satellite satellite) {
-    SatelliteConstellation constellation = repository.findByName(
+    SatelliteConstellation constellation = repository.findByConstellationName(
             constellationName)
         .orElseThrow(
             () -> new IllegalArgumentException("Группировка не найдена: " + constellationName));
