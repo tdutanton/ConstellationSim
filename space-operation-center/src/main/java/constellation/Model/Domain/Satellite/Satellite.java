@@ -1,7 +1,27 @@
 package constellation.Model.Domain.Satellite;
 
+import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Internal.EnergySystem.EnergySystem;
 import constellation.Model.Domain.Internal.SatelliteState.SatelliteState;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +32,12 @@ import lombok.Setter;
  * должны реализовать метод {@link #performMission()}.
  */
 @EqualsAndHashCode
+@Entity
+@Table(name = "satellites")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "satellite_type", discriminatorType = DiscriminatorType.STRING)
+@Getter
+@Setter
 public abstract class Satellite {
 
   /**
@@ -28,16 +54,40 @@ public abstract class Satellite {
    * Имя спутника, генерируется автоматически при создании.
    */
   @Getter
+  @Column(nullable = false, unique = true)
   protected String name;
   /**
    * Текущее состояние спутника (активен/неактивен).
    */
+  @Getter
+  @Embedded
+  @AttributeOverrides({
+      @AttributeOverride(name = "isActive", column = @Column(name = "is_active"))
+  })
   protected SatelliteState state;
   /**
    * Система управления энергией спутника.
    */
   @Getter
+  @Embedded
+  @AttributeOverrides({
+      @AttributeOverride(name = "batteryLevel", column = @Column(name = "battery_level"))
+  })
   protected EnergySystem energy;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(name = "created_at")
+  private LocalDateTime createdAt;
+
+  @Column(name = "updated_at")
+  private LocalDateTime updatedAt;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "constellation_id")
+  private SatelliteConstellation constellation;
 
   /**
    * Конструктор спутника. Генерирует уникальное имя на основе переданного префикса и номера,
@@ -64,6 +114,17 @@ public abstract class Satellite {
     } catch (IllegalArgumentException e) {
       System.out.println("Ошибка при создании спутника: " + e);
     }
+  }
+
+  @PrePersist
+  protected void onCreate() {
+    createdAt = LocalDateTime.now();
+    updatedAt = LocalDateTime.now();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    updatedAt = LocalDateTime.now();
   }
 
   /**

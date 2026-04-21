@@ -2,6 +2,17 @@ package constellation.Model.Domain.Constellation;
 
 import constellation.Model.Domain.Internal.SatelliteState.SatelliteState;
 import constellation.Model.Domain.Satellite.Satellite;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -14,7 +25,10 @@ import lombok.Setter;
  * активировать их и запускать выполнение миссий для всех членов группировки одновременно.
  * </p>
  */
+@Entity
+@Table(name = "constellations")
 @Getter
+@Setter
 public class SatelliteConstellation {
 
   /**
@@ -30,11 +44,24 @@ public class SatelliteConstellation {
   /**
    * Название спутниковой группировки.
    */
+  @Column(nullable = false, unique = true)
   private final String constellationName;
+  
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
   /**
    * Список спутников, входящих в состав группировки.
    */
-  private final List<Satellite> satellites;
+  @OneToMany(mappedBy = "constellation", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Satellite> satellites = new ArrayList<>();
+
+  @Column(name = "created_at")
+  private LocalDateTime createdAt;
+
+  @Column(name = "updated_at")
+  private LocalDateTime updatedAt;
+
 
   /**
    * Конструктор, вызываемый при помощи строителя
@@ -44,6 +71,17 @@ public class SatelliteConstellation {
   private SatelliteConstellation(ConstellationBuilder builder) {
     this.constellationName = builder.constellationName;
     this.satellites = builder.satellites != null ? builder.satellites : new ArrayList<>();
+  }
+
+  @PrePersist
+  protected void onCreate() {
+    createdAt = LocalDateTime.now();
+    updatedAt = LocalDateTime.now();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    updatedAt = LocalDateTime.now();
   }
 
   /**

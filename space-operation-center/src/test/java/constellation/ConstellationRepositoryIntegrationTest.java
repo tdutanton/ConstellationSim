@@ -19,7 +19,7 @@ import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
 import constellation.Model.Factory.SatelliteFactory.Impl.CommunicationSatelliteFactory;
 import constellation.Model.Factory.SatelliteFactory.Impl.ImagingSatelliteFactory;
 import constellation.Model.Factory.SatelliteFactory.SatelliteFactory;
-import constellation.Repository.ConstellationRepository;
+import constellation.Repository.RunTimeRepository.ConstellationRepository;
 import constellation.Service.SatelliteService.Impl.SatelliteServiceImpl;
 import constellation.Service.SatelliteService.SatelliteService;
 import java.util.ArrayList;

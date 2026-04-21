@@ -1,5 +1,7 @@
 package constellation.Model.Domain.Satellite;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -10,6 +12,8 @@ import lombok.Getter;
  */
 @Getter
 @EqualsAndHashCode(callSuper = false)
+@Entity
+@DiscriminatorValue("IMAGING")
 public class ImagingSatellite extends Satellite {
 
   /**

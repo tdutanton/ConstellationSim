@@ -1,10 +1,9 @@
-package constellation.Service.ConstellationService;
+package constellation.Service.ConstellationService.RunTime;
 
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Satellite.Satellite;
-import constellation.Repository.ConstellationRepository;
+import constellation.Repository.RunTimeRepository.ConstellationRepository;
 import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

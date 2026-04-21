@@ -1,7 +1,9 @@
 package constellation.Model.Domain.Internal.SatelliteState;
 
+import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Класс, представляющий состояние спутника - активен или неактивен.
@@ -12,6 +14,8 @@ import lombok.Getter;
  */
 @Getter
 @EqualsAndHashCode
+@Embeddable
+@Setter
 public class SatelliteState {
 
   /**

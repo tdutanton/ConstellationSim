@@ -1,11 +1,9 @@
-package constellation.Repository;
+package constellation.Repository.RunTimeRepository;
 
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Satellite.Satellite;
-import constellation.Service.ConstellationService.ConstellationStatusDTO;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.springframework.stereotype.Component;

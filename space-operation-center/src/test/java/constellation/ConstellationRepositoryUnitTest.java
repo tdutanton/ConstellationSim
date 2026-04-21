@@ -18,7 +18,7 @@ import constellation.Model.Domain.Satellite.SatelliteParam.CommunicationSatellit
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
 import constellation.Model.Factory.SatelliteFactory.Impl.CommunicationSatelliteFactory;
 import constellation.Model.Factory.SatelliteFactory.SatelliteFactory;
-import constellation.Repository.ConstellationRepository;
+import constellation.Repository.RunTimeRepository.ConstellationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

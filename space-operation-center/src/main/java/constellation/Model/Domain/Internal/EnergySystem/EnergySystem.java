@@ -1,8 +1,10 @@
 package constellation.Model.Domain.Internal.EnergySystem;
 
+import jakarta.persistence.Embeddable;
 import java.util.Random;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Класс, моделирующий систему энергоснабжения спутника.
@@ -14,6 +16,8 @@ import lombok.Getter;
  */
 @Getter
 @EqualsAndHashCode
+@Embeddable
+@Setter
 public class EnergySystem {
 
   /**
