@@ -31,6 +31,9 @@ import lombok.Setter;
 @Setter
 public class SatelliteConstellation {
 
+  protected SatelliteConstellation() {
+  }
+
   /**
    * Строка-разделитель, используемая при выводе в консоль.
    */
@@ -45,7 +48,7 @@ public class SatelliteConstellation {
    * Название спутниковой группировки.
    */
   @Column(nullable = false, unique = true)
-  private final String constellationName;
+  private String constellationName;
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

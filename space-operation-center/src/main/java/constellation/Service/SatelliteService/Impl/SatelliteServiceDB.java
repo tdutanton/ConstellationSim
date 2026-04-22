@@ -9,10 +9,12 @@ import constellation.Service.SatelliteService.SatelliteService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Primary
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class SatelliteServiceDB implements SatelliteService {

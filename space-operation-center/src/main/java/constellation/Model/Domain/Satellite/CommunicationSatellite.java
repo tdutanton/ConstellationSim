@@ -16,9 +16,10 @@ import lombok.Getter;
 @DiscriminatorValue("COMMUNICATION")
 public class CommunicationSatellite extends Satellite {
 
-  /**
-   * Префикс имени по умолчанию для спутников данного типа.
-   */
+  protected CommunicationSatellite() {
+    this.bandwidth = 0.0;
+  }
+
   private static final String DEFAULT_NAME = "Связь";
   /**
    * Уровень потребления заряда батареи за одну миссию (5%).

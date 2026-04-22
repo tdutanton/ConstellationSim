@@ -1,0 +1,4 @@
+-- Fix column types for ImagingSatellite
+ALTER TABLE satellites ALTER COLUMN bandwidth TYPE DOUBLE PRECISION USING bandwidth::DOUBLE PRECISION;
+ALTER TABLE satellites ADD COLUMN IF NOT EXISTS resolution DOUBLE PRECISION DEFAULT 0;
+ALTER TABLE satellites ADD COLUMN IF NOT EXISTS photos_taken INTEGER DEFAULT 0;

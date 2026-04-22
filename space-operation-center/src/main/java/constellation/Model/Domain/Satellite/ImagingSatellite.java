@@ -16,9 +16,11 @@ import lombok.Getter;
 @DiscriminatorValue("IMAGING")
 public class ImagingSatellite extends Satellite {
 
-  /**
-   * Префикс имени по умолчанию для спутников данного типа.
-   */
+  protected ImagingSatellite() {
+    this.resolution = 0.0;
+    this.photosTaken = 0;
+  }
+
   private static final String DEFAULT_NAME = "ДЗЗ";
   /**
    * Уровень потребления заряда батареи за одну миссию (8%).

@@ -52,9 +52,10 @@ dependencies {
     // HikariCP
     implementation("com.zaxxer:HikariCP")
 
-    implementation("org.flywaydb:flyway-core")
+implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
     testImplementation("com.h2database:h2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
 }
 
 springBoot {

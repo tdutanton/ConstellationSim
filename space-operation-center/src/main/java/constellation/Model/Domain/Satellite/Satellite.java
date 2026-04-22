@@ -40,9 +40,9 @@ import lombok.Setter;
 @Setter
 public abstract class Satellite {
 
-  /**
-   * Минимальный допустимый уровень заряда для активации спутника (20%).
-   */
+  protected Satellite() {
+  }
+
   private static final double MIN_POSSIBLE_BATTERY_FOR_ACTIVATE = 0.20;
   /**
    * Флаг, включающий или отключающий подробный вывод в консоль при создании, активации и выполнении
