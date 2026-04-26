@@ -105,6 +105,7 @@ public class SatelliteConstellation {
    */
   public void addSatellite(Satellite satellite) {
     satellites.add(satellite);
+    satellite.setConstellation(this);
     if (consolePrintMode) {
       System.out.printf("%s добавлен в группировку '%s'%n", satellite.getName(), constellationName);
     }
@@ -120,6 +121,7 @@ public class SatelliteConstellation {
    */
   public void deleteSatellite(Satellite satellite) {
     satellites.remove(satellite);
+    satellite.setConstellation(null);
     if (consolePrintMode) {
       System.out.printf("%s удален из группировки '%s'%n", satellite.getName(), constellationName);
     }
