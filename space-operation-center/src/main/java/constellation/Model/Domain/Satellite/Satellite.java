@@ -21,21 +21,22 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Абстрактный базовый класс для представления спутника. Содержит общую логику управления состоянием
  * спутника: активация/деактивация, контроль уровня заряда батареи и выполнение миссий. Потомки
  * должны реализовать метод {@link #performMission()}.
  */
-@EqualsAndHashCode
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "satellites")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "satellite_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
 public abstract class Satellite {
@@ -55,10 +56,14 @@ public abstract class Satellite {
    */
   @Getter
   @Column(nullable = false, unique = true)
+  @EqualsAndHashCode.Include
   protected String name;
   /**
-   * Текущее состояние спутника (активен/неактивен).
+   * Текущее состояние спутника (активен/неактивен). -- GETTER -- Получить состояние спутника
+   *
    */
+  @Getter
+  @Setter
   @Embedded
   @AttributeOverrides({
       @AttributeOverride(name = "isActive", column = @Column(name = "is_active"))
@@ -68,6 +73,7 @@ public abstract class Satellite {
    * Система управления энергией спутника.
    */
   @Getter
+  @Setter
   @Embedded
   @AttributeOverrides({
       @AttributeOverride(name = "batteryLevel", column = @Column(name = "battery_level"))
@@ -76,16 +82,19 @@ public abstract class Satellite {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
   private Long id;
 
   @Column(name = "created_at")
-  private LocalDateTime createdAt;
+  private Instant createdAt;
 
   @Column(name = "updated_at")
-  private LocalDateTime updatedAt;
+  private Instant updatedAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "constellation_id")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private SatelliteConstellation constellation;
 
   /**
@@ -117,13 +126,13 @@ public abstract class Satellite {
 
   @PrePersist
   protected void onCreate() {
-    createdAt = LocalDateTime.now();
-    updatedAt = LocalDateTime.now();
+    createdAt = Instant.now();
+    updatedAt = Instant.now();
   }
 
   @PreUpdate
   protected void onUpdate() {
-    updatedAt = LocalDateTime.now();
+    updatedAt = Instant.now();
   }
 
   /**
@@ -185,15 +194,6 @@ public abstract class Satellite {
 
   public void executeMission() {
     performMission();
-  }
-
-  /**
-   * Получить состояние спутника
-   *
-   * @return экземпляр класса SatelliteState - состояние
-   */
-  public SatelliteState getState() {
-    return state;
   }
 
   /**

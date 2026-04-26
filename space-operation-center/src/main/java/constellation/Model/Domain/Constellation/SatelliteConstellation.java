@@ -12,9 +12,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,10 +46,12 @@ public class SatelliteConstellation {
    * Название спутниковой группировки.
    */
   @Column(nullable = false, unique = true)
+  @EqualsAndHashCode.Include
   private final String constellationName;
-  
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
   private Long id;
   /**
    * Список спутников, входящих в состав группировки.
@@ -57,16 +60,15 @@ public class SatelliteConstellation {
   private List<Satellite> satellites = new ArrayList<>();
 
   @Column(name = "created_at")
-  private LocalDateTime createdAt;
+  private Instant createdAt;
 
   @Column(name = "updated_at")
-  private LocalDateTime updatedAt;
+  private Instant updatedAt;
 
 
   /**
    * Конструктор, вызываемый при помощи строителя
    *
-   * @param builder
    */
   private SatelliteConstellation(ConstellationBuilder builder) {
     this.constellationName = builder.constellationName;
@@ -75,13 +77,13 @@ public class SatelliteConstellation {
 
   @PrePersist
   protected void onCreate() {
-    createdAt = LocalDateTime.now();
-    updatedAt = LocalDateTime.now();
+    createdAt = Instant.now();
+    updatedAt = Instant.now();
   }
 
   @PreUpdate
   protected void onUpdate() {
-    updatedAt = LocalDateTime.now();
+    updatedAt = Instant.now();
   }
 
   /**
