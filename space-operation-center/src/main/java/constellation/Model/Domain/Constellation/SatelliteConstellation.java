@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -29,7 +30,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "constellations")
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class SatelliteConstellation {
 
   /**
@@ -42,6 +43,12 @@ public class SatelliteConstellation {
    */
   @Setter
   private static boolean consolePrintMode = false;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
+  private Long id;
+
   /**
    * Название спутниковой группировки.
    */
@@ -49,10 +56,6 @@ public class SatelliteConstellation {
   @EqualsAndHashCode.Include
   private final String constellationName;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @EqualsAndHashCode.Include
-  private Long id;
   /**
    * Список спутников, входящих в состав группировки.
    */

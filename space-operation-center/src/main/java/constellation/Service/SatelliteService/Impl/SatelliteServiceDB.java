@@ -45,4 +45,9 @@ public class SatelliteServiceDB implements SatelliteService {
     Optional<Satellite> resultOpt = repository.findByName(satellite.getName());
     resultOpt.ifPresent(Satellite::executeMission);
   }
+
+  @Transactional
+  public Optional<Satellite> findById(Long id) {
+    return repository.findById(id);
+  }
 }

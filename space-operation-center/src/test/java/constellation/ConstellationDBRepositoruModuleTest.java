@@ -7,7 +7,7 @@ import constellation.Model.Domain.Satellite.SatelliteParam.CommunicationSatellit
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
 import constellation.Model.Factory.SatelliteFactory.Impl.CommunicationSatelliteFactory;
 import constellation.Repository.DBRepository.ConstellationsRepository;
-import constellation.Service.ConstellationService.ServiceDB.ConstellationService;
+import constellation.Service.ConstellationService.ServiceDB.ConstellationServiceDB;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,14 +15,14 @@ import org.springframework.context.annotation.Import;
 
 
 @DataJpaTest
-@Import(ConstellationService.class)
+@Import(ConstellationServiceDB.class)
 public class ConstellationDBRepositoruModuleTest {
 
   @Autowired
   private ConstellationsRepository constellationRepository;
 
   @Autowired
-  private ConstellationService constellationService;
+  private ConstellationServiceDB constellationServiceDB;
 
   @Test
   void shouldCreateAndFindConstellation() {
@@ -30,7 +30,7 @@ public class ConstellationDBRepositoruModuleTest {
     String name = "Test-Group";
 
     // When
-    constellationService.createAndSaveConstellation(name);
+    constellationServiceDB.createAndSaveConstellation(name);
     var found = constellationRepository.findByConstellationName(name);
 
     // Then
@@ -43,14 +43,14 @@ public class ConstellationDBRepositoruModuleTest {
   @Test
   void shouldAddSatelliteToConstellation() {
     // Given
-    constellationService.createAndSaveConstellation("Orbit-1");
+    constellationServiceDB.createAndSaveConstellation("Orbit-1");
     var factory = new CommunicationSatelliteFactory();
     var satellite = factory.createSatelliteWithParameter(
         new CommunicationSatelliteParam(SatelliteType.COMMUNICATION, "COMM", 80,
             500));
 
     // When
-    constellationService.addSatelliteToConstellation("Orbit-1", satellite);
+    constellationServiceDB.addSatelliteToConstellation("Orbit-1", satellite);
 
     // Then
     var satellites = constellationRepository.findByConstellationName("Orbit-1")

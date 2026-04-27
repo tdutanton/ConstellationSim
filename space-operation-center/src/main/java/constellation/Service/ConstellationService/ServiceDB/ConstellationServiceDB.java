@@ -4,6 +4,7 @@ import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Repository.DBRepository.ConstellationsRepository;
 import constellation.Repository.DBRepository.SatellitesRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ConstellationService {
+public class ConstellationServiceDB {
 
   private final ConstellationsRepository repository;
   private final SatellitesRepository satellitesRepository;
@@ -77,6 +78,16 @@ public class ConstellationService {
     satellite.setConstellation(constellation);
     constellation.getSatellites().add(satellite);
     satellitesRepository.save(satellite);
+  }
+
+  @Transactional
+  public Optional<SatelliteConstellation> findByName(String name) {
+    return repository.findByConstellationName(name);
+  }
+
+  @Transactional
+  public Optional<SatelliteConstellation> findById(Long id) {
+    return repository.findById(id);
   }
 
 }
