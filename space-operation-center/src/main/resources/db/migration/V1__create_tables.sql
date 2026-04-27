@@ -22,7 +22,7 @@ CREATE TABLE satellites (
     updated_at TIMESTAMPTZ
 );
 
-CREATE INDEX idx_satellite_name ON satellites(satellite_name);
+CREATE INDEX idx_satellite_name ON satellites(name);
 CREATE INDEX idx_sat_constellation ON satellites(constellation_id);
 
 CREATE TABLE imaging_satellites (
