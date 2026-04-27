@@ -94,7 +94,6 @@ public abstract class Satellite {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "constellation_id")
   @ToString.Exclude
-  @EqualsAndHashCode.Exclude
   private SatelliteConstellation constellation;
 
   /**
