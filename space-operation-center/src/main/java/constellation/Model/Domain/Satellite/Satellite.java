@@ -1,17 +1,46 @@
 package constellation.Model.Domain.Satellite;
 
+import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Internal.EnergySystem.EnergySystem;
 import constellation.Model.Domain.Internal.SatelliteState.SatelliteState;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import java.time.Instant;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Абстрактный базовый класс для представления спутника. Содержит общую логику управления состоянием
  * спутника: активация/деактивация, контроль уровня заряда батареи и выполнение миссий. Потомки
  * должны реализовать метод {@link #performMission()}.
  */
-@EqualsAndHashCode
+@Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(name = "satellites")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@Getter
+@Setter
+@NoArgsConstructor
 public abstract class Satellite {
 
   /**
@@ -28,16 +57,53 @@ public abstract class Satellite {
    * Имя спутника, генерируется автоматически при создании.
    */
   @Getter
+  @Column(nullable = false, unique = true, name = "satellite_name")
+  @EqualsAndHashCode.Include
   protected String name;
   /**
-   * Текущее состояние спутника (активен/неактивен).
+   * Текущее состояние спутника (активен/неактивен). -- GETTER -- Получить состояние спутника
+   *
    */
+  @Getter
+  @Setter
+  @Embedded
+  @AttributeOverrides({
+      @AttributeOverride(name = "isActive", column = @Column(name = "is_active"))
+  })
   protected SatelliteState state;
   /**
    * Система управления энергией спутника.
    */
   @Getter
+  @Setter
+  @Embedded
+  @AttributeOverrides({
+      @AttributeOverride(name = "batteryLevel", column = @Column(name = "battery_level"))
+  })
   protected EnergySystem energy;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
+  @Column(name = "satellite_id")
+  private Long id;
+
+  @Column(name = "created_at")
+  private Instant createdAt;
+
+  @Column(name = "updated_at")
+  private Instant updatedAt;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "constellation_id")
+  @ToString.Exclude
+  private SatelliteConstellation constellation;
+
+  @Column(name = "outside_temperature")
+  private Double outsideTemperature;
+
+  @Column(name = "inside_temperature")
+  private Double insideTemperature;
 
   /**
    * Конструктор спутника. Генерирует уникальное имя на основе переданного префикса и номера,
@@ -64,6 +130,17 @@ public abstract class Satellite {
     } catch (IllegalArgumentException e) {
       System.out.println("Ошибка при создании спутника: " + e);
     }
+  }
+
+  @PrePersist
+  protected void onCreate() {
+    createdAt = Instant.now();
+    updatedAt = Instant.now();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    updatedAt = Instant.now();
   }
 
   /**
@@ -125,15 +202,6 @@ public abstract class Satellite {
 
   public void executeMission() {
     performMission();
-  }
-
-  /**
-   * Получить состояние спутника
-   *
-   * @return экземпляр класса SatelliteState - состояние
-   */
-  public SatelliteState getState() {
-    return state;
   }
 
   /**

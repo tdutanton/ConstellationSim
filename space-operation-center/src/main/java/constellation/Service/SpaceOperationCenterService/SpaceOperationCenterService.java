@@ -8,10 +8,11 @@ import constellation.Model.Domain.Satellite.ImagingSatellite;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteType;
-import constellation.Service.ConstellationService.ConstellationService;
-import constellation.Service.ConstellationService.ConstellationStatusDTO;
+import constellation.Service.ConstellationService.DTO.ConstellationStatusDTO;
+import constellation.Service.ConstellationService.ServiceDB.ConstellationService;
 import constellation.Service.SatelliteService.SatelliteService;
 import constellation.Service.SpaceOperationCenterService.MissionRequest.MissionRequest;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ public class SpaceOperationCenterService {
   }
 
   @LogExecutionTime
+  @Transactional
   public void addSatellite(AddSatelliteRequest request) {
     constellationService.createAndSaveConstellation(request.getConstellationName());
     for (SatelliteParam satelliteParam : request.getSatelliteParams()) {
@@ -50,6 +52,7 @@ public class SpaceOperationCenterService {
 
 
   @LogExecutionTime
+  @Transactional
   public void executeMission(MissionRequest request) {
     SatelliteConstellation currentConstellation = constellationService.constellationFromRepository(
         request.getConstellationName());
@@ -71,6 +74,7 @@ public class SpaceOperationCenterService {
 
 
   @LogExecutionTime
+  @Transactional
   public void activateSatellites(ConstellationRequest request) {
     SatelliteConstellation constellation = constellationService.constellationFromRepository(
         request.getConstellationName());
@@ -80,6 +84,7 @@ public class SpaceOperationCenterService {
   }
 
   @LogExecutionTime
+  @Transactional
   public void activateSatellites() {
     ArrayList<SatelliteConstellation> constellations = constellationService.constellations();
     if (constellations != null) {
@@ -90,6 +95,7 @@ public class SpaceOperationCenterService {
   }
 
   @LogExecutionTime
+  @Transactional
   public void showConstellationStatus(ConstellationRequest request) {
     SatelliteConstellation constellation = constellationService.constellationFromRepository(
         request.getConstellationName());
@@ -99,6 +105,7 @@ public class SpaceOperationCenterService {
   }
 
   @LogExecutionTime
+  @Transactional
   public void showConstellationsStatuses() {
     ArrayList<SatelliteConstellation> constellations = constellationService.constellations();
     if (constellations != null) {
@@ -109,6 +116,7 @@ public class SpaceOperationCenterService {
   }
 
   @LogExecutionTime
+  @Transactional
   public List<ConstellationStatusDTO> overview() {
     ArrayList<SatelliteConstellation> constellations = constellationService.constellations();
     List<ConstellationStatusDTO> result = new ArrayList<>();
@@ -127,6 +135,7 @@ public class SpaceOperationCenterService {
   }
 
   @LogExecutionTime
+  @Transactional
   public boolean deleteSatellite(String constellationName, String satelliteName) {
     return constellationService.deleteSatellite(constellationName, satelliteName);
   }

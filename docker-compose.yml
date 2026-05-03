@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   server:
     build:
@@ -7,9 +5,15 @@ services:
       dockerfile: Dockerfile
     container_name: constellation-server
     image: constellation/server:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
       - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=postgres
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
     ports:
       - "8080:8080"
     networks:
@@ -46,6 +50,27 @@ services:
       retries: 5
       start_period: 40s
     restart: unless-stopped
+
+  postgres:
+    image: postgres:15
+    container_name: constellation-db
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: constellation_db
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
 
 networks:
   app-network:

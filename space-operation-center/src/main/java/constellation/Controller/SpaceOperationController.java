@@ -1,6 +1,6 @@
 package constellation.Controller;
 
-import constellation.Service.ConstellationService.ConstellationStatusDTO;
+import constellation.Service.ConstellationService.DTO.ConstellationStatusDTO;
 import constellation.Service.SpaceOperationCenterService.AddSatelliteRequest;
 import constellation.Service.SpaceOperationCenterService.ConstellationRequest;
 import constellation.Service.SpaceOperationCenterService.MissionRequest.MissionRequest;

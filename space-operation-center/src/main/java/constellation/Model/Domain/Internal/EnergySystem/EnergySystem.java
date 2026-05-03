@@ -1,8 +1,11 @@
 package constellation.Model.Domain.Internal.EnergySystem;
 
+import jakarta.persistence.Embeddable;
 import java.util.Random;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Класс, моделирующий систему энергоснабжения спутника.
@@ -14,6 +17,9 @@ import lombok.Getter;
  */
 @Getter
 @EqualsAndHashCode
+@Embeddable
+@Setter
+@NoArgsConstructor
 public class EnergySystem {
 
   /**
@@ -25,6 +31,7 @@ public class EnergySystem {
   private EnergySystem(EnergySystemBuilder builder) {
     batteryLevel = builder.batteryLevel;
   }
+
 
   /**
    * Потребляет указанное количество энергии из батареи.

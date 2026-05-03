@@ -2,8 +2,20 @@ package constellation.Model.Domain.Constellation;
 
 import constellation.Model.Domain.Internal.SatelliteState.SatelliteState;
 import constellation.Model.Domain.Satellite.Satellite;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +26,10 @@ import lombok.Setter;
  * активировать их и запускать выполнение миссий для всех членов группировки одновременно.
  * </p>
  */
+@Entity
+@Table(name = "constellations")
 @Getter
+@Setter
 public class SatelliteConstellation {
 
   /**
@@ -30,20 +45,46 @@ public class SatelliteConstellation {
   /**
    * Название спутниковой группировки.
    */
-  private final String constellationName;
+  @Column(nullable = false, unique = true, name = "constellation_name")
+  @EqualsAndHashCode.Include
+  private String constellationName;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "constellation_id")
+  @EqualsAndHashCode.Include
+  private Long id;
   /**
    * Список спутников, входящих в состав группировки.
    */
-  private final List<Satellite> satellites;
+  @OneToMany(mappedBy = "constellation", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Satellite> satellites = new ArrayList<>();
+  @Column(name = "created_at")
+  private Instant createdAt;
+  @Column(name = "updated_at")
+  private Instant updatedAt;
+
+  public SatelliteConstellation() {
+  }
+
 
   /**
    * Конструктор, вызываемый при помощи строителя
    *
-   * @param builder
    */
   private SatelliteConstellation(ConstellationBuilder builder) {
     this.constellationName = builder.constellationName;
     this.satellites = builder.satellites != null ? builder.satellites : new ArrayList<>();
+  }
+
+  @PrePersist
+  protected void onCreate() {
+    createdAt = Instant.now();
+    updatedAt = Instant.now();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    updatedAt = Instant.now();
   }
 
   /**
@@ -65,6 +106,7 @@ public class SatelliteConstellation {
    */
   public void addSatellite(Satellite satellite) {
     satellites.add(satellite);
+    satellite.setConstellation(this);
     if (consolePrintMode) {
       System.out.printf("%s добавлен в группировку '%s'%n", satellite.getName(), constellationName);
     }
@@ -80,6 +122,7 @@ public class SatelliteConstellation {
    */
   public void deleteSatellite(Satellite satellite) {
     satellites.remove(satellite);
+    satellite.setConstellation(null);
     if (consolePrintMode) {
       System.out.printf("%s удален из группировки '%s'%n", satellite.getName(), constellationName);
     }

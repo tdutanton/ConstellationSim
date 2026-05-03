@@ -4,17 +4,23 @@ import constellation.Model.Domain.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
 import constellation.Model.Factory.SatelliteFactory.SatelliteFactory;
+import constellation.Repository.SatellitesRepository;
 import constellation.Service.SatelliteService.SatelliteService;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
-public class SatelliteServiceImpl implements SatelliteService {
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class SatelliteServiceDB implements SatelliteService {
 
+  private final SatellitesRepository repository;
   private final List<SatelliteFactory> factories;
 
+  @Transactional
   @Override
   public Satellite createSatellite(SatelliteParam param) throws SpaceOperationException {
     for (SatelliteFactory factory : factories) {
@@ -31,9 +37,16 @@ public class SatelliteServiceImpl implements SatelliteService {
             param.getType()));
   }
 
+
+  @Transactional
   @Override
   public void executeMission(Satellite satellite) {
-    satellite.executeMission();
+    Optional<Satellite> resultOpt = repository.findByName(satellite.getName());
+    resultOpt.ifPresent(Satellite::executeMission);
+  }
+
+  @Transactional
+  public Optional<Satellite> findById(Long id) {
+    return repository.findById(id);
   }
 }
-

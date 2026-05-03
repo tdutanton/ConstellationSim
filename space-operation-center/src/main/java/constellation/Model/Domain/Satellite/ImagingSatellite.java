@@ -1,7 +1,12 @@
 package constellation.Model.Domain.Satellite;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Спутник дистанционного зондирования Земли (ДЗЗ). Выполняет миссию по съёмке территории с заданным
@@ -10,6 +15,10 @@ import lombok.Getter;
  */
 @Getter
 @EqualsAndHashCode(callSuper = false)
+@Entity
+@DiscriminatorValue("IMAGE")
+@Table(name = "imaging_satellites")
+@NoArgsConstructor
 public class ImagingSatellite extends Satellite {
 
   /**
@@ -24,10 +33,12 @@ public class ImagingSatellite extends Satellite {
   /**
    * Пространственное разрешение съёмки в метрах на пиксель.
    */
-  private final double resolution;
+  @Column(name = "resolution")
+  private double resolution;
   /**
    * Количество сделанных снимков за время работы спутника.
    */
+  @Column(name = "photos_taken")
   private int photosTaken;
 
   /**

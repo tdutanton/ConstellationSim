@@ -1,13 +1,9 @@
-package constellation.Service.ConstellationService;
+package constellation.Service.ConstellationService.DTO;
 
-import constellation.Model.Domain.Satellite.Satellite;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @AllArgsConstructor

@@ -1,7 +1,12 @@
 package constellation.Model.Domain.Satellite;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Спутник связи. Предназначен для передачи данных с заданной пропускной способностью. Каждая миссия
@@ -10,6 +15,10 @@ import lombok.Getter;
  */
 @Getter
 @EqualsAndHashCode(callSuper = false)
+@Entity
+@DiscriminatorValue("COMMUNICATION")
+@Table(name = "communication_satellites")
+@NoArgsConstructor
 public class CommunicationSatellite extends Satellite {
 
   /**
@@ -24,7 +33,8 @@ public class CommunicationSatellite extends Satellite {
   /**
    * Пропускная способность канала связи в мегабитах в секунду (Мбит/с).
    */
-  private final double bandwidth;
+  @Column(name = "bandwidth")
+  private double bandwidth;
 
   /**
    * Конструирует новый спутник связи с заданной пропускной способностью. Автоматически генерирует

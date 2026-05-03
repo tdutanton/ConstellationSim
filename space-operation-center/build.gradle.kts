@@ -43,6 +43,18 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    // PostgreSQL драйвер
+    runtimeOnly("org.postgresql:postgresql")
+
+    // HikariCP
+    implementation("com.zaxxer:HikariCP")
+
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.flywaydb:flyway-database-postgresql")
+    testImplementation("com.h2database:h2")
 }
 
 springBoot {
