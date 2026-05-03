@@ -24,6 +24,7 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -39,6 +40,7 @@ import lombok.ToString;
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
+@NoArgsConstructor
 public abstract class Satellite {
 
   /**

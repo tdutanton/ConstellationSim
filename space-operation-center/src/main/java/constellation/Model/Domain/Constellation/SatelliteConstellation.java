@@ -47,8 +47,7 @@ public class SatelliteConstellation {
    */
   @Column(nullable = false, unique = true, name = "constellation_name")
   @EqualsAndHashCode.Include
-  private final String constellationName;
-
+  private String constellationName;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "constellation_id")
@@ -59,12 +58,13 @@ public class SatelliteConstellation {
    */
   @OneToMany(mappedBy = "constellation", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Satellite> satellites = new ArrayList<>();
-
   @Column(name = "created_at")
   private Instant createdAt;
-
   @Column(name = "updated_at")
   private Instant updatedAt;
+
+  public SatelliteConstellation() {
+  }
 
 
   /**

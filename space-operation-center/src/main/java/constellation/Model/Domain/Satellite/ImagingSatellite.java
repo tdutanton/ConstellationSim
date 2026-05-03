@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Спутник дистанционного зондирования Земли (ДЗЗ). Выполняет миссию по съёмке территории с заданным
@@ -17,6 +18,7 @@ import lombok.Getter;
 @Entity
 @DiscriminatorValue("IMAGE")
 @Table(name = "imaging_satellites")
+@NoArgsConstructor
 public class ImagingSatellite extends Satellite {
 
   /**
@@ -32,7 +34,7 @@ public class ImagingSatellite extends Satellite {
    * Пространственное разрешение съёмки в метрах на пиксель.
    */
   @Column(name = "resolution")
-  private final double resolution;
+  private double resolution;
   /**
    * Количество сделанных снимков за время работы спутника.
    */
