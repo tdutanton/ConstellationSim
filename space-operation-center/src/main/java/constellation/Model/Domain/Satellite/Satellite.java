@@ -35,7 +35,7 @@ import lombok.ToString;
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "satellites")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
@@ -55,7 +55,7 @@ public abstract class Satellite {
    * Имя спутника, генерируется автоматически при создании.
    */
   @Getter
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false, unique = true, name = "satellite_name")
   @EqualsAndHashCode.Include
   protected String name;
   /**
@@ -83,6 +83,7 @@ public abstract class Satellite {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @EqualsAndHashCode.Include
+  @Column(name = "satellite_id")
   private Long id;
 
   @Column(name = "created_at")
@@ -95,6 +96,12 @@ public abstract class Satellite {
   @JoinColumn(name = "constellation_id")
   @ToString.Exclude
   private SatelliteConstellation constellation;
+
+  @Column(name = "outside_temperature")
+  private Double outsideTemperature;
+
+  @Column(name = "inside_temperature")
+  private Double insideTemperature;
 
   /**
    * Конструктор спутника. Генерирует уникальное имя на основе переданного префикса и номера,

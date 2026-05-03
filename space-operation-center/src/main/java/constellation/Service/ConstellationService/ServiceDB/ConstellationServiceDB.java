@@ -2,9 +2,10 @@ package constellation.Service.ConstellationService.ServiceDB;
 
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Satellite.Satellite;
-import constellation.Repository.DBRepository.ConstellationsRepository;
-import constellation.Repository.DBRepository.SatellitesRepository;
-import java.util.Optional;
+import constellation.Repository.ConstellationsRepository;
+import constellation.Repository.SatellitesRepository;
+import java.util.ArrayList;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ConstellationServiceDB {
+public class ConstellationService {
 
   private final ConstellationsRepository repository;
   private final SatellitesRepository satellitesRepository;
@@ -62,6 +63,10 @@ public class ConstellationServiceDB {
 
   @Transactional
   public void createAndSaveConstellation(String name) {
+    if (repository.findByConstellationName(name).isPresent()) {
+      System.out.println("Такая группировка уже есть");
+      return;
+    }
     if (isConstellationCorrect(name)) {
       SatelliteConstellation constellation = new SatelliteConstellation.ConstellationBuilder().setConstellationName(
           name).build();
@@ -81,13 +86,81 @@ public class ConstellationServiceDB {
   }
 
   @Transactional
-  public Optional<SatelliteConstellation> findByName(String name) {
-    return repository.findByConstellationName(name);
+  public void executeConstellationMission(String constellationName) {
+    SatelliteConstellation constellation = repository.findByConstellationName(
+            constellationName)
+        .orElseThrow(
+            () -> new IllegalArgumentException("Группировка не найдена: " + constellationName));
+    if (constellation != null) {
+      System.out.printf("=== ВЫПОЛНЕНИЕ МИССИЙ ДЛЯ ГРУППИРОВКИ: %s ===%n", constellationName);
+      constellation.executeAllMissions();
+    }
   }
 
   @Transactional
-  public Optional<SatelliteConstellation> findById(Long id) {
-    return repository.findById(id);
+  public void activateAllSatellites(String constellationName) {
+    SatelliteConstellation constellation = repository.findByConstellationName(
+            constellationName)
+        .orElseThrow(
+            () -> new IllegalArgumentException("Группировка не найдена: " + constellationName));
+    if (constellation != null) {
+      System.out.printf("=== АКТИВАЦИЯ СПУТНИКОВ В ГРУППИРОВКЕ: %s ===%n", constellationName);
+      constellation.activateSatellites();
+    }
+  }
+
+  @Transactional
+  public void showConstellationStatus(String constellationName) {
+    SatelliteConstellation constellation = repository.findByConstellationName(
+            constellationName)
+        .orElseThrow(
+            () -> new IllegalArgumentException("Группировка не найдена: " + constellationName));
+    if (constellation != null) {
+      System.out.printf("=== СТАТУС ГРУППИРОВКИ: %s ===%n", constellationName);
+      System.out.printf("Количество спутников: %d%n", constellation.getSatellites().size());
+      System.out.println(constellation.getSatellitesStatus());
+      System.out.println(constellation.getSatellites());
+    }
+  }
+
+  @Transactional
+  public boolean deleteSatellite(String constellationName, String name) {
+    SatelliteConstellation constellation = repository.findByConstellationName(
+            constellationName)
+        .orElseThrow(
+            () -> new IllegalArgumentException("Группировка не найдена: " + constellationName));
+    Satellite satellite = satellitesRepository.findByName(name).orElseThrow(
+        () -> new IllegalArgumentException("Спутник не найден: " + name));
+    if (satellite != null && constellation != null) {
+      satellitesRepository.delete(satellite);
+      return true;
+    }
+    return false;
+  }
+
+  @Transactional
+  public SatelliteConstellation constellationFromRepository(String constellationName) {
+    return repository.findByConstellationName(constellationName).orElse(null);
+  }
+
+  @Transactional
+  public Satellite satelliteByName(String constellationName, String name) {
+    SatelliteConstellation constellation = repository.findByConstellationName(
+            constellationName)
+        .orElseThrow(
+            () -> new IllegalArgumentException("Группировка не найдена: " + constellationName));
+    Satellite satellite = satellitesRepository.findByName(name).orElseThrow(
+        () -> new IllegalArgumentException("Спутник не найден: " + name));
+    if (Objects.equals(satellite.getConstellation().getId(), constellation.getId())) {
+      return satellite;
+    } else {
+      return null;
+    }
+  }
+
+  @Transactional
+  public ArrayList<SatelliteConstellation> constellations() {
+    return (ArrayList<SatelliteConstellation>) repository.findAll();
   }
 
 }

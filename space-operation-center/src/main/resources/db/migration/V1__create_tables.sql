@@ -11,12 +11,15 @@ CREATE INDEX idx_constellation_name ON constellations(constellation_name);
 
 CREATE TABLE satellites (
     satellite_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name TEXT NOT NULL,
+    satellite_name TEXT NOT NULL,
     type TEXT NOT NULL,
     constellation_id BIGINT NOT NULL REFERENCES constellations(constellation_id),
 
     is_active BOOLEAN DEFAULT FALSE NOT NULL,
     battery_level DOUBLE PRECISION NOT NULL,
+
+    outside_temperature DOUBLE PRECISION,
+    inside_temperature DOUBLE PRECISION,
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ
@@ -29,9 +32,9 @@ CREATE TABLE imaging_satellites (
   satellite_id BIGINT PRIMARY KEY REFERENCES satellites(satellite_id) ON DELETE CASCADE,
   resolution DOUBLE PRECISION NOT NULL,
   photos_taken INTEGER NOT NULL
-)
+);
 
 CREATE TABLE communication_satellites (
   satellite_id BIGINT PRIMARY KEY REFERENCES satellites(satellite_id) ON DELETE CASCADE,
   bandwidth DOUBLE PRECISION NOT NULL
-)
+);

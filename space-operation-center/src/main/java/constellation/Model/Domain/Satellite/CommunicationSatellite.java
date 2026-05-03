@@ -1,7 +1,9 @@
 package constellation.Model.Domain.Satellite;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -14,6 +16,7 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @DiscriminatorValue("COMMUNICATION")
+@Table(name = "communication_satellites")
 public class CommunicationSatellite extends Satellite {
 
   /**
@@ -28,6 +31,7 @@ public class CommunicationSatellite extends Satellite {
   /**
    * Пропускная способность канала связи в мегабитах в секунду (Мбит/с).
    */
+  @Column(name = "bandwidth")
   private final double bandwidth;
 
   /**

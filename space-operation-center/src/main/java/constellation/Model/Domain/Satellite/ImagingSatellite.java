@@ -1,7 +1,9 @@
 package constellation.Model.Domain.Satellite;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -13,7 +15,8 @@ import lombok.Getter;
 @Getter
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@DiscriminatorValue("IMAGING")
+@DiscriminatorValue("IMAGE")
+@Table(name = "imaging_satellites")
 public class ImagingSatellite extends Satellite {
 
   /**
@@ -28,10 +31,12 @@ public class ImagingSatellite extends Satellite {
   /**
    * Пространственное разрешение съёмки в метрах на пиксель.
    */
+  @Column(name = "resolution")
   private final double resolution;
   /**
    * Количество сделанных снимков за время работы спутника.
    */
+  @Column(name = "photos_taken")
   private int photosTaken;
 
   /**

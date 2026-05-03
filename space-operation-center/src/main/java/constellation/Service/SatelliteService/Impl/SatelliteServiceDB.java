@@ -4,7 +4,7 @@ import constellation.Model.Domain.Exception.SpaceOperationException;
 import constellation.Model.Domain.Satellite.Satellite;
 import constellation.Model.Domain.Satellite.SatelliteParam.SatelliteParam;
 import constellation.Model.Factory.SatelliteFactory.SatelliteFactory;
-import constellation.Repository.DBRepository.SatellitesRepository;
+import constellation.Repository.SatellitesRepository;
 import constellation.Service.SatelliteService.SatelliteService;
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +26,7 @@ public class SatelliteServiceDB implements SatelliteService {
     for (SatelliteFactory factory : factories) {
       if (factory.isSatelliteTypeSupported(param.getType())) {
         try {
-          Satellite result = factory.createSatelliteWithParameter(param);
-          return repository.save(result);
+          return factory.createSatelliteWithParameter(param);
         } catch (SpaceOperationException e) {
           System.out.printf("Ошибка создания спутника: %s%n", e);
         }

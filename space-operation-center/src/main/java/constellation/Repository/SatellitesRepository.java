@@ -1,14 +1,10 @@
-package constellation.Repository.DBRepository;
+package constellation.Repository;
 
 import constellation.Model.Domain.Satellite.Satellite;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SatellitesRepository extends JpaRepository<Satellite, Long> {
-//
-//  List<Satellite> findByConstellation_ConstellationName(String constellationName);
-//
-//  List<Satellite> findByIsActiveTrue();
 
   Optional<Satellite> findByName(String name);
 }

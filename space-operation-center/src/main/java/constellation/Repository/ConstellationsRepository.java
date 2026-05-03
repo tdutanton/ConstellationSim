@@ -1,4 +1,4 @@
-package constellation.Repository.DBRepository;
+package constellation.Repository;
 
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import java.util.Optional;
