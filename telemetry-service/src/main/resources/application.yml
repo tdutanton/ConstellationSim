@@ -1,1 +1,6 @@
-grpc.server.port: 9091
+spring:
+  grpc:
+    server:
+      port: ${GRPC_SERVER_PORT}
+      reflection:
+        enabled: true

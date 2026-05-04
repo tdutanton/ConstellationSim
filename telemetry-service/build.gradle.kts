@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.6"
     id("io.spring.dependency-management") version "1.1.7"
+    id("com.google.protobuf") version "0.10.0"
     id("jacoco")
 }
 
@@ -21,6 +22,12 @@ repositories {
 dependencies {
     // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter")
+
+    // gRPC dependencies
+    implementation("net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE")
+    implementation("io.grpc:grpc-protobuf:1.54.0")
+    implementation("io.grpc:grpc-stub:1.54.0")
+    compileOnly("org.apache.tomcat:annotations-api:6.0.53")
 
     // Lombok (production)
     compileOnly("org.projectlombok:lombok")
@@ -86,4 +93,37 @@ tasks.jacocoTestReport {
 
 tasks.bootRun {
     systemProperty("file.encoding", "UTF-8")
+}
+
+springBoot {
+    mainClass = "TelemetryService.TelemetryApp"
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.22.0"
+    }
+    plugins {
+        create("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.54.0"
+        }
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.plugins {
+                create("grpc")
+            }
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs(
+                "build/generated/source/proto/main/java",
+                "build/generated/source/proto/main/grpc"
+            )
+        }
+    }
 }

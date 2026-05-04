@@ -69,6 +69,26 @@ services:
       timeout: 5s
       retries: 5
 
+  telemetry-service:
+    build:
+      context: ./telemetry-service
+      dockerfile: Dockerfile
+    container_name: telemetry-service
+    image: constellation/telemetry-service:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - GRPC_SERVER_PORT=9091
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=postgres
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - "9091:9091"
+    networks:
+      - app-network
+
 volumes:
   postgres_data:
 

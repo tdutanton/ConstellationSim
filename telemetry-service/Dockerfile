@@ -1,5 +1,5 @@
 # Build stage
-FROM gradle:8.14.1-jdk21-alpine AS builder
+FROM gradle:8.14.1-jdk21 AS builder
 WORKDIR /app
 
 # Кэши зависимостей
@@ -26,11 +26,6 @@ COPY --from=builder --chown=appuser:appgroup /app/build/libs/*.jar app.jar
 # Открытие порт
 EXPOSE 9091
 
-# Healthcheck
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:8081/actuator/health || exit 1
-
 # Запуск от непривилегированного пользователя
 USER appuser
-
 ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
