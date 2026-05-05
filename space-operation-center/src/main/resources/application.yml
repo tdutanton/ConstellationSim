@@ -29,3 +29,9 @@ spring:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
+
+grpc:
+  client:
+    telemetry-service:
+      address: 'static://telemetry-service:9091'
+      negotiationType: PLAINTEXT

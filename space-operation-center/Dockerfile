@@ -1,17 +1,18 @@
 # Build stage
-FROM gradle:8.14.1-jdk21-alpine AS builder
+FROM gradle:8.14.1-jdk21 AS builder
 WORKDIR /app
 
 # Кэш зависимости
 COPY build.gradle.kts settings.gradle.kts ./
 COPY gradle gradle
 COPY gradlew ./
+RUN sed -i 's/\r$//' gradlew && chmod +x gradlew
 RUN chmod +x gradlew
 RUN ./gradlew dependencies --no-daemon
 
 # Копирование исходников и сборка
 COPY src ./src
-RUN ./gradlew bootJar -x test --no-daemon
+RUN ./gradlew bootJar -x test --no-daemon --no-build-cache
 
 # Run stage
 FROM eclipse-temurin:21-jre-alpine

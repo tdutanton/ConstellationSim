@@ -22,6 +22,7 @@ repositories {
 dependencies {
     // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter")
+    implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
 
     // gRPC dependencies
     implementation("net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE")
