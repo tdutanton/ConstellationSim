@@ -1,0 +1,7 @@
+# Use this workspace to collaborate
+workspace:
+  id: f31daad4-50b7-45c0-86a6-3f9e8e655b55
+
+localResources:
+  specs:
+    - ..\telemetry-service\src\main\proto\telemetry.proto

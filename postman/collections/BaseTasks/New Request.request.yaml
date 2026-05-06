@@ -1,0 +1,5 @@
+$kind: http-request
+name: New Request
+url: http://localhost:8080/api/sss/satellites/comm
+method: DELETE
+order: 3358

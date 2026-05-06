@@ -133,6 +133,9 @@ public class ConstellationService {
         () -> new IllegalArgumentException("Спутник не найден: " + name));
     if (satellite != null && constellation != null) {
       satellitesRepository.delete(satellite);
+      if (constellation.getSatellites().isEmpty()) {
+        repository.delete(constellation);
+      }
       return true;
     }
     return false;
