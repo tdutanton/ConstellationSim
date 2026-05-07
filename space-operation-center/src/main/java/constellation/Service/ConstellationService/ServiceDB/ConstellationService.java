@@ -124,21 +124,19 @@ public class ConstellationService {
   }
 
   @Transactional
-  public boolean deleteSatellite(String constellationName, String name) {
-    SatelliteConstellation constellation = repository.findByConstellationName(
-            constellationName)
+  public boolean deleteSatellite(String constellationName, String satelliteName) {
+    SatelliteConstellation constellation = repository.findByConstellationName(constellationName)
         .orElseThrow(
             () -> new IllegalArgumentException("Группировка не найдена: " + constellationName));
-    Satellite satellite = satellitesRepository.findByName(name).orElseThrow(
-        () -> new IllegalArgumentException("Спутник не найден: " + name));
-    if (satellite != null && constellation != null) {
-      satellitesRepository.delete(satellite);
-      if (constellation.getSatellites().isEmpty()) {
-        repository.delete(constellation);
-      }
-      return true;
+    Satellite satellite = constellation.satelliteByName(satelliteName);
+    if (satellite == null) {
+      return false;
     }
-    return false;
+    constellation.deleteSatellite(satellite);
+    if (constellation.getSatellites().isEmpty()) {
+      repository.delete(constellation);
+    }
+    return true;
   }
 
   @Transactional
