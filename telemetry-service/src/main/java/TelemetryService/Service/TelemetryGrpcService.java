@@ -1,25 +1,27 @@
 package TelemetryService.Service;
 
+import TelemetryService.Kafka.SatelliteRegistry;
 import constellationsim.telemetry.proto.TelemetryRequest;
 import constellationsim.telemetry.proto.TelemetryServiceGrpc;
 import constellationsim.telemetry.proto.TelemetryUpdate;
 import io.grpc.stub.ServerCallStreamObserver;
 import io.grpc.stub.StreamObserver;
 import jakarta.annotation.PreDestroy;
-import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 @GrpcService
+@RequiredArgsConstructor
 public class TelemetryGrpcService extends TelemetryServiceGrpc.TelemetryServiceImplBase {
 
   private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
   private final Random random = new Random();
-
-  private static final List<Long> EMULATED_SATELLITE_IDS = List.of(1L, 2L, 3L);
+  private final SatelliteRegistry satelliteRegistry;
 
   public void streamTelemetry(TelemetryRequest request,
       StreamObserver<TelemetryUpdate> responseObserver) {
@@ -31,7 +33,7 @@ public class TelemetryGrpcService extends TelemetryServiceGrpc.TelemetryServiceI
 
     long filterId = request.getSatelliteId();
     boolean sendAll = (filterId == 0);
-    List<Long> targetIds = sendAll ? EMULATED_SATELLITE_IDS : List.of(filterId);
+
     serverObserver.setOnCancelHandler(this::cleanup);
 
     scheduler.scheduleAtFixedRate(() -> {
@@ -40,6 +42,7 @@ public class TelemetryGrpcService extends TelemetryServiceGrpc.TelemetryServiceI
       }
 
       try {
+        Set<Long> targetIds = resolveTargetIds(filterId);
         for (Long satId : targetIds) {
           if (serverObserver.isCancelled()) {
             return;
@@ -75,6 +78,16 @@ public class TelemetryGrpcService extends TelemetryServiceGrpc.TelemetryServiceI
     } catch (InterruptedException e) {
       scheduler.shutdownNow();
       Thread.currentThread().interrupt();
+    }
+  }
+
+  private Set<Long> resolveTargetIds(long filterId) {
+    if (filterId == 0) {
+      // Запрос "всех": возвращаем только активные из реестра
+      return satelliteRegistry.getActiveIds();
+    } else {
+      // Запрос конкретного: проверяем наличие в реестре
+      return satelliteRegistry.contains(filterId) ? Set.of(filterId) : Set.of();
     }
   }
 }

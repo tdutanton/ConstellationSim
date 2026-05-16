@@ -1,5 +1,6 @@
 package constellation.Service.SpaceOperationCenterService;
 
+import constellation.Kafka.SatelliteEventPublisher;
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Exception.SpaceOperationException;
 import constellation.Model.Domain.LogExecutionTime.LogExecutionTime;
@@ -25,6 +26,7 @@ public class SpaceOperationCenterService {
 
   private final ConstellationService constellationService;
   private final SatelliteService satelliteService;
+  private final SatelliteEventPublisher eventPublisher;
 
   private final Map<SatelliteType, Class<? extends Satellite>> LUT_TYPES = Map.of(
       SatelliteType.COMMUNICATION, CommunicationSatellite.class,
@@ -44,6 +46,7 @@ public class SpaceOperationCenterService {
       try {
         Satellite satellite = satelliteService.createSatellite(satelliteParam);
         constellationService.addSatelliteToConstellation(request.getConstellationName(), satellite);
+        eventPublisher.publishSatelliteAdded(satellite);
       } catch (SpaceOperationException e) {
         System.out.println(e.getMessage());
       }
@@ -137,6 +140,16 @@ public class SpaceOperationCenterService {
   @LogExecutionTime
   @Transactional
   public boolean deleteSatellite(String constellationName, String satelliteName) {
-    return constellationService.deleteSatellite(constellationName, satelliteName);
+    Satellite satellite = constellationService.satelliteByName(constellationName, satelliteName);
+    if (satellite == null) {
+      return false;
+    }
+    Long satelliteId = satellite.getId();  // сохраняем ID до удаления
+    String satName = satellite.getName();
+    boolean result = constellationService.deleteSatellite(constellationName, satelliteName);
+    if (result) {
+      eventPublisher.publishSatelliteRemoved(satelliteId, satName);
+    }
+    return result;
   }
 }

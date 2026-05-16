@@ -1,0 +1,17 @@
+syntax = "proto3";
+package constellation.events;
+
+option java_package = "constellation.events.proto";
+option java_multiple_files = true;
+option java_outer_classname = "SatelliteEventsProto";
+
+enum SatelliteEventType {
+  SATELLITE_ADDED = 0;
+  SATELLITE_REMOVED = 1;
+}
+
+message SatelliteEvent {
+  string event_id = 1;
+  SatelliteEventType type = 2;
+  int64 satellite_id = 3;
+}

@@ -48,6 +48,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.kafka:spring-kafka")
+    implementation("com.google.protobuf:protobuf-java:3.25.1")
 }
 
 //springBoot {
@@ -102,7 +104,7 @@ springBoot {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.22.0"
+        artifact = "com.google.protobuf:protoc:3.25.1"
     }
     plugins {
         create("grpc") {

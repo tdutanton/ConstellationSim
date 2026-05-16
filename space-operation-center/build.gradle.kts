@@ -51,6 +51,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.kafka:spring-kafka")
+    implementation("com.google.protobuf:protobuf-java:3.25.1")
 
     // PostgreSQL драйвер
     runtimeOnly("org.postgresql:postgresql")
@@ -111,7 +113,7 @@ tasks.bootRun {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.22.0"
+        artifact = "com.google.protobuf:protoc:3.25.1"
     }
     plugins {
         create("grpc") {
