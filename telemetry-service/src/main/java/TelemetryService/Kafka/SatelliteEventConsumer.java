@@ -12,38 +12,40 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SatelliteEventConsumer {
 
+  // внедряется автоматически
   private final SatelliteRegistry satelliteRegistry;
 
+  // аннотация делает метод слушателем kafka
   @KafkaListener(
-      topics = "${KAFKA_TOPIC_SATELLITE_EVENTS:satellite-events}",
-      groupId = "${KAFKA_GROUP_ID:telemetry-service-group}",
-      concurrency = "1"
+      topics = "${KAFKA_TOPIC_SATELLITE_EVENTS:satellite-events}", // какой топик слушать
+      groupId = "${KAFKA_GROUP_ID:telemetry-service-group}", // к какой группе принадлежать
+      concurrency = "1" // сколько потоков для обработки
   )
-  public void handleSatelliteEvent(byte[] payload) { // ← принимаем byte[]
+  public void handleSatelliteEvent(byte[] payload) { // kafka сама передаст сюда байты payload
     try {
-      // ✅ Парсим byte[] → Protobuf-объект
+      // десерализация - из байт в protobuf
       SatelliteEvent event = SatelliteEvent.parseFrom(payload);
 
-      log.info("Received event: type={} satelliteId={}",
+      log.info("Получено событие: тип={} id спутника={}",
           event.getType(), event.getSatelliteId());
-
+      // обработка в зависимости от типа события
       switch (event.getType()) {
         case SATELLITE_ADDED -> {
           satelliteRegistry.addSatellite(event.getSatelliteId());
-          log.info("✅ Added (id={}) to telemetry stream",
+          log.info("Добавлен спутник (id={}) в поток телеметрии",
               event.getSatelliteId());
         }
         case SATELLITE_REMOVED -> {
           satelliteRegistry.removeSatellite(event.getSatelliteId());
-          log.info("❌ Removed  (id={}) from telemetry stream",
+          log.info("Удален спутник (id={}) из потока телеметрии",
               event.getSatelliteId());
         }
-        case UNRECOGNIZED -> log.warn("⚠️ Received unrecognized event type");
+        case UNRECOGNIZED -> log.warn("Получен неизвестный тип события");
       }
     } catch (InvalidProtocolBufferException e) {
-      log.error("Failed to parse Protobuf message", e);
+      log.error("Ошибка парсинга protobuf", e);
     } catch (Exception e) {
-      log.error("Failed to process satellite event", e);
+      log.error("Ошибка обработки события", e);
     }
   }
 }

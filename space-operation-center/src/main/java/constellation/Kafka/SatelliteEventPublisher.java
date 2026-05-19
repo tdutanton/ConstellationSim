@@ -15,10 +15,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SatelliteEventPublisher {
 
-  private final KafkaTemplate<String, byte[]> kafkaTemplate; // ← byte[]
+  // KafkaTemplate из KafkaProducerConfig, внедряется через конструктор через @RequiredArgsConstructor
+  private final KafkaTemplate<String, byte[]> kafkaTemplate;
+
+  // имя топика - из конфига или satellite-events по умолчанию
   @Value("${KAFKA_TOPIC_SATELLITE_EVENTS:satellite-events}")
   private String topic;
 
+  // публикация события о добавлении спутника
   public void publishSatelliteAdded(Satellite satellite) {
     SatelliteEvent event = SatelliteEvent.newBuilder()
         .setEventId(UUID.randomUUID().toString())
@@ -26,24 +30,27 @@ public class SatelliteEventPublisher {
         .setSatelliteId(satellite.getId())
         .build();
 
-    // Конвертируем Protobuf → byte[]
+    // конвертация protobuf в байты
     byte[] payload = event.toByteArray();
 
-    kafkaTemplate.send(topic, satellite.getName(), payload)
-        .whenComplete((result, ex) -> {
+    // отправка в kafka - топик, ключ, значение
+    kafkaTemplate.send(topic, String.valueOf(satellite.getId()), payload)
+        .whenComplete((result, ex) -> { // асинхронный колбэк
           if (ex != null) {
             log.error("Failed to send satellite ADDED event", ex);
           }
+          // если все ок, то result содержит метаданные отправки
         });
   }
 
-  public void publishSatelliteRemoved(Long satelliteId, String satelliteName) {
+  // публикация события об удалении спутника
+  public void publishSatelliteRemoved(Long satelliteId) {
     SatelliteEvent event = SatelliteEvent.newBuilder()
         .setEventId(UUID.randomUUID().toString())
         .setType(SatelliteEventType.SATELLITE_REMOVED)
         .setSatelliteId(satelliteId)
         .build();
 
-    kafkaTemplate.send(topic, satelliteName, event.toByteArray());
+    kafkaTemplate.send(topic, String.valueOf(satelliteId), event.toByteArray());
   }
 }
