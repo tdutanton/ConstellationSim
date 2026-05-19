@@ -1,9 +1,9 @@
 server:
-  port: ${SERVER_PORT:8081}
+  port: ${SERVER_PORT}
 
 app:
   space-center-service:
-    url: ${SERVER_URL:http://localhost:8080/api}
+    url: ${SERVER_URL}
 
     missions:
       - targetType: CONSTELLATION

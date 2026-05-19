@@ -1,0 +1,587 @@
+{
+  "info": {
+    "_postman_id": "85e70dd5-9f87-40f0-9974-809fed08a6cb",
+    "name": "OpenAPI definition",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "13526573"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "missions",
+          "item": [
+            {
+              "name": "execute Mission",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"targetType\": \"CONSTELLATION\",\n  \"constellationName\": \"string\",\n  \"satelliteName\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/missions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "missions"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"targetType\": \"CONSTELLATION\",\n  \"constellationName\": \"string\",\n  \"satelliteName\": \"string\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/missions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "missions"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "add-satellites",
+          "item": [
+            {
+              "name": "add Satellites",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Satellite added successfully\", () => {\r",
+                      "    pm.response.to.have.status(200); // или 201, если измените контроллер\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"constellationName\": \"string\",\n  \"satelliteParams\": [\n    {\n      \"type\": \"COMMUNICATION\",\n      \"name\": \"string\",\n      \"batteryLevel\": 80,\n      \"bandwidth\": 521\n    },\n    {\n      \"type\": \"IMAGE\",\n      \"name\": \"string-2\",\n      \"batteryLevel\": 70,\n      \"resolution\": 50\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/add-satellites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "add-satellites"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"constellationName\": \"string\",\n  \"satelliteParams\": [\n    {\n      \"type\": \"IMAGE\",\n      \"name\": \"string\",\n      \"batteryLevel\": 80,\n      \"bandwidth\": 521\n    },\n    {\n      \"type\": \"COMMUNICATION\",\n      \"name\": \"string\",\n      \"batteryLevel\": 8213.902808721634,\n      \"resolution\": 4116\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/add-satellites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "add-satellites"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "activate-satellites",
+          "item": [
+            {
+              "name": "{constellationName}",
+              "item": [
+                {
+                  "name": "activate Satellites",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/activate-satellites/:constellationName",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "activate-satellites",
+                        ":constellationName"
+                      ],
+                      "variable": [
+                        {
+                          "key": "constellationName",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/activate-satellites/:constellationName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "activate-satellites",
+                            ":constellationName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "constellationName",
+                              "value": "string"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "activate-all-satellites",
+          "item": [
+            {
+              "name": "activate All Satellites",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/activate-all-satellites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "activate-all-satellites"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/activate-all-satellites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "activate-all-satellites"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "overview",
+          "item": [
+            {
+              "name": "overview",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Overview returned 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Сохраняем начальное количество спутников (подставьте ваше поле из DTO)\r",
+                      "const data = pm.response.json();\r",
+                      "const initialCount = Array.isArray(data) ? data.length : 0;\r",
+                      "pm.environment.set(\"initialSatelliteCount\", initialCount);\r",
+                      "\r",
+                      "// Опционально: сохраняем имя группировки для следующего шага\r",
+                      "if (initialCount > 0) {\r",
+                      "    pm.environment.set(\"targetConstellation\", data[0].constellationName); // 👈 замените на реальное поле\r",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/overview",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "overview"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "*/*"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/overview",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "overview"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "*/*"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n  {\n    \"constellationName\": \"string\",\n    \"satellitesCount\": 7876,\n    \"satellitesStatus\": [\n      \"string\",\n      \"string\"\n    ]\n  },\n  {\n    \"constellationName\": \"string\",\n    \"satellitesCount\": 3188,\n    \"satellitesStatus\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "overview Copy",
+          "item": [
+            {
+              "name": "overview",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Overview after add returned 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Satellite count increased by at least 1\", () => {\r",
+                      "    const data = pm.response.json();\r",
+                      "    const initial = parseInt(pm.environment.get(\"initialSatelliteCount\") || \"0\");\r",
+                      "    const current = Array.isArray(data) ? data.length : 0;\r",
+                      "    \r",
+                      "    pm.expect(current).to.be.greaterThan(initial);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/overview",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "overview"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "*/*"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/overview",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "overview"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "*/*"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n  {\n    \"constellationName\": \"string\",\n    \"satellitesCount\": 7876,\n    \"satellitesStatus\": [\n      \"string\",\n      \"string\"\n    ]\n  },\n  {\n    \"constellationName\": \"string\",\n    \"satellitesCount\": 3188,\n    \"satellitesStatus\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "delete-satellite",
+          "item": [
+            {
+              "name": "{constellationName}",
+              "item": [
+                {
+                  "name": "satellites",
+                  "item": [
+                    {
+                      "name": "{satelliteName}",
+                      "item": [
+                        {
+                          "name": "delete Satellite",
+                          "request": {
+                            "method": "DELETE",
+                            "header": [],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/delete-satellite/:constellationName/satellites/:satelliteName",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "delete-satellite",
+                                ":constellationName",
+                                "satellites",
+                                ":satelliteName"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "constellationName",
+                                  "value": "string"
+                                },
+                                {
+                                  "key": "satelliteName",
+                                  "value": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "name": "OK",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/delete-satellite/:constellationName/satellites/:satelliteName",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "delete-satellite",
+                                    ":constellationName",
+                                    "satellites",
+                                    ":satelliteName"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "constellationName",
+                                      "value": "string"
+                                    },
+                                    {
+                                      "key": "satelliteName",
+                                      "value": "string"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "body": ""
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ]
+}

@@ -41,8 +41,8 @@ public class SpaceOperationController {
     return ResponseEntity.ok(statuses);
   }
 
-  @DeleteMapping("/{constellationName}/satellites/{satelliteName}")
-  public ResponseEntity<Void> decommissionSatellite(
+  @DeleteMapping("/delete-satellite/{constellationName}/satellites/{satelliteName}")
+  public ResponseEntity<Void> deleteSatellite(
       @PathVariable String constellationName,
       @PathVariable String satelliteName) {
 
@@ -54,13 +54,14 @@ public class SpaceOperationController {
         : ResponseEntity.notFound().build();
   }
 
-  @PostMapping("/activateSatellitesInConstellation")
-  public ResponseEntity<Void> activateSatellites(@RequestBody ConstellationRequest request) {
+  @PostMapping("/activate-satellites/{constellationName}")
+  public ResponseEntity<Void> activateSatellites(@PathVariable String constellationName) {
+    ConstellationRequest request = new ConstellationRequest(constellationName);
     spaceOperationCenterService.activateSatellites(request);
     return ResponseEntity.ok().build();
   }
 
-  @PostMapping("/activateAllSatellites")
+  @PostMapping("/activate-all-satellites")
   public ResponseEntity<Void> activateAllSatellites() {
     spaceOperationCenterService.activateSatellites();
     return ResponseEntity.ok().build();

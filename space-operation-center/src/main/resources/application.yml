@@ -1,5 +1,5 @@
 server:
-port: 8080
+port: ${SERVER_PORT}
 
 springdoc:
   swagger-ui:
@@ -29,3 +29,13 @@ spring:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
+  kafka:
+    bootstrap-servers: kafka:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+grpc:
+  client:
+    telemetry-service:
+      address: 'static://telemetry-service:9091'
+      negotiationType: PLAINTEXT

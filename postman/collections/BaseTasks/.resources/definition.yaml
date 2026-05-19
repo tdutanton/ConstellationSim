@@ -1,0 +1,5 @@
+$kind: collection
+name: BaseTasks
+variables:
+  constellationName: ""
+  satelliteName: ""

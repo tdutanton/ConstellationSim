@@ -11,7 +11,7 @@ CREATE INDEX idx_constellation_name ON constellations(constellation_name);
 
 CREATE TABLE satellites (
     satellite_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    satellite_name TEXT NOT NULL,
+    satellite_name TEXT NOT NULL UNIQUE,
     type TEXT NOT NULL,
     constellation_id BIGINT NOT NULL REFERENCES constellations(constellation_id),
 

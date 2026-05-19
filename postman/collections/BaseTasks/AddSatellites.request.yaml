@@ -1,0 +1,40 @@
+$kind: http-request
+name: AddSatellites
+url: http://localhost:8080/api/add-satellites
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"constellationName\": \"sss\",\r
+
+    \  \"satelliteParams\": [\r
+
+    \    {\r
+
+    \      \"type\": \"IMAGE\",\r
+
+    \      \"name\": \"img\",\r
+
+    \      \"batteryLevel\": 90,\r
+
+    \      \"resolution\": 500\r
+
+    \    },\r
+
+    \    {\r
+
+    \      \"type\": \"COMMUNICATION\",\r
+
+    \      \"name\": \"comm\",\r
+
+    \      \"batteryLevel\": 80,\r
+
+    \      \"bandwidth\": 80\r
+
+    \    }\r
+
+    \  ]\r
+
+    }"
+order: 2000

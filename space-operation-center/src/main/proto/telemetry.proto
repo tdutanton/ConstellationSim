@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package telemetry;
+
+option java_multiple_files = true;
+option java_package = "constellationsim.telemetry.proto";
+
+message TelemetryRequest {
+  int64 satellite_id = 1;
+}
+
+message TelemetryUpdate {
+  int64 satellite_id = 1;
+  double outside_temperature = 2;
+  double inside_temperature = 3;
+}
+
+service TelemetryService {
+  rpc StreamTelemetry(TelemetryRequest) returns(stream TelemetryUpdate);
+}
