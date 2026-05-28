@@ -4,15 +4,10 @@ WORKDIR /app
 
 # Кэш зависимости
 COPY build.gradle.kts settings.gradle.kts ./
-COPY gradle gradle
-COPY gradlew ./
+COPY --chown=gradle:gradle . .
 RUN sed -i 's/\r$//' gradlew && chmod +x gradlew
-RUN chmod +x gradlew
-RUN ./gradlew dependencies --no-daemon
-
-# Копирование исходников и сборка
-COPY src ./src
-RUN ./gradlew bootJar -x test --no-daemon --no-build-cache
+RUN gradle dependencies --refresh-dependencies && \
+    gradle build -x test --no-daemon
 
 # Run stage
 FROM eclipse-temurin:21-jre-alpine
