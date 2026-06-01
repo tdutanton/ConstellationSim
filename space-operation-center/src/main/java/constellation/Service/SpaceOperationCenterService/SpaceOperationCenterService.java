@@ -144,7 +144,7 @@ public class SpaceOperationCenterService {
     if (satellite == null) {
       return false;
     }
-    Long satelliteId = satellite.getId();  // сохраняем ID до удаления
+    Long satelliteId = satellite.getId();
     boolean result = constellationService.deleteSatellite(constellationName, satelliteName);
     if (result) {
       eventPublisher.publishSatelliteRemoved(satelliteId);

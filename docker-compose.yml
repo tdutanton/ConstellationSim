@@ -1,37 +1,4 @@
 services:
-  server:
-    build:
-      context: ./space-operation-center
-      dockerfile: Dockerfile
-    container_name: constellation-server
-    image: constellation/server:latest
-    depends_on:
-      postgres:
-        condition: service_healthy
-      kafka:
-        condition: service_healthy
-      telemetry-service:
-        condition: service_healthy
-    environment:
-      - SERVER_PORT=8080
-      - SPRING_PROFILES_ACTIVE=docker
-      - DB_HOST=postgres
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - KAFKA_TOPIC_SATELLITE_EVENTS=satellite-events
-    ports:
-      - "8080:8080"
-    networks:
-      - app-network
-    healthcheck:
-      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 40s
-    restart: unless-stopped
-
   mission-service:
     build:
       context: ./mission-scheduler
@@ -57,7 +24,7 @@ services:
       start_period: 40s
     restart: unless-stopped
 
-  postgres:
+  constellation-db:
     image: postgres:15
     container_name: constellation-db
     environment:
@@ -68,13 +35,63 @@ services:
     networks:
       - app-network
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init-dbs.sql:/docker-entrypoint-initdb.d/init-dbs.sql
+      - constellation_db_data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
       timeout: 5s
       retries: 5
+
+  telemetry-db:
+    image: postgres:15
+    container_name: telemetry-db
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: telemetry_db
+    ports:
+      - "5433:5432"
+    networks:
+      - app-network
+    volumes:
+      - telemetry_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: ./space-operation-center
+      dockerfile: Dockerfile
+    container_name: constellation-server
+    image: constellation/server:latest
+    depends_on:
+      constellation-db:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      telemetry-service:
+        condition: service_healthy
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=constellation-db
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_TOPIC_SATELLITE_EVENTS=satellite-events
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
 
   telemetry-service:
     build:
@@ -83,14 +100,14 @@ services:
     container_name: telemetry-service
     image: constellation/telemetry-service:latest
     depends_on:
-      postgres:
+      telemetry-db:
         condition: service_healthy
       kafka:
         condition: service_healthy
     environment:
       - GRPC_SERVER_PORT=9091
       - SPRING_PROFILES_ACTIVE=docker
-      - DB_HOST=postgres
+      - DB_HOST=telemetry-db
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
@@ -101,7 +118,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: [ "CMD", "nc", "-z", "localhost", "9091" ]  # Проверяет, открыт ли gRPC порт
+      test: [ "CMD", "nc", "-z", "localhost", "9091" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -140,7 +157,8 @@ services:
       start_period: 15s
 
 volumes:
-  postgres_data:
+  constellation_db_data:
+  telemetry_db_data:
   kafka_data:
 
 networks:
