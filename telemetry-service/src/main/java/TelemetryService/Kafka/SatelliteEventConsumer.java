@@ -28,7 +28,7 @@ public class SatelliteEventConsumer {
       String eventId = event.getEventId();
 
       if (inboxRepository.existsById(eventId)) {
-        log.info("Событие {} уже обработано, пропускаем", eventId);
+        log.info("Событие {} уже обработано, пропускается", eventId);
         return;
       }
 

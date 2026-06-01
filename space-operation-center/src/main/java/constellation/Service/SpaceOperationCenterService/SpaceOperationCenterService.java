@@ -24,8 +24,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SpaceOperationCenterService {
 
+  // сервис управления группировками
   private final ConstellationService constellationService;
+  // сервис управления спутниками
   private final SatelliteService satelliteService;
+  // брокер событий SatelliteEventPublisher
+  // добавляет строки в outboxRepository, в полях статус везде PENDING
+  // обработчик outboxScheduler по расписанию чекает outboxRepository,
+  // отправляет на кафку и меняет статус на SENT
   private final SatelliteEventPublisher eventPublisher;
 
   private final Map<SatelliteType, Class<? extends Satellite>> LUT_TYPES = Map.of(
@@ -45,7 +51,9 @@ public class SpaceOperationCenterService {
     for (SatelliteParam satelliteParam : request.getSatelliteParams()) {
       try {
         Satellite satellite = satelliteService.createSatellite(satelliteParam);
+        // constellationService оперирует своим репозиторием
         constellationService.addSatelliteToConstellation(request.getConstellationName(), satellite);
+        // добавление строки в outboxRepository - все под одной транзакцией
         eventPublisher.publishSatelliteAdded(satellite);
       } catch (SpaceOperationException e) {
         System.out.println(e.getMessage());

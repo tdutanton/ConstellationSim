@@ -38,6 +38,7 @@ public class OutboxEvent {
   @Column(name = "status", nullable = false)
   private String status;
 
+  // при создании каждой строки в поле status будет PENDING (еще не обработано)
   @PrePersist
   protected void onCreate() {
     createdAt = Instant.now();
