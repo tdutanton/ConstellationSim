@@ -6,39 +6,46 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class SatelliteEventConsumer {
 
-  // внедряется автоматически
   private final SatelliteRegistry satelliteRegistry;
+  private final InboxEventRepository inboxRepository;
 
-  // аннотация делает метод слушателем kafka
   @KafkaListener(
-      topics = "${KAFKA_TOPIC_SATELLITE_EVENTS:satellite-events}", // какой топик слушать
-      groupId = "${KAFKA_GROUP_ID:telemetry-service-group}", // к какой группе принадлежать
-      concurrency = "1" // сколько потоков для обработки
+      topics = "${KAFKA_TOPIC_SATELLITE_EVENTS:satellite-events}",
+      groupId = "${KAFKA_GROUP_ID:telemetry-service-group}",
+      concurrency = "1"
   )
-  public void handleSatelliteEvent(byte[] payload) { // kafka сама передаст сюда байты payload
+  @Transactional
+  public void handleSatelliteEvent(byte[] payload) {
     try {
-      // десерализация - из байт в protobuf
       SatelliteEvent event = SatelliteEvent.parseFrom(payload);
+      String eventId = event.getEventId();
 
-      log.info("Получено событие: тип={} id спутника={}",
-          event.getType(), event.getSatelliteId());
-      // обработка в зависимости от типа события
+      if (inboxRepository.existsById(eventId)) {
+        log.info("Событие {} уже обработано, пропускается", eventId);
+        return;
+      }
+
+      log.info("Получено событие: тип={} id спутника={}", event.getType(), event.getSatelliteId());
+
+      InboxEvent inboxEvent = new InboxEvent(
+          eventId, event.getSatelliteId(), event.getType().name());
+      inboxRepository.save(inboxEvent);
+
       switch (event.getType()) {
         case SATELLITE_ADDED -> {
           satelliteRegistry.addSatellite(event.getSatelliteId());
-          log.info("Добавлен спутник (id={}) в поток телеметрии",
-              event.getSatelliteId());
+          log.info("Добавлен спутник (id={}) в поток телеметрии", event.getSatelliteId());
         }
         case SATELLITE_REMOVED -> {
           satelliteRegistry.removeSatellite(event.getSatelliteId());
-          log.info("Удален спутник (id={}) из потока телеметрии",
-              event.getSatelliteId());
+          log.info("Удален спутник (id={}) из потока телеметрии", event.getSatelliteId());
         }
         case UNRECOGNIZED -> log.warn("Получен неизвестный тип события");
       }

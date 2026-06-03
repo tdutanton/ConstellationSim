@@ -12,6 +12,18 @@ spring:
     name: telemetry-service
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:default}
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:telemetry-db}:5432/telemetry_db?sslmode=disable&connectTimeout=10&socketTimeout=30
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
   kafka:
     bootstrap-servers: kafka:9092
     consumer:
@@ -19,8 +31,6 @@ spring:
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
-      properties:
-        protobuf.deserializer.message.type: constellation.events.proto.SatelliteEvent
 
 management:
   endpoints:

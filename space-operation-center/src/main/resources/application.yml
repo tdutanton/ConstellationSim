@@ -18,7 +18,7 @@ management:
 
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_HOST:postgres}:5432/constellation_db?sslmode=disable&connectTimeout=10&socketTimeout=30
+    url: jdbc:postgresql://${DB_HOST:constellation-db}:5432/constellation_db?sslmode=disable&connectTimeout=10&socketTimeout=30
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:postgres}
   jpa:

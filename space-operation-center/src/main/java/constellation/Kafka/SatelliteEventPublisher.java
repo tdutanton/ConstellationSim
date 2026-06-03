@@ -1,13 +1,11 @@
 package constellation.Kafka;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import constellation.Model.Domain.Satellite.Satellite;
-import constellation.events.proto.SatelliteEvent;
-import constellation.events.proto.SatelliteEventType;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,42 +13,42 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SatelliteEventPublisher {
 
-  // KafkaTemplate из KafkaProducerConfig, внедряется через конструктор через @RequiredArgsConstructor
-  private final KafkaTemplate<String, byte[]> kafkaTemplate;
+  private final OutboxEventRepository outboxRepository;
+  private final ObjectMapper objectMapper;
 
-  // имя топика - из конфига или satellite-events по умолчанию
-  @Value("${KAFKA_TOPIC_SATELLITE_EVENTS:satellite-events}")
-  private String topic;
-
-  // публикация события о добавлении спутника
+  // отправляет в psql таблицу запись outboxEvent о добавлении спутника
   public void publishSatelliteAdded(Satellite satellite) {
-    SatelliteEvent event = SatelliteEvent.newBuilder()
-        .setEventId(UUID.randomUUID().toString())
-        .setType(SatelliteEventType.SATELLITE_ADDED)
-        .setSatelliteId(satellite.getId())
-        .build();
-
-    // конвертация protobuf в байты
-    byte[] payload = event.toByteArray();
-
-    // отправка в kafka - топик, ключ, значение
-    kafkaTemplate.send(topic, String.valueOf(satellite.getId()), payload)
-        .whenComplete((result, ex) -> { // асинхронный колбэк
-          if (ex != null) {
-            log.error("Failed to send satellite ADDED event", ex);
-          }
-          // если все ок, то result содержит метаданные отправки
-        });
+    SatelliteEventPayload satelliteEventPayload = new SatelliteEventPayload(
+        UUID.randomUUID().toString(),
+        "SATELLITE_ADDED",
+        satellite.getId()
+    );
+    try {
+      String payloadJson = objectMapper.writeValueAsString(satelliteEventPayload);
+      OutboxEvent event = new OutboxEvent(
+          String.valueOf(satellite.getId()), "CREATED", payloadJson);
+      outboxRepository.save(event);
+      log.info("Сохранено outbox событие в репозиторий: спутник {} добавлен", satellite.getId());
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException("Failed to serialize outbox payload", e);
+    }
   }
 
-  // публикация события об удалении спутника
+  // отправляет в psql таблицу запись outboxEvent об удалении спутника
   public void publishSatelliteRemoved(Long satelliteId) {
-    SatelliteEvent event = SatelliteEvent.newBuilder()
-        .setEventId(UUID.randomUUID().toString())
-        .setType(SatelliteEventType.SATELLITE_REMOVED)
-        .setSatelliteId(satelliteId)
-        .build();
-
-    kafkaTemplate.send(topic, String.valueOf(satelliteId), event.toByteArray());
+    SatelliteEventPayload satelliteEventPayload = new SatelliteEventPayload(
+        UUID.randomUUID().toString(),
+        "SATELLITE_REMOVED",
+        satelliteId
+    );
+    try {
+      String payloadJson = objectMapper.writeValueAsString(satelliteEventPayload);
+      OutboxEvent event = new OutboxEvent(
+          String.valueOf(satelliteId), "DELETED", payloadJson);
+      outboxRepository.save(event);
+      log.info("Сохранено outbox событие в репозиторий: спутник {} удален", satelliteId);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException("Failed to serialize outbox payload", e);
+    }
   }
 }
