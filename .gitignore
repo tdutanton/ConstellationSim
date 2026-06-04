@@ -25,6 +25,10 @@ mission-scheduler/gradle/**
 mission-scheduler/gradle.properties
 
 
+# Load test reports
+load-tests/*.html
+load-tests/*.json
+
 # OS
 .DS_Store
 Thumbs.db
