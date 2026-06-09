@@ -2,6 +2,7 @@ package constellation.Model.Domain.Constellation;
 
 import constellation.Model.Domain.Internal.SatelliteState.SatelliteState;
 import constellation.Model.Domain.Satellite.Satellite;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +29,7 @@ import lombok.Setter;
  */
 @Entity
 @Table(name = "constellations")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "satellitesStatus"})
 @Getter
 @Setter
 public class SatelliteConstellation {

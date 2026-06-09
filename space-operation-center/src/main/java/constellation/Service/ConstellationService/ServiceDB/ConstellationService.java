@@ -7,6 +7,9 @@ import constellation.Repository.SatellitesRepository;
 import java.util.ArrayList;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,6 +64,7 @@ public class ConstellationService {
     return (satellite.getName() != null) && !satellite.getName().isBlank();
   }
 
+  @CacheEvict(value = "constellations", key = "'all'")
   @Transactional
   public void createAndSaveConstellation(String name) {
     if (repository.findByConstellationName(name).isPresent()) {
@@ -75,6 +79,11 @@ public class ConstellationService {
   }
 
   @Transactional
+  @Caching(evict = {
+      @CacheEvict(value = "constellation", key = "#constellationName"),
+      @CacheEvict(value = "constellations", key = "'all'"),
+      @CacheEvict(value = "satellites", key = "'all'")
+  })
   public void addSatelliteToConstellation(String constellationName, Satellite satellite) {
     SatelliteConstellation constellation = repository.findByConstellationName(
             constellationName)
@@ -124,6 +133,11 @@ public class ConstellationService {
   }
 
   @Transactional
+  @Caching(evict = {
+      @CacheEvict(value = "constellation", key = "#constellationName"),
+      @CacheEvict(value = "constellations", key = "'all'"),
+      @CacheEvict(value = "satellites", key = "'all'")
+  })
   public boolean deleteSatellite(String constellationName, String satelliteName) {
     SatelliteConstellation constellation = repository.findByConstellationName(constellationName)
         .orElseThrow(
@@ -139,9 +153,25 @@ public class ConstellationService {
     return true;
   }
 
+  private SatelliteConstellation copyForCache(SatelliteConstellation original) {
+    SatelliteConstellation copy = new SatelliteConstellation();
+    copy.setId(original.getId());
+    copy.setConstellationName(original.getConstellationName());
+    copy.setCreatedAt(original.getCreatedAt());
+    copy.setUpdatedAt(original.getUpdatedAt());
+    copy.setSatellites(new ArrayList<>(original.getSatellites()));
+    return copy;
+  }
+
+  @Cacheable(value = "constellation", key = "#constellationName", unless = "#result == null")
   @Transactional
   public SatelliteConstellation constellationFromRepository(String constellationName) {
-    return repository.findByConstellationName(constellationName).orElse(null);
+    SatelliteConstellation c = repository.findByConstellationName(constellationName).orElse(null);
+    if (c != null) {
+      c.getSatellites().size();
+      return copyForCache(c);
+    }
+    return null;
   }
 
   @Transactional
@@ -159,9 +189,17 @@ public class ConstellationService {
     }
   }
 
+  @Cacheable(value = "constellations", key = "'all'")
   @Transactional
   public ArrayList<SatelliteConstellation> constellations() {
-    return (ArrayList<SatelliteConstellation>) repository.findAll();
+    ArrayList<SatelliteConstellation> result =
+        (ArrayList<SatelliteConstellation>) repository.findAll();
+    ArrayList<SatelliteConstellation> cacheCopy = new ArrayList<>();
+    for (SatelliteConstellation c : result) {
+      c.getSatellites().size();
+      cacheCopy.add(copyForCache(c));
+    }
+    return cacheCopy;
   }
 
 }

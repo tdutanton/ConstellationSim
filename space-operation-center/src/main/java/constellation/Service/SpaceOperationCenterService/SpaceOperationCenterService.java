@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +30,8 @@ public class SpaceOperationCenterService {
   private final ConstellationService constellationService;
   // сервис управления спутниками
   private final SatelliteService satelliteService;
+  // менеджер кэша для ручной инвалидации
+  private final CacheManager cacheManager;
   // брокер событий SatelliteEventPublisher
   // добавляет строки в outboxRepository, в полях статус везде PENDING
   // обработчик outboxScheduler по расписанию чекает outboxRepository,
@@ -155,6 +159,10 @@ public class SpaceOperationCenterService {
     Long satelliteId = satellite.getId();
     boolean result = constellationService.deleteSatellite(constellationName, satelliteName);
     if (result) {
+      Cache cache = cacheManager.getCache("satellite");
+      if (cache != null) {
+        cache.evict(satelliteId);
+      }
       eventPublisher.publishSatelliteRemoved(satelliteId);
     }
     return result;

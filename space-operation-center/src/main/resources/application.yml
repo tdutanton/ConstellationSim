@@ -11,12 +11,30 @@ management:
   endpoints:
     web:
       exposure:
-        include: "health,info"
+        include: "health,info,caches,metrics"
   endpoint:
     health:
       show-details: always
+  metrics:
+    cache:
+      enabled: true
 
 spring:
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000
+      cache-null-values: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: 6379
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 4
+          min-idle: 0
   datasource:
     url: jdbc:postgresql://${DB_HOST:constellation-db}:5432/constellation_db?sslmode=disable&connectTimeout=10&socketTimeout=30
     username: ${DB_USERNAME:postgres}

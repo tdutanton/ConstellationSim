@@ -1,5 +1,6 @@
 package constellation.Model.Domain.Satellite;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import constellation.Model.Domain.Constellation.SatelliteConstellation;
 import constellation.Model.Domain.Internal.EnergySystem.EnergySystem;
 import constellation.Model.Domain.Internal.SatelliteState.SatelliteState;
@@ -38,6 +39,7 @@ import lombok.ToString;
 @Table(name = "satellites")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "constellation"})
 @Getter
 @Setter
 @NoArgsConstructor
